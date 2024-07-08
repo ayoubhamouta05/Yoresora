@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">EcommerceCourse</string>
+    <string name="onboardingtitle1">Welcome to OM-MH</string>
+    <string name="onboardingtitle2">Bespoke Designs</string>
+    <string name="onboardingtitle3">Get Started with OM-MH</string>
+    <string name="onboardingbody1">Explore the elegance and craftsmanship of custom-made dresses tailored just for you</string>
+    <string name="onboardingbody2">Each piece is crafted with meticulous attention to detail, reflecting your unique style and personality</string>
+    <string name="onboardingbody3">Sign up or log in to begin your fashion journey with us. Discover, customize, and create your dream dress</string>
+    <string name="continuee">continue</string>
+    <string name="selectLanguage">Select Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+
+
 </resources>

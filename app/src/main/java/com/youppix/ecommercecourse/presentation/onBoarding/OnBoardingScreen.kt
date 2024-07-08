@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.onBoarding
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -25,19 +24,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.pages
 import com.youppix.ecommercecourse.common.Dimens.PageIndicatorWidth
 import com.youppix.ecommercecourse.presentation.components.PageIndicator
 import com.youppix.ecommercecourse.presentation.login.LoginScreen
-import com.youppix.ecommercecourse.presentation.ui.theme.Cairo
 import kotlinx.coroutines.launch
 
 
@@ -63,11 +61,8 @@ class OnBoardingScreen(private val modifier: Modifier = Modifier) : Screen {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = pages[index].title,
-                        textAlign = TextAlign.Center,
-                        fontFamily = Cairo,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
+                        text = stringResource(id = pages[index].title),
+                        style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier.padding(bottom = 10.dp)
                     )
                     Image(
@@ -80,12 +75,10 @@ class OnBoardingScreen(private val modifier: Modifier = Modifier) : Screen {
 
                         )
                     Text(
-                        text = pages[index].body,
+                        text = stringResource(id = pages[index].body),
                         color = Color.DarkGray,
+                        style = MaterialTheme.typography.displaySmall,
                         textAlign = TextAlign.Center,
-                        fontFamily = Cairo,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 20.sp,
                         modifier = Modifier.padding(horizontal = 30.dp),
                         lineHeight = TextUnit(35f, TextUnitType.Sp)
                     )
@@ -119,7 +112,7 @@ class OnBoardingScreen(private val modifier: Modifier = Modifier) : Screen {
                     navigator?.push(LoginScreen())
                 }
             }) {
-                Text(text = "Continue")
+                Text(text = stringResource(id = R.string.continuee))
             }
         }
     }

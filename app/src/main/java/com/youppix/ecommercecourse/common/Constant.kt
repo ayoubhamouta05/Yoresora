@@ -5,21 +5,23 @@ import com.youppix.ecommercecourse.domain.model.OnBoarding
 
 object Constant {
 
+    const val APP_LANG = "APP_LANG"
+
     val pages = listOf(
         OnBoarding(
-            title = "Welcome to OM-MH",
+            title = R.string.onboardingtitle1,
             image = R.drawable.onboarding1,
-            body = "Discover exquisite couture and custom-made dresses designed just for you"
+            body = R.string.onboardingbody1
         ),
         OnBoarding(
-            title = "Expert Craftsmanship",
+            title = R.string.onboardingtitle2,
             image = R.drawable.onboarding2,
-            body = "Experience the finest in dressmaking with our skilled artisans and attention to detail"
+            body = R.string.onboardingbody2
         ),
         OnBoarding(
-            title = "Tailored to You",
+            title = R.string.onboardingtitle3,
             image = R.drawable.onboarding3,
-            body = "Every piece is tailored to fit you perfectly, reflecting your unique style and personality"
+            body = R.string.onboardingbody3
         ),
 
     )

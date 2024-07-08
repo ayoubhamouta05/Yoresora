@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    id ("kotlin-kapt")
 }
 
 android {
@@ -71,4 +73,16 @@ dependencies {
 
     // Navigator
     implementation(libs.voyager.navigator)
+
+    //datastore
+    implementation (libs.androidx.datastore.preferences)
+
+    //Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    //Dagger Hilt
+    implementation (libs.hilt.android)
+    kapt (libs.hilt.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
 }
