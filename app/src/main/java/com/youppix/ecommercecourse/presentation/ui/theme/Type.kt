@@ -59,7 +59,7 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontSize = 16.sp,
         fontFamily = Cairo,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.SemiBold,
         lineHeight = 24.sp,
     ),
     labelSmall = TextStyle(

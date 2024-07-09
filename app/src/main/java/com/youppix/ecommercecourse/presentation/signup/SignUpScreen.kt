@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.login
+package com.youppix.ecommercecourse.presentation.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,16 +7,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
@@ -41,35 +45,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Constant.APP_LANG
+import com.youppix.ecommercecourse.common.Constant
+import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.presentation.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.login.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.login.components.SocialMediaItem
-import com.youppix.ecommercecourse.presentation.signup.SignUpScreen
-import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import java.util.Locale
 
-class LoginScreen() : Screen {
-
+class SignUpScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val isEnglish = LocalContext.current.getSharedPreferences(APP_LANG, 0)
-            .getString(APP_LANG, Locale.getDefault().language) == "en"
+        val isEnglish = LocalContext.current.getSharedPreferences(Constant.APP_LANG, 0)
+            .getString(Constant.APP_LANG, Locale.getDefault().language) == "en"
 
         val navigator = LocalNavigator.current
 
-        val viewModel: LoginViewModel = hiltViewModel()
+        val viewModel: SignUpViewModel = hiltViewModel()
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -78,79 +80,105 @@ class LoginScreen() : Screen {
                 LocalLayoutDirection provides LayoutDirection.Rtl
             }
         ) {
-        Scaffold(modifier = Modifier.fillMaxSize(),
-            topBar = {
-                CenterAlignedTopAppBar(title = {
-                    Text(
-                        text = stringResource(id = R.string.signin),
-                        modifier = Modifier,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
-                        color = Color.Gray
-                    )
-                },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                navigator?.pop()
-                            },
-                        ) {
-                            Image(
-                                Icons.Default.KeyboardArrowDown,
-                                colorFilter = ColorFilter.tint(color = Color.Gray),
-                                modifier = Modifier
-                                    .rotate(if (isEnglish) 90f else -90f)
-                                    .size(HorizontalPaddingSignIn),
-                                contentDescription = null,
-                                contentScale = ContentScale.Fit
-                            )
-                        }
-                    })
+            Scaffold(modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    CenterAlignedTopAppBar(title = {
+                        Text(
+                            text = stringResource(id = R.string.signup),
+                            modifier = Modifier,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
+                            color = Color.Gray
+                        )
+                    },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    navigator?.pop()
+                                },
+                            ) {
+                                Image(
+                                    Icons.Default.KeyboardArrowDown,
+                                    colorFilter = ColorFilter.tint(color = Color.Gray),
+                                    modifier = Modifier
+                                        .rotate(if (isEnglish) 90f else -90f)
+                                        .size(HorizontalPaddingSignIn),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Fit
+                                )
+                            }
+                        })
 
-            }) { innerPadding ->
+                }) { innerPadding ->
+                val scrollState = rememberScrollState()
 
                 Column(
-                    modifier = Modifier.padding(
-                        bottom = innerPadding.calculateBottomPadding()
-                    )
+                    modifier = Modifier
+                        .padding(
+                            bottom = innerPadding.calculateBottomPadding()
+                        ).fillMaxSize()
+                        .verticalScroll(state = scrollState, enabled = true)
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = stringResource(id = R.string.welcomeBack),
+                        text = stringResource(id = R.string.welcomeToOurCommunity),
                         style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
                                 top = innerPadding
-                                    .calculateTopPadding()
-                                    .plus(
-                                        HorizontalPaddingSignIn
-                                    )
+                                    .calculateTopPadding(),
+                                end = HorizontalPaddingSignIn,
+                                start = HorizontalPaddingSignIn
                             ),
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = stringResource(id = R.string.signInBodyText),
+                        text = stringResource(id = R.string.signUpBodyText),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                bottom = HorizontalPaddingSignIn,
                                 start = HorizontalPaddingSignIn,
                                 end = HorizontalPaddingSignIn
                             ),
                         textAlign = TextAlign.Center
                     )
-                    //Email
+                    //User Name
                     CustomTextField(
                         modifier = Modifier.padding(vertical = MediumPadding),
+                        value = viewModel.userName.value,
+                        label = stringResource(id = R.string.userName),
+                        placeholder = stringResource(id = R.string.enterYourUserName),
+                        trailingIcon = Icons.Outlined.Person,
+                        onValueChange = { value ->
+                            viewModel.updateUserName(value)
+                        },
+                        isError = false,
+                        isPassword = false
+                    )
+                    //Email
+                    CustomTextField(
                         value = viewModel.email.value,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
                         trailingIcon = Icons.Outlined.Email,
-                        onValueChange = { value->
+                        onValueChange = { value ->
                             viewModel.updateEmail(value)
+                        },
+                        isError = false,
+                        isPassword = false
+                    )
+                    //Phone
+                    CustomTextField(
+                        modifier = Modifier.padding(vertical = MediumPadding),
+                        value = viewModel.phone.value,
+                        label = stringResource(id = R.string.phone),
+                        placeholder = stringResource(id = R.string.enterYourPhone),
+                        trailingIcon = Icons.Outlined.Phone,
+                        onValueChange = { value ->
+                            viewModel.updatePhone(value)
                         },
                         isError = false,
                         isPassword = false
@@ -160,12 +188,12 @@ class LoginScreen() : Screen {
 
                     CustomTextField(
                         value = viewModel.password.value,
-                        onValueChange ={ value ->
+                        onValueChange = { value ->
                             viewModel.updatePassword(value)
-                        } ,
+                        },
                         label = stringResource(id = R.string.password),
                         placeholder = stringResource(id = R.string.enterYourPassword),
-                        trailingIcon = Icons.Outlined.Lock ,
+                        trailingIcon = Icons.Outlined.Lock,
                         isError = false,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         isPassword = true,
@@ -174,38 +202,6 @@ class LoginScreen() : Screen {
                             viewModel.showOrHidePassword(it)
                         }
                     )
-
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = HorizontalPaddingSignIn,
-                                vertical = MediumPadding
-                            ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        Checkbox(checked = viewModel.rememberMe.value, onCheckedChange = {
-                            viewModel.updateRememberMe(it)
-                        })
-
-                        Text(
-                            text = stringResource(id = R.string.rememberMe),
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.offset(-ExtraSmallPadding)
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        TextButton(onClick = { }) {
-                            Text(
-                                text = stringResource(id = R.string.forgotPassword),
-                                color = Color.Gray,
-                                textDecoration = TextDecoration.Underline,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
 
                     Button(
                         onClick = {},
@@ -261,7 +257,7 @@ class LoginScreen() : Screen {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = stringResource(id = R.string.dontHaveAnAccount),
+                            text = stringResource(id = R.string.alreadyHaveAccount),
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.SemiBold
                             ),
@@ -269,10 +265,14 @@ class LoginScreen() : Screen {
                             modifier = Modifier.offset(x = SmallPadding)
                         )
                         TextButton(onClick = {
-                            navigator?.push(SignUpScreen())
+                            navigator?.let {
+                                if (!it.pop()){
+                                    it.push(LoginScreen())
+                                }
+                            }
                         }) {
                             Text(
-                                text = stringResource(id = R.string.signup),
+                                text = stringResource(id = R.string.signin),
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -287,14 +287,5 @@ class LoginScreen() : Screen {
 
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    EcommerceCourseTheme {
-        LoginScreen().Content()
     }
 }

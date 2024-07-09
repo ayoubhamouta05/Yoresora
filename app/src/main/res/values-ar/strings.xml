@@ -12,4 +12,22 @@
     <string name="selectLanguage">اختر اللغة</string>
     <string name="english">انجليزية</string>
     <string name="arabic">عربية</string>
+    <string name="welcomeBack">مرحبا بعودتك</string>
+    <string name="signInBodyText">قم بتسجيل الدخول باستخدام بريدك الإلكتروني وكلمة المرور أو الاستمرار عبر حسابات التواصل الاجتماعي</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="enterYourEmail">أدخل البريد الإلكتروني</string>
+    <string name="password">كلمة السر</string>
+    <string name="enterYourPassword">أدخل كلمة السر</string>
+    <string name="rememberMe">تذكرني</string>
+    <string name="forgotPassword">نسيت كلمة السر</string>
+    <string name="dontHaveAnAccount">ليس لديك حساب ؟</string>
+    <string name="signup">إنشاء حساب</string>
+    <string name="signin">تسجيل الدخول</string>
+    <string name="alreadyHaveAccount">لديك حساب بالفعل ؟</string>
+    <string name="signUpBodyText">اشترك بإدخال معلوماتك أو الاستمرار عبر حسابات التواصل الاجتماعي</string>
+    <string name="welcomeToOurCommunity">مرحبًا بكم في مجتمعنا</string>
+    <string name="userName">اسم المستخدم</string>
+    <string name="enterYourUserName">أدخل اسم المستخدم</string>
+    <string name="phone">الهاتف</string>
+    <string name="enterYourPhone">أدخل هاتفك</string>
 </resources>
