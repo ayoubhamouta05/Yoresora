@@ -30,6 +30,18 @@ or continue with social media</string>
     <string name="signup">Sign Up</string>
     <string name="alreadyHaveAccount">Already have an account?</string>
     <string name="welcomeToOurCommunity">Welcome To Our Community</string>
+    <string name="forgotPasswordBodyText">enter your email to reinitialize your password</string>
+    <string name="checkEmail">Check Email</string>
+    <string name="resetPassword">Reset Password</string>
+    <string name="resetPasswordBodyText">Enter your new password here</string>
+    <string name="emailEmptyErrorMsg">Please fill email field</string>
+    <string name="passwordEmptyErrorMsg">Please fill password field</string>
+    <string name="emailWrongPatternErrorMsg">Wrong email Format</string>
+    <string name="passwordWrongPatternErrorMsg">Password must more than 6 character</string>
+    <string name="otpVerification">OTP Verification</string>
+    <string name="confirm">Confirm</string>
+    <string name="verificationBody">Please verify your identity with the OTP we sent to : </string>
+
 
 
 

@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.components
+package com.youppix.ecommercecourse.presentation.onBoarding.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing

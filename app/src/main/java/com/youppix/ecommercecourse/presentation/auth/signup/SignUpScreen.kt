@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.signup
+package com.youppix.ecommercecourse.presentation.auth.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,14 +16,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,22 +42,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
-import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.login.LoginScreen
-import com.youppix.ecommercecourse.presentation.login.components.CustomTextField
-import com.youppix.ecommercecourse.presentation.login.components.SocialMediaItem
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationScreen
+import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import java.util.Locale
 
 class SignUpScreen : Screen {
@@ -116,7 +114,8 @@ class SignUpScreen : Screen {
                     modifier = Modifier
                         .padding(
                             bottom = innerPadding.calculateBottomPadding()
-                        ).fillMaxSize()
+                        )
+                        .fillMaxSize()
                         .verticalScroll(state = scrollState, enabled = true)
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
@@ -147,7 +146,7 @@ class SignUpScreen : Screen {
                     )
                     //User Name
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = MediumPadding),
+                        modifier = Modifier.padding(vertical = SmallPadding),
                         value = viewModel.userName.value,
                         label = stringResource(id = R.string.userName),
                         placeholder = stringResource(id = R.string.enterYourUserName),
@@ -172,7 +171,7 @@ class SignUpScreen : Screen {
                     )
                     //Phone
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = MediumPadding),
+                        modifier = Modifier.padding(vertical = SmallPadding),
                         value = viewModel.phone.value,
                         label = stringResource(id = R.string.phone),
                         placeholder = stringResource(id = R.string.enterYourPhone),
@@ -204,7 +203,9 @@ class SignUpScreen : Screen {
                     )
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                                  navigator?.push(VerificationScreen(viewModel.email.value))
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(

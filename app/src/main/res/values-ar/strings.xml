@@ -30,4 +30,15 @@
     <string name="enterYourUserName">أدخل اسم المستخدم</string>
     <string name="phone">الهاتف</string>
     <string name="enterYourPhone">أدخل هاتفك</string>
+    <string name="forgotPasswordBodyText">أدخل بريدك الإلكتروني لإعادة ترتيب كلمة المرور الخاصة بك</string>
+    <string name="checkEmail">التحقق من البريد الإلكتروني</string>
+    <string name="resetPasswordBodyText">أدخل كلمة السر الجديدة هنا</string>
+    <string name="resetPassword">إعادة تعيين كلمة السر</string>
+    <string name="emailEmptyErrorMsg">يرجى إدخال البريد الإلكتروني</string>
+    <string name="passwordEmptyErrorMsg">يرجى إدخال كلمة السر</string>
+    <string name="emailWrongPatternErrorMsg">شكل هذا البريد الإلكتروني غير صحيح</string>
+    <string name="passwordWrongPatternErrorMsg">كلمة المرور يجب أن تكون أكثر من 6 حروف</string>
+    <string name="otpVerification">التحقق من OTP</string>
+    <string name="confirm">تأكيد</string>
+    <string name="verificationBody">"يرجى التحقق من هويتك باستخدام OTP الذي أرسلناه إلى : "</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.login
+package com.youppix.ecommercecourse.presentation.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -53,9 +52,10 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.login.components.CustomTextField
-import com.youppix.ecommercecourse.presentation.login.components.SocialMediaItem
-import com.youppix.ecommercecourse.presentation.signup.SignUpScreen
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordScreen
+import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
+import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import java.util.Locale
 
@@ -78,36 +78,36 @@ class LoginScreen() : Screen {
                 LocalLayoutDirection provides LayoutDirection.Rtl
             }
         ) {
-        Scaffold(modifier = Modifier.fillMaxSize(),
-            topBar = {
-                CenterAlignedTopAppBar(title = {
-                    Text(
-                        text = stringResource(id = R.string.signin),
-                        modifier = Modifier,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
-                        color = Color.Gray
-                    )
-                },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                navigator?.pop()
-                            },
-                        ) {
-                            Image(
-                                Icons.Default.KeyboardArrowDown,
-                                colorFilter = ColorFilter.tint(color = Color.Gray),
-                                modifier = Modifier
-                                    .rotate(if (isEnglish) 90f else -90f)
-                                    .size(HorizontalPaddingSignIn),
-                                contentDescription = null,
-                                contentScale = ContentScale.Fit
-                            )
-                        }
-                    })
+            Scaffold(modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    CenterAlignedTopAppBar(title = {
+                        Text(
+                            text = stringResource(id = R.string.signin),
+                            modifier = Modifier,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
+                            color = Color.Gray
+                        )
+                    },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    navigator?.pop()
+                                },
+                            ) {
+                                Image(
+                                    Icons.Default.KeyboardArrowDown,
+                                    colorFilter = ColorFilter.tint(color = Color.Gray),
+                                    modifier = Modifier
+                                        .rotate(if (isEnglish) 90f else -90f)
+                                        .size(HorizontalPaddingSignIn),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Fit
+                                )
+                            }
+                        })
 
-            }) { innerPadding ->
+                }) { innerPadding ->
 
                 Column(
                     modifier = Modifier.padding(
@@ -144,35 +144,37 @@ class LoginScreen() : Screen {
                     )
                     //Email
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = MediumPadding),
+                        modifier = Modifier.padding(vertical = SmallPadding),
                         value = viewModel.email.value,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
                         trailingIcon = Icons.Outlined.Email,
-                        onValueChange = { value->
+                        onValueChange = { value ->
                             viewModel.updateEmail(value)
                         },
-                        isError = false,
-                        isPassword = false
+                        isError = viewModel.emailError.value.isNotEmpty(),
+                        isPassword = false,
+                        errorMessage = viewModel.emailError.value
                     )
 
                     //Password
 
                     CustomTextField(
                         value = viewModel.password.value,
-                        onValueChange ={ value ->
+                        onValueChange = { value ->
                             viewModel.updatePassword(value)
-                        } ,
+                        },
                         label = stringResource(id = R.string.password),
                         placeholder = stringResource(id = R.string.enterYourPassword),
-                        trailingIcon = Icons.Outlined.Lock ,
-                        isError = false,
+                        trailingIcon = Icons.Outlined.Lock,
+                        isError = viewModel.passwordError.value.isNotEmpty(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         isPassword = true,
                         showPassword = viewModel.showPassword.value,
                         onShowPassword = {
                             viewModel.showOrHidePassword(it)
-                        }
+                        },
+                        errorMessage = viewModel.passwordError.value
                     )
 
                     Row(
@@ -197,7 +199,9 @@ class LoginScreen() : Screen {
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        TextButton(onClick = { }) {
+                        TextButton(onClick = {
+                            navigator?.push(ForgotPasswordScreen())
+                        }) {
                             Text(
                                 text = stringResource(id = R.string.forgotPassword),
                                 color = Color.Gray,
@@ -206,9 +210,21 @@ class LoginScreen() : Screen {
                             )
                         }
                     }
-
+                    val emailEmptyErrorMsg = stringResource(id = R.string.emailEmptyErrorMsg)
+                    val emailWrongPatternErrorMsg =
+                        stringResource(id = R.string.emailWrongPatternErrorMsg)
+                    val passwordEmptyErrorMsg = stringResource(id = R.string.passwordEmptyErrorMsg)
+                    val passwordWrongPatternErrorMsg =
+                        stringResource(id = R.string.passwordWrongPatternErrorMsg)
                     Button(
-                        onClick = {},
+                        onClick = {
+                            viewModel.validateForm(
+                                emailEmptyErrorMsg = emailEmptyErrorMsg,
+                                emailWrongPatternErrorMsg = emailWrongPatternErrorMsg,
+                                passwordEmptyErrorMsg = passwordEmptyErrorMsg,
+                                passwordWrongPatternErrorMsg = passwordWrongPatternErrorMsg
+                            )
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(

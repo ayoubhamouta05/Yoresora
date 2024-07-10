@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation
+package com.youppix.ecommercecourse.presentation.selectLanguage
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,10 +20,11 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
+import com.youppix.ecommercecourse.presentation.MainViewModel
 import com.youppix.ecommercecourse.presentation.components.CustomButton
 import com.youppix.ecommercecourse.presentation.onBoarding.OnBoardingScreen
 
-class SelectLanguageScreen(private val modifier: Modifier=Modifier,private val viewModel: MainViewModel, private val baseContext: Context) :
+class SelectLanguageScreen(private val modifier: Modifier=Modifier, private val viewModel: MainViewModel, private val baseContext: Context) :
     Screen {
     @Composable
     override fun Content() {

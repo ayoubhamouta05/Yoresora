@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -33,9 +34,10 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.pages
+import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.PageIndicatorWidth
-import com.youppix.ecommercecourse.presentation.components.PageIndicator
-import com.youppix.ecommercecourse.presentation.login.LoginScreen
+import com.youppix.ecommercecourse.presentation.onBoarding.components.PageIndicator
+import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import kotlinx.coroutines.launch
 
 
@@ -112,7 +114,13 @@ class OnBoardingScreen(private val modifier: Modifier = Modifier) : Screen {
                     navigator?.push(LoginScreen())
                 }
             }) {
-                Text(text = stringResource(id = R.string.continuee))
+                Text(
+                    text = stringResource(id = R.string.confirm),
+                    Modifier.padding(vertical = Dimens.ExtraSmallPadding),
+                    style = MaterialTheme.typography.displaySmall.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
             }
         }
     }

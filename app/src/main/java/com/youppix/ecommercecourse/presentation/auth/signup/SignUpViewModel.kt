@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.signup
+package com.youppix.ecommercecourse.presentation.auth.signup
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
