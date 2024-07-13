@@ -1,77 +1,94 @@
 package com.youppix.ecommercecourse.presentation.auth.forgotPassword
 
-import android.util.Patterns
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ForgotPasswordUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel@Inject constructor(
-
+    private val forgotPasswordUseCases: ForgotPasswordUseCases
 ) : ViewModel() {
 
-    private var _email = mutableStateOf("")
-    val email : State<String> = _email
+    private var _forgotPasswordState = mutableStateOf(ForgotPasswordState())
+    val forgotPasswordState : State<ForgotPasswordState> = _forgotPasswordState
 
-    private var _emailError = mutableStateOf("")
-    val emailError : State<String> = _emailError
+    fun setState(newState: ForgotPasswordState) {
+        _forgotPasswordState.value = newState
+    }
 
     fun updateEmail(value : String){
-        _email.value = value
+        _forgotPasswordState.value = forgotPasswordState.value.copy(
+            email = value
+        )
     }
-
-    private var _password = mutableStateOf("")
-    val password : State<String> = _password
-
-    private var _showPassword = mutableStateOf(false)
-    val showPassword : State<Boolean> = _showPassword
-
-    private var _passwordError = mutableStateOf("")
-    var passwordError : State<String> = _passwordError
 
     fun updatePassword (value : String){
-        _password.value = value
+        _forgotPasswordState.value = forgotPasswordState.value.copy(
+            newPassword = value
+        )
     }
 
-    fun showOrHidePassword(showPassword : Boolean){
-        _showPassword.value = showPassword
+    fun updateVerificationCode(value : String){
+        _forgotPasswordState.value = forgotPasswordState.value.copy(
+            verificationCode = value
+        )
     }
 
-    fun validateEmail(emptyErrorMsg : String , wrongPatternErrorMsg : String): Boolean {
-        val trimEmail = email.value.trim()
-        var isValid = true
-        var errorMessage = ""
+    fun showPassword(showPassword : Boolean){
+        _forgotPasswordState.value = forgotPasswordState.value.copy(
+            showPassword = showPassword
+        )
+    }
 
-        if (trimEmail.isBlank() || trimEmail.isEmpty()) {
-            errorMessage =  emptyErrorMsg//"Please fill email field"
-            isValid = false
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(trimEmail).matches()) {
-            errorMessage = wrongPatternErrorMsg// "Wrong email Format"
-            isValid = false
+     fun checkEmail(email: String,context: Context): Boolean {
+
+        when (val result = forgotPasswordUseCases.checkEmail(email,context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _forgotPasswordState.value = forgotPasswordState.value.copy(
+                    emailError = result.message,
+                )
+            }
+
+            is Resource.Successful -> {
+                _forgotPasswordState.value = _forgotPasswordState.value.copy(
+                    emailError = null
+                )
+
+            }
+        }
+        return forgotPasswordState.value.emailError.isNullOrEmpty()
+    }
+
+     fun checkPassword(password: String,context: Context): Boolean {
+
+
+        when (val result = forgotPasswordUseCases.checkPassword(password,context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _forgotPasswordState.value = forgotPasswordState.value.copy(
+                    passwordError = result.message ,
+                )
+            }
+
+            is Resource.Successful -> {
+                _forgotPasswordState.value = forgotPasswordState.value.copy(
+                    passwordError = null
+                )
+            }
         }
 
-        _emailError.value = errorMessage
-        return isValid
-    }
-
-    fun validatePassword(emptyErrorMsg : String , wrongPatternErrorMsg : String): Boolean {
-        val trimPassword = password.value.trim()
-        var isValid = true
-        var errorMessage = ""
-
-        if (trimPassword.isBlank() || trimPassword.isEmpty()) {
-            errorMessage = emptyErrorMsg//"Please fill password field"
-            isValid = false
-        } else if (trimPassword.length < 6) {
-            errorMessage = wrongPatternErrorMsg// "Password must more than 6 character"
-            isValid = false
-        }
-
-        _passwordError.value = errorMessage
-        return isValid
+        return forgotPasswordState.value.passwordError.isNullOrEmpty()
     }
 }

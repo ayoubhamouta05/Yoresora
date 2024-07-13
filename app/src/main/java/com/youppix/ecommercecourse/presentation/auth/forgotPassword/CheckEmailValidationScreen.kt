@@ -1,72 +1,64 @@
-package com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification
+package com.youppix.ecommercecourse.presentation.auth.forgotPassword
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.components.OtpInputField
-import com.youppix.ecommercecourse.presentation.auth.signup.SuccessfulSignUpScreen
+import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.MediumPadding
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailForgotPasswordScreen
+import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import java.util.Locale
 
-class VerificationScreen(private var emailOrPassword: String) : Screen {
+class CheckEmailValidationScreen : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        var otpValue by remember { mutableStateOf("") }
-        var isOtpFilled by remember { mutableStateOf(false) }
-        val focusRequester = remember { FocusRequester() }
-        val keyboardController = LocalSoftwareKeyboardController.current
 
-        val navigator = LocalNavigator.current
         val isEnglish = LocalContext.current.getSharedPreferences(Constant.APP_LANG, 0)
             .getString(Constant.APP_LANG, Locale.getDefault().language) == "en"
 
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-            keyboardController?.show()
-        }
+        val navigator = LocalNavigator.current
+
+        val viewModel: ForgotPasswordViewModel = hiltViewModel()
+
+        val state = viewModel.forgotPasswordState.value
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -75,8 +67,7 @@ class VerificationScreen(private var emailOrPassword: String) : Screen {
                 LocalLayoutDirection provides LayoutDirection.Rtl
             }
         ) {
-            Scaffold(
-                modifier = Modifier.fillMaxSize(),
+            Scaffold(modifier = Modifier.fillMaxSize(),
                 topBar = {
                     CenterAlignedTopAppBar(title = {
                         Text(
@@ -105,9 +96,8 @@ class VerificationScreen(private var emailOrPassword: String) : Screen {
                             }
                         })
 
-                },
-
-                ) { innerPadding ->
+                }) { innerPadding ->
+                val scrollState = rememberScrollState()
 
                 Column(
                     modifier = Modifier
@@ -115,23 +105,25 @@ class VerificationScreen(private var emailOrPassword: String) : Screen {
                             bottom = innerPadding.calculateBottomPadding()
                         )
                         .fillMaxSize()
+                        .verticalScroll(state = scrollState, enabled = true)
                 ) {
+
                     Text(
-                        text = stringResource(id = R.string.otpVerification),
+                        text = stringResource(id = R.string.checkEmail),
                         style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
                                 top = innerPadding
                                     .calculateTopPadding()
-                                    .plus(Dimens.HorizontalPaddingSignIn),
+                                    .plus(HorizontalPaddingSignIn),
                                 end = Dimens.HorizontalPaddingSignIn,
                                 start = Dimens.HorizontalPaddingSignIn
                             ),
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = stringResource(id = R.string.verificationBody) + emailOrPassword,
+                        text = stringResource(id = R.string.forgotPasswordBodyText),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         modifier = Modifier
@@ -142,36 +134,35 @@ class VerificationScreen(private var emailOrPassword: String) : Screen {
                             ),
                         textAlign = TextAlign.Center
                     )
-                    Surface(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.White)
-                            .padding(24.dp),
-                        color = Color.White
-                    ) {
-                        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                            OtpInputField(
-                                modifier = Modifier
-                                    .padding(top = 48.dp)
-                                    .focusRequester(focusRequester),
-                                otpText = otpValue,
-                                shouldCursorBlink = false,
-                                onOtpModified = { value, otpFilled ->
-                                    otpValue = value
-                                    isOtpFilled = otpFilled
-                                    if (otpFilled) {
-                                        keyboardController?.hide()
-                                    }
-                                }
-                            )
-                        }
 
-                    }
+                    //Email
+                    CustomTextField(
+                        modifier = Modifier.padding(top = MediumPadding),
+                        value = state.email,
+                        label = stringResource(id = R.string.email),
+                        placeholder = stringResource(id = R.string.enterYourEmail),
+                        trailingIcon = Icons.Outlined.Email,
+                        onValueChange = { value ->
+                            viewModel.updateEmail(value)
+                        },
+                        isError = !state.emailError.isNullOrEmpty(),
+                        isPassword = false,
+                        errorMessage = state.emailError ?: ""
+                    )
+                    val context = LocalContext.current
 
                     Button(
                         onClick = {
-//                            navigator?.push(ResetPasswordScreen())
-                                  navigator?.push(SuccessfulSignUpScreen())
+                            if (viewModel.checkEmail(
+                                    email = state.email, context
+                                )
+                            ) {
+                                navigator?.replace(
+                                    VerificationEmailForgotPasswordScreen(
+                                        forgotPasswordState = viewModel.forgotPasswordState.value
+                                    )
+                                )
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -179,21 +170,19 @@ class VerificationScreen(private var emailOrPassword: String) : Screen {
                                 horizontal = Dimens.HorizontalPaddingSignIn,
                                 vertical = Dimens.MediumPadding
                             ),
-                        shape = RoundedCornerShape(30),
-                        enabled = isOtpFilled
+                        shape = RoundedCornerShape(30)
                     ) {
                         Text(
-                            text = stringResource(id = R.string.confirm),
+                            text = stringResource(id = R.string.continuee),
                             Modifier.padding(vertical = Dimens.ExtraSmallPadding),
                             style = MaterialTheme.typography.displaySmall.copy(
                                 fontWeight = FontWeight.Bold
                             )
                         )
                     }
+
                 }
             }
         }
-
     }
-
 }

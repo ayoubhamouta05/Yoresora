@@ -1,6 +1,9 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,8 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Email
@@ -49,11 +54,16 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordScreen
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.CheckEmailValidationScreen
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordState
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordViewModel
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailForgotPasswordScreen
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
@@ -70,6 +80,9 @@ class LoginScreen() : Screen {
         val navigator = LocalNavigator.current
 
         val viewModel: LoginViewModel = hiltViewModel()
+        val loginState = viewModel.loginState.value
+
+        val context = LocalContext.current
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -108,11 +121,14 @@ class LoginScreen() : Screen {
                         })
 
                 }) { innerPadding ->
+                val scrollState = rememberScrollState()
 
                 Column(
-                    modifier = Modifier.padding(
-                        bottom = innerPadding.calculateBottomPadding()
-                    )
+                    modifier = Modifier
+                        .padding(
+                            bottom = innerPadding.calculateBottomPadding()
+                        ).verticalScroll(scrollState),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
@@ -144,37 +160,37 @@ class LoginScreen() : Screen {
                     )
                     //Email
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = SmallPadding),
-                        value = viewModel.email.value,
+                        modifier = Modifier,
+                        value = loginState.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
                         trailingIcon = Icons.Outlined.Email,
                         onValueChange = { value ->
                             viewModel.updateEmail(value)
                         },
-                        isError = viewModel.emailError.value.isNotEmpty(),
+                        isError = !loginState.emailError.isNullOrEmpty(),
                         isPassword = false,
-                        errorMessage = viewModel.emailError.value
+                        errorMessage = loginState.emailError ?: ""
                     )
 
                     //Password
 
                     CustomTextField(
-                        value = viewModel.password.value,
+                        value = loginState.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)
                         },
                         label = stringResource(id = R.string.password),
                         placeholder = stringResource(id = R.string.enterYourPassword),
                         trailingIcon = Icons.Outlined.Lock,
-                        isError = viewModel.passwordError.value.isNotEmpty(),
+                        isError = !loginState.passwordError.isNullOrEmpty(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         isPassword = true,
-                        showPassword = viewModel.showPassword.value,
+                        showPassword = loginState.showPassword,
                         onShowPassword = {
-                            viewModel.showOrHidePassword(it)
+                            viewModel.showPassword(it)
                         },
-                        errorMessage = viewModel.passwordError.value
+                        errorMessage = loginState.passwordError ?: ""
                     )
 
                     Row(
@@ -187,7 +203,7 @@ class LoginScreen() : Screen {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Checkbox(checked = viewModel.rememberMe.value, onCheckedChange = {
+                        Checkbox(checked = loginState.rememberMe, onCheckedChange = {
                             viewModel.updateRememberMe(it)
                         })
 
@@ -200,7 +216,8 @@ class LoginScreen() : Screen {
                         Spacer(modifier = Modifier.weight(1f))
 
                         TextButton(onClick = {
-                            navigator?.push(ForgotPasswordScreen())
+                            Log.d("LoginScreen" , navigator.toString())
+                            navigator?.push(CheckEmailValidationScreen())
                         }) {
                             Text(
                                 text = stringResource(id = R.string.forgotPassword),
@@ -210,20 +227,18 @@ class LoginScreen() : Screen {
                             )
                         }
                     }
-                    val emailEmptyErrorMsg = stringResource(id = R.string.emailEmptyErrorMsg)
-                    val emailWrongPatternErrorMsg =
-                        stringResource(id = R.string.emailWrongPatternErrorMsg)
-                    val passwordEmptyErrorMsg = stringResource(id = R.string.passwordEmptyErrorMsg)
-                    val passwordWrongPatternErrorMsg =
-                        stringResource(id = R.string.passwordWrongPatternErrorMsg)
+
+
                     Button(
                         onClick = {
-                            viewModel.validateForm(
-                                emailEmptyErrorMsg = emailEmptyErrorMsg,
-                                emailWrongPatternErrorMsg = emailWrongPatternErrorMsg,
-                                passwordEmptyErrorMsg = passwordEmptyErrorMsg,
-                                passwordWrongPatternErrorMsg = passwordWrongPatternErrorMsg
-                            )
+                            if (viewModel.validateForm(
+                                    loginState.email,
+                                    loginState.password,
+                                    context
+                                )
+                            ) {
+//                               todo navigator.push()
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()

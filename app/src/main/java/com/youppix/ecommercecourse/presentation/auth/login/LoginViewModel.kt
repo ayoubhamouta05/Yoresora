@@ -1,99 +1,107 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
-import android.util.Patterns
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-
+    private val loginUseCases: LoginUseCases
 ) : ViewModel() {
 
-    private var _email = mutableStateOf("")
-    val email: State<String> = _email
+    private var _loginState = mutableStateOf(LoginState())
+    val loginState: State<LoginState> = _loginState
 
-    private var _password = mutableStateOf("")
-    val password: State<String> = _password
-
-    private var _showPassword = mutableStateOf(false)
-    val showPassword: State<Boolean> = _showPassword
-
-    private var _rememberMe = mutableStateOf(false)
-    val rememberMe: State<Boolean> = _rememberMe
-
-    private var _emailError = mutableStateOf("")
-    var emailError: State<String> = _emailError
-
-    private var _passwordError = mutableStateOf("")
-    var passwordError: State<String> = _passwordError
 
     fun updateEmail(value: String) {
-        _email.value = value
+        _loginState.value = loginState.value.copy(
+            email = value,
+        )
     }
 
     fun updatePassword(value: String) {
-        _password.value = value
+        _loginState.value = loginState.value.copy(
+            password = value,
+        )
     }
 
     fun updateRememberMe(value: Boolean) {
-        _rememberMe.value = value
+        _loginState.value = loginState.value.copy(
+            rememberMe = value,
+        )
     }
 
-    fun showOrHidePassword(showPassword: Boolean) {
-        _showPassword.value = showPassword
+    fun showPassword(showPassword: Boolean) {
+        _loginState.value = loginState.value.copy(
+            showPassword = showPassword,
+        )
     }
 
-    private fun validateEmail(emptyErrorMsg: String, wrongPatternErrorMsg: String): Boolean {
-        val trimEmail = email.value.trim()
-        var isValid = true
-        var errorMessage = ""
+    private fun checkEmail(email: String, context: Context): Boolean {
 
-        if (trimEmail.isBlank() || trimEmail.isEmpty()) {
-            errorMessage = emptyErrorMsg
-            isValid = false
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(trimEmail).matches()) {
-            errorMessage = wrongPatternErrorMsg
-            isValid = false
+        when (val result = loginUseCases.checkEmail(email, context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _loginState.value = loginState.value.copy(
+                    emailError = result.message,
+                )
+            }
+
+            is Resource.Successful -> {
+                _loginState.value = loginState.value.copy(
+                    emailError = null
+                )
+
+            }
+        }
+        return loginState.value.emailError.isNullOrEmpty()
+    }
+
+    private fun checkPassword(password: String, context: Context): Boolean {
+
+
+        when (val result = loginUseCases.checkPassword(password, context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _loginState.value = loginState.value.copy(
+                    passwordError = result.message,
+                )
+            }
+
+            is Resource.Successful -> {
+                _loginState.value = loginState.value.copy(
+                    passwordError = null
+                )
+            }
         }
 
-        _emailError.value = errorMessage
-        return isValid
+        return loginState.value.passwordError.isNullOrEmpty()
     }
 
-    private fun validatePassword(emptyErrorMsg: String, wrongPatternErrorMsg: String): Boolean {
-        val trimPassword = password.value.trim()
-        var isValid = true
-        var errorMessage = ""
+    fun validateForm(email: String, password: String, context: Context): Boolean {
 
-        if (trimPassword.isBlank() || trimPassword.isEmpty()) {
-            errorMessage = emptyErrorMsg
-            isValid = false
-        } else if (trimPassword.length < 6) {
-            errorMessage = wrongPatternErrorMsg
-            isValid = false
+        if (checkEmail(email, context) && checkPassword(password, context)) {
+            _loginState.value = loginState.value.copy(loginSuccessful = true)
         }
 
-        _passwordError.value = errorMessage
-        return isValid
-    }
+        return loginState.value.loginSuccessful
 
-
-    fun validateForm(
-        emailEmptyErrorMsg: String,
-        emailWrongPatternErrorMsg: String,
-        passwordEmptyErrorMsg: String,
-        passwordWrongPatternErrorMsg: String
-    ) {
-        if (validateEmail(emailEmptyErrorMsg, emailWrongPatternErrorMsg) && validatePassword(
-                passwordEmptyErrorMsg,
-                passwordWrongPatternErrorMsg
-            )
-        ) {
-            println("login successful")
-        }
     }
 
 

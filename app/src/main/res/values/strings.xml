@@ -41,6 +41,9 @@ or continue with social media</string>
     <string name="otpVerification">OTP Verification</string>
     <string name="confirm">Confirm</string>
     <string name="verificationBody">Please verify your identity with the OTP we sent to : </string>
+    <string name="goToLoginScreen">Go to Login Screen</string>
+    <string name="successfullyResetPassword">Password reset successfully</string>
+    <string name="successfullyRegistered">Successfully Registered</string>
 
 
 

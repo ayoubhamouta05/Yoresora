@@ -13,8 +13,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -37,14 +40,23 @@ class SuccessfulResetPasswordScreen : Screen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.successfull_img),
-                contentDescription = null,
+            Column(
                 modifier = Modifier.padding(
-
                     vertical = Dimens.MediumPadding
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.successfull_img),
+                    contentDescription = null,
                 )
-            )
+                Text(
+                    text = stringResource(id = R.string.successfullyResetPassword), Modifier.padding(vertical = Dimens.ExtraSmallPadding),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
+
             Button(
                 onClick = {
                     navigator?.push(LoginScreen())
@@ -52,17 +64,17 @@ class SuccessfulResetPasswordScreen : Screen {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = HorizontalPaddingSignIn,
                         vertical = Dimens.MediumPadding
                     ),
                 shape = RoundedCornerShape(30)
             ) {
                 Text(
-                    text = "Go to Login Screen",
+                    text = stringResource(id = R.string.goToLoginScreen),
                     Modifier.padding(vertical = Dimens.ExtraSmallPadding),
                     style = MaterialTheme.typography.displaySmall.copy(
                         fontWeight = FontWeight.Bold
-                    )
+                    ),
+                    textAlign = TextAlign.Center
                 )
             }
 

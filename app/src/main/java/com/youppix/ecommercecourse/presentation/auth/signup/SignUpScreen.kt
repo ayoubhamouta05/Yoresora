@@ -47,17 +47,16 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationScreen
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
-import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import java.util.Locale
 
 class SignUpScreen : Screen {
@@ -116,7 +115,8 @@ class SignUpScreen : Screen {
                             bottom = innerPadding.calculateBottomPadding()
                         )
                         .fillMaxSize()
-                        .verticalScroll(state = scrollState, enabled = true)
+                        .verticalScroll(state = scrollState, enabled = true),
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
@@ -146,7 +146,7 @@ class SignUpScreen : Screen {
                     )
                     //User Name
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = SmallPadding),
+                        modifier = Modifier.padding(top = MediumPadding),
                         value = viewModel.userName.value,
                         label = stringResource(id = R.string.userName),
                         placeholder = stringResource(id = R.string.enterYourUserName),
@@ -171,7 +171,7 @@ class SignUpScreen : Screen {
                     )
                     //Phone
                     CustomTextField(
-                        modifier = Modifier.padding(vertical = SmallPadding),
+                        modifier = Modifier,
                         value = viewModel.phone.value,
                         label = stringResource(id = R.string.phone),
                         placeholder = stringResource(id = R.string.enterYourPhone),
@@ -204,7 +204,11 @@ class SignUpScreen : Screen {
 
                     Button(
                         onClick = {
-                                  navigator?.push(VerificationScreen(viewModel.email.value))
+                            navigator?.push(
+                                VerificationEmailSignUpScreen(
+                                    signUpState = viewModel.signUpState.value
+                                )
+                            )
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -267,7 +271,7 @@ class SignUpScreen : Screen {
                         )
                         TextButton(onClick = {
                             navigator?.let {
-                                if (!it.pop()){
+                                if (!it.pop()) {
                                     it.push(LoginScreen())
                                 }
                             }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.domain.useCases.appLanguage.LanguageManagerUseCases
+import com.youppix.ecommercecourse.presentation.auth.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +16,9 @@ class MainViewModel @Inject constructor(
 
     var language  = mutableStateOf("")
         private set
+
+    var loginState = mutableStateOf(LoginState())
+
     fun getLanguage(key:String, defaultValue : String ){
        language.value = languageManagerUseCases.getAppLanguageUseCase(key,defaultValue)
     }

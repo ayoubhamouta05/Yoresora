@@ -41,4 +41,7 @@
     <string name="otpVerification">التحقق من OTP</string>
     <string name="confirm">تأكيد</string>
     <string name="verificationBody">"يرجى التحقق من هويتك باستخدام OTP الذي أرسلناه إلى : "</string>
+    <string name="goToLoginScreen">اذهب إلى صفحة تسجيل الدخول</string>
+    <string name="successfullyRegistered">تم التسجيل بنجاح</string>
+    <string name="successfullyResetPassword">تم إعادة تعيين كلمة المرور بنجاح</string>
 </resources>
