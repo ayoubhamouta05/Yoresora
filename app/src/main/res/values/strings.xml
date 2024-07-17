@@ -48,6 +48,10 @@ or continue with social media</string>
     <string name="goToLoginScreen">Go to Login Screen</string>
     <string name="successfullyResetPassword">Password reset successfully</string>
     <string name="successfullyRegistered">Successfully Registered</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
+    <string name="leaveTheApp">Leave The App</string>
+    <string name="doYouReallyWantToLeave">Do You Really Want To Leave The App ?</string>
 
 
 

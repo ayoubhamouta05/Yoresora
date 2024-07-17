@@ -48,4 +48,8 @@
     <string name="successfullyResetPassword">تم إعادة تعيين كلمة المرور بنجاح</string>
     <string name="phoneEmptyErrorMsg">يرجى إدخال رقم الهاتف</string>
     <string name="phoneWrongPatternErrorMsg">يرجى إدخال رقم هاتف حقيقي</string>
+    <string name="exit">مغادرة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="leaveTheApp">مغادرة التطبيق</string>
+    <string name="doYouReallyWantToLeave">هل تريد حقًا مغادرة التطبيق ؟</string>
 </resources>

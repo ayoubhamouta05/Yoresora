@@ -160,7 +160,7 @@ class OnBoardingScreen() : Screen {
                             )
                         }
                         if (pagerState.currentPage == pagerState.pageCount - 1) {
-                            navigator?.push(LoginScreen())
+                            navigator?.replaceAll(LoginScreen())
                         }
                     }) {
                         Text(
