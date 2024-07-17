@@ -69,6 +69,8 @@ class SignUpScreen : Screen {
         val navigator = LocalNavigator.current
 
         val viewModel: SignUpViewModel = hiltViewModel()
+        val state = viewModel.signUpState.value
+        val context = LocalContext.current
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -147,68 +149,78 @@ class SignUpScreen : Screen {
                     //User Name
                     CustomTextField(
                         modifier = Modifier.padding(top = MediumPadding),
-                        value = viewModel.userName.value,
+                        value = state.userName,
                         label = stringResource(id = R.string.userName),
                         placeholder = stringResource(id = R.string.enterYourUserName),
                         trailingIcon = Icons.Outlined.Person,
                         onValueChange = { value ->
                             viewModel.updateUserName(value)
                         },
-                        isError = false,
-                        isPassword = false
+                        isError = !state.userNameError.isNullOrEmpty(),
+                        errorMessage = state.userNameError?:""
                     )
                     //Email
                     CustomTextField(
-                        value = viewModel.email.value,
+                        value = state.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
                         trailingIcon = Icons.Outlined.Email,
                         onValueChange = { value ->
                             viewModel.updateEmail(value)
                         },
-                        isError = false,
-                        isPassword = false
+                        isError = !state.emailError.isNullOrEmpty(),
+                        errorMessage = state.emailError?:""
                     )
                     //Phone
+
                     CustomTextField(
                         modifier = Modifier,
-                        value = viewModel.phone.value,
+                        value =state.phone,
                         label = stringResource(id = R.string.phone),
                         placeholder = stringResource(id = R.string.enterYourPhone),
                         trailingIcon = Icons.Outlined.Phone,
                         onValueChange = { value ->
                             viewModel.updatePhone(value)
                         },
-                        isError = false,
-                        isPassword = false
+                        isError = !state.phoneError.isNullOrEmpty(),
+                        isPassword = false,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                        errorMessage = state.phoneError?:""
                     )
 
                     //Password
 
                     CustomTextField(
-                        value = viewModel.password.value,
+                        value = state.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)
                         },
                         label = stringResource(id = R.string.password),
                         placeholder = stringResource(id = R.string.enterYourPassword),
                         trailingIcon = Icons.Outlined.Lock,
-                        isError = false,
+                        isError = !state.passwordError.isNullOrEmpty(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         isPassword = true,
-                        showPassword = viewModel.showPassword.value,
+                        showPassword = state.showPassword,
                         onShowPassword = {
                             viewModel.showOrHidePassword(it)
-                        }
+                        },
+                        errorMessage = state.passwordError?:""
                     )
 
                     Button(
                         onClick = {
-                            navigator?.push(
-                                VerificationEmailSignUpScreen(
-                                    signUpState = viewModel.signUpState.value
+                            if (viewModel.validateForm(
+                                    context = context,
+                                    userName = state.userName,
+                                    email = state.email,
+                                    password = state.password,
+                                    phone = state.phone
                                 )
                             )
+                                navigator?.push(
+                                    VerificationEmailSignUpScreen(state)
+                                )
                         },
                         modifier = Modifier
                             .fillMaxWidth()

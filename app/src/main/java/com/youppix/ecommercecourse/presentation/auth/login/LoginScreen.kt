@@ -1,9 +1,7 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,18 +52,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
-import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.CheckEmailValidationScreen
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordState
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordViewModel
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailForgotPasswordScreen
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import java.util.Locale
 
@@ -83,7 +76,7 @@ class LoginScreen() : Screen {
         val loginState = viewModel.loginState.value
 
         val context = LocalContext.current
-
+        Log.d("OnBoardingScreen", "currentLang: ${Locale.getDefault().language} isEnglish: $isEnglish")
         CompositionLocalProvider(
             if (isEnglish) {
                 LocalLayoutDirection provides LayoutDirection.Ltr
@@ -127,7 +120,8 @@ class LoginScreen() : Screen {
                     modifier = Modifier
                         .padding(
                             bottom = innerPadding.calculateBottomPadding()
-                        ).verticalScroll(scrollState),
+                        )
+                        .verticalScroll(scrollState),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Spacer(modifier = Modifier.weight(1f))
@@ -197,8 +191,7 @@ class LoginScreen() : Screen {
                         Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = HorizontalPaddingSignIn,
-                                vertical = MediumPadding
+                                horizontal = HorizontalPaddingSignIn
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {

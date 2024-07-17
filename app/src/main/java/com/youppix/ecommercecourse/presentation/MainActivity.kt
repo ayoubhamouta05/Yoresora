@@ -1,5 +1,7 @@
 package com.youppix.ecommercecourse.presentation
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.navigator.Navigator
+import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.presentation.selectLanguage.SelectLanguageScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
@@ -24,6 +27,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,24 +35,10 @@ class MainActivity : ComponentActivity() {
             EcommerceCourseTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                ) { innerPadding ->
+                ) {
                     Navigator(
-                        SelectLanguageScreen(
-//                            Modifier.padding(
-//                                top = innerPadding.calculateTopPadding(),
-//                                end = innerPadding.calculateEndPadding(
-//                                    if (currentLang == "ar")
-//                                        LayoutDirection.Rtl else LayoutDirection.Ltr
-//                                ),
-//                                start = innerPadding.calculateStartPadding(
-//                                    if (currentLang == "ar")
-//                                        LayoutDirection.Rtl else LayoutDirection.Ltr
-//                                ),
-//                                bottom = innerPadding.calculateBottomPadding()
-//                            )
-                        )
+                        SelectLanguageScreen()
                     )
-
                 }
             }
         }

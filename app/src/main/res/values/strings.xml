@@ -36,7 +36,11 @@ or continue with social media</string>
     <string name="resetPasswordBodyText">Enter your new password here</string>
     <string name="emailEmptyErrorMsg">Please fill email field</string>
     <string name="passwordEmptyErrorMsg">Please fill password field</string>
+    <string name="userNameEmptyErrorMsg">Please fill user name field</string>
+    <string name="phoneEmptyErrorMsg">Please fill phone field</string>
     <string name="emailWrongPatternErrorMsg">Wrong email Format</string>
+    <string name="userNameWrongPatternErrorMsg">please enter valid user name</string>
+    <string name="phoneWrongPatternErrorMsg">Please enter valid phone number</string>
     <string name="passwordWrongPatternErrorMsg">Password must more than 6 character</string>
     <string name="otpVerification">OTP Verification</string>
     <string name="confirm">Confirm</string>

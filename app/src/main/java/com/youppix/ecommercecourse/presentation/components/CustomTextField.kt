@@ -27,16 +27,16 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
 fun ColumnScope.CustomTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
     placeholder: String,
     trailingIcon: ImageVector,
-    modifier: Modifier = Modifier,
     keyboardActions: KeyboardActions = KeyboardActions(),
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
     isError: Boolean,
-    isPassword: Boolean,
+    isPassword: Boolean = false,
     showPassword: Boolean = false,
     onShowPassword: ((Boolean) -> Unit)? = null,
     errorMessage : String =""

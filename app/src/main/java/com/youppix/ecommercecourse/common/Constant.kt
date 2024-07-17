@@ -1,14 +1,19 @@
 package com.youppix.ecommercecourse.common
 
 import android.content.Context
-import android.util.Log
+import android.content.res.Configuration
 import android.util.Patterns
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.domain.model.OnBoarding
+import java.util.Locale
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 object Constant {
 
     const val APP_LANG = "APP_LANG"
+
+    const val COUNTRY_CODE = "213+"
 
     val pages = listOf(
         OnBoarding(
@@ -28,6 +33,54 @@ object Constant {
         ),
 
     )
+
+    fun setLocal(lang : String , context: Context){
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration()
+
+        config.setLocale(locale)
+        context.resources.updateConfiguration(
+            config,
+            context.resources.displayMetrics
+        )
+    }
+
+
+    fun checkUserName(name: String, context: Context): Resource<Boolean> {
+        val regex = "^[A-Za-z]\\w{5,29}$"
+        val p: Pattern = Pattern.compile(regex)
+        val trimName = name.trim()
+        val m: Matcher = p.matcher(name)
+        return when{
+            name.isBlank() || trimName.isEmpty()->{
+                Resource.Error(context.getString(R.string.userNameEmptyErrorMsg), false)
+            }
+            !m.matches()->{
+                Resource.Error(context.getString(R.string.userNameWrongPatternErrorMsg), false)
+            }
+            else->{
+                Resource.Successful(true)
+            }
+        }
+    }
+    fun checkPhone(phone: String, context: Context): Resource<Boolean> {
+        val regex = "^(00213|\\+213|0)(5|6|7)[0-9]{8}$"
+        val p: Pattern = Pattern.compile(regex)
+        val trimPhone = phone.trim()
+        val m: Matcher = p.matcher(phone)
+        return when{
+            phone.isBlank() || trimPhone.isEmpty()->{
+                Resource.Error(context.getString(R.string.phoneEmptyErrorMsg), false)
+            }
+            !m.matches()->{
+                Resource.Error(context.getString(R.string.phoneWrongPatternErrorMsg), false)
+            }
+            else->{
+                Resource.Successful(true)
+            }
+        }
+    }
 
     fun checkEmail(email: String , context: Context): Resource<Boolean> {
         val trimEmail = email.trim()

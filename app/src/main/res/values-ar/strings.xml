@@ -36,7 +36,9 @@
     <string name="resetPassword">إعادة تعيين كلمة السر</string>
     <string name="emailEmptyErrorMsg">يرجى إدخال البريد الإلكتروني</string>
     <string name="passwordEmptyErrorMsg">يرجى إدخال كلمة السر</string>
+    <string name="userNameEmptyErrorMsg">يرجى إدخال اسم المستخدم</string>
     <string name="emailWrongPatternErrorMsg">شكل هذا البريد الإلكتروني غير صحيح</string>
+    <string name="userNameWrongPatternErrorMsg">يرجى إدخال اسم مستخدم صالح</string>
     <string name="passwordWrongPatternErrorMsg">كلمة المرور يجب أن تكون أكثر من 6 حروف</string>
     <string name="otpVerification">التحقق من OTP</string>
     <string name="confirm">تأكيد</string>
@@ -44,4 +46,6 @@
     <string name="goToLoginScreen">اذهب إلى صفحة تسجيل الدخول</string>
     <string name="successfullyRegistered">تم التسجيل بنجاح</string>
     <string name="successfullyResetPassword">تم إعادة تعيين كلمة المرور بنجاح</string>
+    <string name="phoneEmptyErrorMsg">يرجى إدخال رقم الهاتف</string>
+    <string name="phoneWrongPatternErrorMsg">يرجى إدخال رقم هاتف حقيقي</string>
 </resources>

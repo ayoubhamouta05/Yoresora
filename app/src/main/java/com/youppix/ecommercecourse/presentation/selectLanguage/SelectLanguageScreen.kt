@@ -5,15 +5,11 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,16 +39,8 @@ class SelectLanguageScreen() :
         val viewModel: MainViewModel = hiltViewModel()
         viewModel.getLanguage(APP_LANG, Locale.getDefault().language)
         val currentLang = viewModel.language.value
-        val locale = Locale(currentLang)
-        Locale.setDefault(locale)
-        val config = Configuration()
-
-        config.setLocale(locale)
         val context = LocalContext.current
-        context.resources.updateConfiguration(
-            config,
-            context.resources.displayMetrics
-        )
+        setLocal(currentLang , context)
         Scaffold(
             modifier = Modifier.fillMaxSize(),
         ) { innerPadding ->
@@ -87,7 +75,8 @@ class SelectLanguageScreen() :
                     text = stringResource(id = R.string.english),
                 ) {
                     viewModel.saveLanguage(APP_LANG, "en")
-                    navigator?.push(OnBoardingScreen(currentLang = "en" ))
+                    setLocal("en" , context)
+                    navigator?.push(OnBoardingScreen())
                 }
 
                 CustomButton(
@@ -97,11 +86,24 @@ class SelectLanguageScreen() :
                     text = stringResource(id = R.string.arabic)
                 ) {
                     viewModel.saveLanguage(APP_LANG, "ar")
-                    navigator?.push(OnBoardingScreen("ar"))
+                    setLocal("en" , context)
+                    navigator?.push(OnBoardingScreen())
                 }
 
             }
         }
+    }
+
+    private fun setLocal(lang : String , context: Context){
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration()
+
+        config.setLocale(locale)
+        context.resources.updateConfiguration(
+            config,
+            context.resources.displayMetrics
+        )
     }
 }
 
