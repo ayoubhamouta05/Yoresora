@@ -1,5 +1,7 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -54,6 +56,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.OnBackPressed
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Constant
+import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
@@ -80,13 +84,7 @@ class LoginScreen() : Screen {
         val loginState = viewModel.loginState.value
 
         val context = LocalContext.current
-        LaunchedEffect(navigator) {
-            if(navigator?.canPop != true){
-               println("onBackPressed false")
-            }
-        }
 
-        Log.d("OnBoardingScreen", "currentLang: ${Locale.getDefault().language} isEnglish: $isEnglish")
         CompositionLocalProvider(
             if (isEnglish) {
                 LocalLayoutDirection provides LayoutDirection.Ltr
@@ -219,7 +217,7 @@ class LoginScreen() : Screen {
                         Spacer(modifier = Modifier.weight(1f))
 
                         TextButton(onClick = {
-                            Log.d("LoginScreen" , navigator.toString())
+                            Log.d("LoginScreen", navigator.toString())
                             navigator?.push(CheckEmailValidationScreen())
                         }) {
                             Text(

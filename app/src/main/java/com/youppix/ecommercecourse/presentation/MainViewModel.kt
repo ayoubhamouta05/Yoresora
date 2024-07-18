@@ -1,31 +1,25 @@
 package com.youppix.ecommercecourse.presentation
 
+import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.youppix.ecommercecourse.domain.useCases.appLanguage.LanguageManagerUseCases
-import com.youppix.ecommercecourse.presentation.auth.login.LoginState
+import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
+import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val languageManagerUseCases: LanguageManagerUseCases
-) : ViewModel() {
+class MainViewModel@Inject constructor(
+    private val appEntryUseCases: AppEntryUseCases
+) : ViewModel(){
 
-    var language  = mutableStateOf("")
-        private set
+    private var _appEntry = mutableStateOf(false)
+    val appEntry : State<Boolean> =  _appEntry
 
-    var loginState = mutableStateOf(LoginState())
-
-    fun getLanguage(key:String, defaultValue : String ){
-       language.value = languageManagerUseCases.getAppLanguageUseCase(key,defaultValue)
+    init {
+        _appEntry.value = appEntryUseCases.getAppEntryUseCase(APP_ENTRY , _appEntry.value)
     }
 
-    fun saveLanguage(key : String , value: String) = viewModelScope.launch {
-        languageManagerUseCases.saveAppLanguageUseCase(key,value)
-        language.value = value
-    }
 
 }

@@ -38,6 +38,7 @@ import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.CustomDialog
 import com.youppix.ecommercecourse.common.LeavingAppDialog
+import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.selectLanguage.SelectLanguageScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,6 +55,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val currentLang = LocalContext.current.getSharedPreferences(APP_LANG, 0)
                 .getString(APP_LANG, Locale.getDefault().language) ?: "en"
+
+            val viewModel = hiltViewModel<MainViewModel>()
+
             var backPressedState by remember {
                 mutableStateOf(false)
             }
@@ -61,11 +65,7 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(false)
             }
             onBackButtonPressed {
-                if (!backPressedState) {
-                    showDialog = true
-                } else {
-                    showDialog = false
-                }
+                showDialog = !backPressedState
                 backPressedState
             }
             EcommerceCourseTheme {
@@ -73,7 +73,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     Navigator(
-                        SelectLanguageScreen()
+                        if (viewModel.appEntry.value)
+                            LoginScreen()
+                        else
+                            SelectLanguageScreen()
                     ) { navigator ->
                         CurrentScreen()
                         backPressedState = navigator.canPop

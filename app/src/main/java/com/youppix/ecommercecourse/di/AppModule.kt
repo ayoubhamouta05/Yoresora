@@ -2,13 +2,18 @@ package com.youppix.ecommercecourse.di
 
 import android.app.Application
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
+import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
 import com.youppix.ecommercecourse.domain.manager.LanguageManager
+import com.youppix.ecommercecourse.domain.manager.LocaleUserEntryManager
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
+import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
+import com.youppix.ecommercecourse.domain.useCases.appEntry.GetAppEntryUseCase
+import com.youppix.ecommercecourse.domain.useCases.appEntry.SaveAppEntryUseCase
 import com.youppix.ecommercecourse.domain.useCases.appLanguage.GetAppLanguageUseCase
 import com.youppix.ecommercecourse.domain.useCases.appLanguage.LanguageManagerUseCases
 import com.youppix.ecommercecourse.domain.useCases.appLanguage.SaveAppLanguageUseCase
@@ -91,6 +96,20 @@ object AppModule {
             checkPassword = CheckPasswordUseCase(signUpRepository = signUpRepository),
             checkUserName = CheckUserNameUseCase(signUpRepository = signUpRepository),
             checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository)
+        )
+
+
+    @Provides
+    @Singleton
+    fun provideLocaleUserEntryManager(application: Application) : LocaleUserEntryManager =
+        LocaleUserEntryManagerImpl(application)
+
+    @Provides
+    @Singleton
+    fun provideLocaleUserEntryUseCases(localeUserEntryManager: LocaleUserEntryManager) : AppEntryUseCases =
+        AppEntryUseCases(
+            getAppEntryUseCase = GetAppEntryUseCase(localeUserEntryManager),
+            saveAppEntryUseCase = SaveAppEntryUseCase(localeUserEntryManager)
         )
 
 

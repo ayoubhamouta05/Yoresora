@@ -15,6 +15,8 @@ object Constant {
 
     const val COUNTRY_CODE = "213+"
 
+    const val APP_ENTRY = "appEntry"
+
     val pages = listOf(
         OnBoarding(
             title = R.string.onboardingtitle1,

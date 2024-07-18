@@ -1,7 +1,5 @@
 package com.youppix.ecommercecourse.presentation.onBoarding
 
-import android.content.res.Configuration
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -30,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.BeyondBoundsLayout
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -42,19 +39,20 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
+import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.pages
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.PageIndicatorWidth
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.onBoarding.components.PageIndicator
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
-import com.youppix.ecommercecourse.presentation.auth.login.LoginState
+import com.youppix.ecommercecourse.presentation.onBoarding.components.PageIndicator
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -71,7 +69,8 @@ class OnBoardingScreen() : Screen {
             .getString(Constant.APP_LANG, Locale.getDefault().language) ?: "en"
         setLocal(currentLang, LocalContext.current)
 
-        Log.d("OnBoardingScreen", "lang: $currentLang , local : ${Locale.getDefault().language}")
+        val viewModel = hiltViewModel<OnBoardingViewModel>()
+
         CompositionLocalProvider(
             if (currentLang == "en") {
                 LocalLayoutDirection provides LayoutDirection.Ltr
@@ -161,6 +160,7 @@ class OnBoardingScreen() : Screen {
                         }
                         if (pagerState.currentPage == pagerState.pageCount - 1) {
                             navigator?.replaceAll(LoginScreen())
+                            viewModel.saveAppEntry(APP_ENTRY, true)
                         }
                     }) {
                         Text(

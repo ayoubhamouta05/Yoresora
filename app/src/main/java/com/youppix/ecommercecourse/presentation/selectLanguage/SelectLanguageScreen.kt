@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.selectLanguage
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,6 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
-import com.youppix.ecommercecourse.presentation.MainViewModel
 import com.youppix.ecommercecourse.presentation.components.CustomButton
 import com.youppix.ecommercecourse.presentation.onBoarding.OnBoardingScreen
 import java.util.Locale
@@ -36,7 +34,7 @@ class SelectLanguageScreen() :
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-        val viewModel: MainViewModel = hiltViewModel()
+        val viewModel: SelectLanguageViewModel = hiltViewModel()
         viewModel.getLanguage(APP_LANG, Locale.getDefault().language)
         val currentLang = viewModel.language.value
         val context = LocalContext.current
