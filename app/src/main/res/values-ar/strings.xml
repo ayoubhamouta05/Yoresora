@@ -52,4 +52,6 @@
     <string name="cancel">إلغاء</string>
     <string name="leaveTheApp">مغادرة التطبيق</string>
     <string name="doYouReallyWantToLeave">هل تريد حقًا مغادرة التطبيق ؟</string>
+    <string name="networkStatusAvailable">متصل</string>
+    <string name="networkStatusUnavailable">لا يوجد اتصال بالإنترنت</string>
 </resources>

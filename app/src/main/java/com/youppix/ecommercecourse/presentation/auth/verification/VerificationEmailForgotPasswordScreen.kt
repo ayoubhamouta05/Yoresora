@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification
+package com.youppix.ecommercecourse.presentation.auth.verification
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -48,14 +48,14 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.components.OtpInputField
-import com.youppix.ecommercecourse.presentation.auth.signup.SignUpState
-import com.youppix.ecommercecourse.presentation.auth.signup.SignUpViewModel
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordState
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordViewModel
+import com.youppix.ecommercecourse.presentation.auth.components.OtpInputField
 import com.youppix.ecommercecourse.presentation.auth.signup.SuccessfulSignUpScreen
 import java.util.Locale
 
-class VerificationEmailSignUpScreen(
-    private var signUpState: SignUpState,
+class VerificationEmailForgotPasswordScreen(
+    private var forgotPasswordState: ForgotPasswordState
 ) : Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -70,15 +70,17 @@ class VerificationEmailSignUpScreen(
         val isEnglish = LocalContext.current.getSharedPreferences(Constant.APP_LANG, 0)
             .getString(Constant.APP_LANG, Locale.getDefault().language) == "en"
 
-        val signUpViewModel: SignUpViewModel = hiltViewModel()
+
+        val forgotPasswordViewModel : ForgotPasswordViewModel = hiltViewModel()
+
 
         LaunchedEffect(Unit) {
-            signUpViewModel.setState(signUpState)
+            forgotPasswordViewModel.setState(forgotPasswordState)
             focusRequester.requestFocus()
             keyboardController?.show()
         }
 
-        val currentState by signUpViewModel.signUpState
+        val currentState by forgotPasswordViewModel.forgotPasswordState
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -90,16 +92,15 @@ class VerificationEmailSignUpScreen(
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
-                    CenterAlignedTopAppBar(
-                        title = {
-                            Text(
-                                text = stringResource(id = R.string.forgotPassword),
-                                modifier = Modifier,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
-                                color = Color.Gray
-                            )
-                        },
+                    CenterAlignedTopAppBar(title = {
+                        Text(
+                            text = stringResource(id = R.string.forgotPassword),
+                            modifier = Modifier,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
+                            color = Color.Gray
+                        )
+                    },
                         navigationIcon = {
                             IconButton(
                                 onClick = {
@@ -116,10 +117,11 @@ class VerificationEmailSignUpScreen(
                                     contentScale = ContentScale.Fit
                                 )
                             }
-                        }
-                    )
+                        })
+
                 },
-            ) { innerPadding ->
+
+                ) { innerPadding ->
 
                 Column(
                     modifier = Modifier
@@ -134,7 +136,8 @@ class VerificationEmailSignUpScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = innerPadding.calculateTopPadding()
+                                top = innerPadding
+                                    .calculateTopPadding()
                                     .plus(Dimens.HorizontalPaddingSignIn),
                                 end = Dimens.HorizontalPaddingSignIn,
                                 start = Dimens.HorizontalPaddingSignIn
@@ -142,7 +145,7 @@ class VerificationEmailSignUpScreen(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = stringResource(id = R.string.verificationBody) + currentState.email,
+                        text = stringResource(id = R.string.verificationBody) + forgotPasswordState.email,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray,
                         modifier = Modifier
@@ -168,10 +171,11 @@ class VerificationEmailSignUpScreen(
                                 otpText = currentState.verificationCode,
                                 shouldCursorBlink = false,
                                 onOtpModified = { value, otpFilled ->
-                                    signUpViewModel.updateVerificationCode(value)
+                                    forgotPasswordViewModel.updateVerificationCode(value)
+
                                     Log.d(
                                         "VerificationScreen",
-                                        "State: ${currentState.verificationCode}, ViewModel: ${signUpViewModel.signUpState.value.verificationCode}"
+                                        forgotPasswordState.verificationCode + "viewModel : " + forgotPasswordState.verificationCode
                                     )
                                     isOtpFilled = otpFilled
                                     if (otpFilled) {
@@ -180,11 +184,12 @@ class VerificationEmailSignUpScreen(
                                 }
                             )
                         }
+
                     }
 
                     Button(
                         onClick = {
-                            signUpViewModel.updateVerificationCode("")
+                            forgotPasswordViewModel.updateVerificationCode("")
                             navigator?.replace(SuccessfulSignUpScreen())
                         },
                         modifier = Modifier
@@ -207,5 +212,8 @@ class VerificationEmailSignUpScreen(
                 }
             }
         }
+
     }
+
+
 }

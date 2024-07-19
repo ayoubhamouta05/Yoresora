@@ -41,7 +41,7 @@ import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
-import com.youppix.ecommercecourse.presentation.auth.forgotPassword.verification.VerificationEmailForgotPasswordScreen
+import com.youppix.ecommercecourse.presentation.auth.verification.VerificationEmailForgotPasswordScreen
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import java.util.Locale

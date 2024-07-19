@@ -3,11 +3,13 @@ package com.youppix.ecommercecourse.di
 import android.app.Application
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
 import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
+import com.youppix.ecommercecourse.data.manager.NetworkConnectivityManagerImpl
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
 import com.youppix.ecommercecourse.domain.manager.LanguageManager
 import com.youppix.ecommercecourse.domain.manager.LocaleUserEntryManager
+import com.youppix.ecommercecourse.domain.manager.NetworkConnectivityManager
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
@@ -25,6 +27,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
+import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,12 +88,12 @@ object AppModule {
     // SignUp
     @Provides
     @Singleton
-    fun provideSignUpRepository() : SignUpRepository =
+    fun provideSignUpRepository(): SignUpRepository =
         SignUpRepositoryImpl()
 
     @Provides
     @Singleton
-    fun provideSignUpUseCases(signUpRepository : SignUpRepository) : SignUpUseCases =
+    fun provideSignUpUseCases(signUpRepository: SignUpRepository): SignUpUseCases =
         SignUpUseCases(
             checkEmail = CheckEmailUseCase(signUpRepository = signUpRepository),
             checkPassword = CheckPasswordUseCase(signUpRepository = signUpRepository),
@@ -101,16 +104,26 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocaleUserEntryManager(application: Application) : LocaleUserEntryManager =
+    fun provideLocaleUserEntryManager(application: Application): LocaleUserEntryManager =
         LocaleUserEntryManagerImpl(application)
 
     @Provides
     @Singleton
-    fun provideLocaleUserEntryUseCases(localeUserEntryManager: LocaleUserEntryManager) : AppEntryUseCases =
+    fun provideLocaleUserEntryUseCases(localeUserEntryManager: LocaleUserEntryManager): AppEntryUseCases =
         AppEntryUseCases(
             getAppEntryUseCase = GetAppEntryUseCase(localeUserEntryManager),
             saveAppEntryUseCase = SaveAppEntryUseCase(localeUserEntryManager)
         )
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnectivityManager(application: Application): NetworkConnectivityManager =
+        NetworkConnectivityManagerImpl(application)
+
+    @Provides
+    @Singleton
+    fun provideNetworkConnectivityUseCase(networkConnectivityManager: NetworkConnectivityManager): NetworkConnectivityManagerUseCase =
+        NetworkConnectivityManagerUseCase(networkConnectivityManager)
 
 
 }

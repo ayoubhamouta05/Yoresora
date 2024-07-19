@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.auth.forgotPassword.components
+package com.youppix.ecommercecourse.presentation.auth.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

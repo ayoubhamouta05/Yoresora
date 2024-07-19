@@ -1,7 +1,5 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
@@ -33,8 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -54,11 +49,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.OnBackPressed
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Constant
-import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
+import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
@@ -75,8 +68,9 @@ class LoginScreen() : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val isEnglish = LocalContext.current.getSharedPreferences(APP_LANG, 0)
-            .getString(APP_LANG, Locale.getDefault().language) == "en"
+        val currentLang = LocalContext.current.getSharedPreferences(APP_LANG, 0)
+            .getString(APP_LANG, Locale.getDefault().language) ?: "en"
+        val isEnglish = currentLang == "en"
 
         val navigator = LocalNavigator.current
 
@@ -84,6 +78,7 @@ class LoginScreen() : Screen {
         val loginState = viewModel.loginState.value
 
         val context = LocalContext.current
+        setLocal(currentLang , context)
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -97,30 +92,11 @@ class LoginScreen() : Screen {
                     CenterAlignedTopAppBar(title = {
                         Text(
                             text = stringResource(id = R.string.signin),
-                            modifier = Modifier,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleSmall.copy(fontSize = 24.sp),
                             color = Color.Gray
                         )
-                    },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    navigator?.pop()
-                                },
-                            ) {
-                                Image(
-                                    Icons.Default.KeyboardArrowDown,
-                                    colorFilter = ColorFilter.tint(color = Color.Gray),
-                                    modifier = Modifier
-                                        .rotate(if (isEnglish) 90f else -90f)
-                                        .size(HorizontalPaddingSignIn),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Fit
-                                )
-                            }
-                        })
-
+                    })
                 }) { innerPadding ->
                 val scrollState = rememberScrollState()
 

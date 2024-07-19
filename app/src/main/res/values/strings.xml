@@ -52,6 +52,8 @@ or continue with social media</string>
     <string name="cancel">Cancel</string>
     <string name="leaveTheApp">Leave The App</string>
     <string name="doYouReallyWantToLeave">Do You Really Want To Leave The App ?</string>
+    <string name="networkStatusAvailable">Connected</string>
+    <string name="networkStatusUnavailable">No Internet Connection</string>
 
 
 
