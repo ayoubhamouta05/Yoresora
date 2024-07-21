@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation
+package com.youppix.ecommercecourse.presentation.activities
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -48,9 +48,9 @@ class MainViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-        if (status.value == NetworkConnectivityManager.Status.Unavailable) {
-            _showNetworkStatus.value = true
-        }
+//        if (status.value == NetworkConnectivityManager.Status.Unavailable) {
+//            _showNetworkStatus.value = true
+//        }
     }
 
 

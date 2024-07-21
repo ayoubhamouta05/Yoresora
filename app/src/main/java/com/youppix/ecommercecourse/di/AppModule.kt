@@ -4,7 +4,7 @@ import android.app.Application
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
 import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
 import com.youppix.ecommercecourse.data.manager.NetworkConnectivityManagerImpl
-import com.youppix.ecommercecourse.data.remote.auth.SignUpService
+import com.youppix.ecommercecourse.data.remote.auth.AuthService
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
@@ -24,11 +24,13 @@ import com.youppix.ecommercecourse.domain.useCases.auth.CheckEmailUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.CheckPasswordUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ForgotPasswordUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ResetPasswordUseCase
+import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.AddUserUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
+import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import dagger.Module
 import dagger.Provides
@@ -70,15 +72,16 @@ object AppModule {
     // Login
     @Provides
     @Singleton
-    fun provideLoginValidatorRepository(): LoginRepository =
-        LoginRepositoryImpl()
+    fun provideLoginValidatorRepository(authService: AuthService): LoginRepository =
+        LoginRepositoryImpl(authService)
 
     @Provides
     @Singleton
     fun provideLoginUseCases(loginRepository: LoginRepository): LoginUseCases {
         return LoginUseCases(
             checkEmail = CheckEmailUseCase(loginRepository),
-            checkPassword = CheckPasswordUseCase(loginRepository)
+            checkPassword = CheckPasswordUseCase(loginRepository),
+            login = LoginUseCase(loginRepository)
         )
     }
 
@@ -100,8 +103,8 @@ object AppModule {
     // SignUp
     @Provides
     @Singleton
-    fun provideSignUpRepository(signUpService: SignUpService): SignUpRepository =
-        SignUpRepositoryImpl(signUpService)
+    fun provideSignUpRepository(authService: AuthService): SignUpRepository =
+        SignUpRepositoryImpl(authService)
 
     @Provides
     @Singleton
@@ -111,7 +114,8 @@ object AppModule {
             checkPassword = CheckPasswordUseCase(signUpRepository = signUpRepository),
             checkUserName = CheckUserNameUseCase(signUpRepository = signUpRepository),
             checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository),
-            addUser = AddUserUseCase(signUpRepository = signUpRepository)
+            addUser = AddUserUseCase(signUpRepository = signUpRepository),
+            verifyCode = VerifyCodeUseCase(signUpRepository = signUpRepository)
         )
 
 
@@ -172,8 +176,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSignUpService(client: HttpClient) : SignUpService =
-        SignUpService(client)
+    fun provideAuthService(client: HttpClient) : AuthService =
+        AuthService(client)
+
 
 
 }

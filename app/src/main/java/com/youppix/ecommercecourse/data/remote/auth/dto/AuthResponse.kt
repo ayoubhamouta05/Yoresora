@@ -3,7 +3,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class SignUpResponse(
+data class AuthResponse(
     val status : String ,
     val message : String
 )

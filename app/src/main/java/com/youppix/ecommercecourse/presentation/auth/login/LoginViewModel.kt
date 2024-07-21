@@ -96,12 +96,45 @@ class LoginViewModel @Inject constructor(
 
     fun validateForm(email: String, password: String, context: Context): Boolean {
 
-        if (checkEmail(email, context) && checkPassword(password, context)) {
-            _loginState.value = loginState.value.copy(loginSuccessful = true)
-        }
+        return checkEmail(email, context) && checkPassword(password, context)
 
-        return loginState.value.loginSuccessful
 
+    }
+
+    suspend fun login(email : String , password : String) {
+        loginUseCases.login(email , password).onEach { result ->
+            when(result){
+                is Resource.Loading -> {
+                    _loginState.value = loginState.value.copy(
+                        isLoading = true,
+                    )
+                }
+                is Resource.Error -> {
+                    _loginState.value = loginState.value.copy(
+                        isLoading = false,
+                        loginError = result.message,
+                        loginSuccessful = false,
+                    )
+                    Log.d("LoginViewModel" , "result : ${result.message}")
+                }
+                is Resource.Successful->{
+                    _loginState.value = loginState.value.copy(
+                        isLoading = false,
+                        loginSuccessful = true,
+                        loginError = null
+                    )
+                    Log.d("LoginViewModel" , "result : ${result.data}")
+                }
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    fun resetState(){
+        _loginState.value = loginState.value.copy(
+            loginSuccessful = false ,
+            loginError = null
+        )
     }
 
 

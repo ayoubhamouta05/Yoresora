@@ -19,6 +19,8 @@ object Constant {
 
     const val BASE_URL = "http://192.168.213.86:8080/ecommerce_course/"
     const val SIGNUP_URL = "$BASE_URL/auth/signup.php"
+    const val VERIFY_CODE_URL = "$BASE_URL/auth/verifyCode.php"
+    const val LOGIN_URL = "$BASE_URL/auth/login.php"
 
     val pages = listOf(
         OnBoarding(

@@ -1,6 +1,9 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +33,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -56,11 +61,13 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.presentation.activities.HomeActivity
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.CheckEmailValidationScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class LoginScreen() : Screen {
@@ -78,7 +85,19 @@ class LoginScreen() : Screen {
         val loginState = viewModel.loginState.value
 
         val context = LocalContext.current
+        val scope = rememberCoroutineScope()
         setLocal(currentLang , context)
+
+        LaunchedEffect(loginState.loginSuccessful , loginState.loginError) {
+
+            if (loginState.loginSuccessful){
+                context.startActivity(Intent(context, HomeActivity::class.java))
+                (context as Activity).finish()
+            }else if (!loginState.loginError.isNullOrEmpty()){
+                Toast.makeText(context, loginState.loginError, Toast.LENGTH_SHORT).show()
+            }
+            viewModel.resetState()
+        }
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -214,7 +233,9 @@ class LoginScreen() : Screen {
                                     context
                                 )
                             ) {
-//                               todo navigator.push()
+                                scope.launch{
+                                    viewModel.login(loginState.email, loginState.password)
+                                }
                             }
                         },
                         modifier = Modifier

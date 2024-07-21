@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.common.Constant.COUNTRY_CODE
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.model.User
+import com.youppix.ecommercecourse.domain.model.VerifyCode
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -171,7 +172,6 @@ class SignUpViewModel @Inject constructor(
                         isLoading = true
                     )
                 }
-
                 is Resource.Error -> {
                     _signUpState.value = signUpState.value.copy(
                         isLoading = false,
@@ -188,12 +188,31 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
             }
-
-            Log.d("SignUpViewModel", "result : ${result.message?:result.data}" )
-
         }.launchIn(viewModelScope)
+    }
 
-
+    suspend fun verifyCode(email: String , verifyCode: String){
+        signUpUseCases.verifyCode(email, verifyCode).onEach { result ->
+            when(result){
+                is Resource.Loading -> {
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = true,
+                    )
+                }
+                is Resource.Error -> {
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = false,
+                        signUpErrorMessage = result.message
+                    )
+                }
+                is Resource.Successful->{
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = false,
+                        signUpSuccessful = true,
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun resetState(){

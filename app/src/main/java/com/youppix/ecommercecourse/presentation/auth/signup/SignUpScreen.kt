@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -57,6 +58,7 @@ import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.User
+import com.youppix.ecommercecourse.presentation.auth.components.CustomProgressIndicator
 import com.youppix.ecommercecourse.presentation.auth.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
@@ -90,8 +92,9 @@ class SignUpScreen : Screen {
                     state.signUpErrorMessage,
                     Toast.LENGTH_SHORT
                 ).show()
+                viewModel.resetState()
             }
-            viewModel.resetState()
+
         }
 
         CompositionLocalProvider(
@@ -332,6 +335,10 @@ class SignUpScreen : Screen {
 
 
                 }
+
+
+                CustomProgressIndicator(show = state.isLoading)
+
 
             }
         }

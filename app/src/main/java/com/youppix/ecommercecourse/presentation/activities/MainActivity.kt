@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation
+package com.youppix.ecommercecourse.presentation.activities
 
 import NetworkStatusMessage
 import android.annotation.SuppressLint

@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.auth.verification
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -48,10 +50,13 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.domain.model.VerifyCode
+import com.youppix.ecommercecourse.presentation.auth.components.CustomProgressIndicator
 import com.youppix.ecommercecourse.presentation.auth.components.OtpInputField
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpState
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpViewModel
 import com.youppix.ecommercecourse.presentation.auth.signup.SuccessfulSignUpScreen
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class VerificationEmailSignUpScreen(
@@ -71,14 +76,34 @@ class VerificationEmailSignUpScreen(
             .getString(Constant.APP_LANG, Locale.getDefault().language) == "en"
 
         val signUpViewModel: SignUpViewModel = hiltViewModel()
+        val scope = rememberCoroutineScope()
+        val currentState by signUpViewModel.signUpState
 
         LaunchedEffect(Unit) {
             signUpViewModel.setState(signUpState)
+            signUpViewModel.resetState()
             focusRequester.requestFocus()
             keyboardController?.show()
         }
 
-        val currentState by signUpViewModel.signUpState
+
+        val context = LocalContext.current
+
+        LaunchedEffect(currentState.signUpSuccessful, currentState.signUpErrorMessage) {
+            if (currentState.signUpSuccessful) {
+                navigator?.replace(SuccessfulSignUpScreen())
+            } else if (!currentState.signUpErrorMessage.isNullOrEmpty()) {
+                Toast.makeText(
+                    context,
+                    currentState.signUpErrorMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
+                signUpViewModel.resetState()
+            }
+
+        }
+
+
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -134,7 +159,8 @@ class VerificationEmailSignUpScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = innerPadding.calculateTopPadding()
+                                top = innerPadding
+                                    .calculateTopPadding()
                                     .plus(Dimens.HorizontalPaddingSignIn),
                                 end = Dimens.HorizontalPaddingSignIn,
                                 start = Dimens.HorizontalPaddingSignIn
@@ -169,10 +195,6 @@ class VerificationEmailSignUpScreen(
                                 shouldCursorBlink = false,
                                 onOtpModified = { value, otpFilled ->
                                     signUpViewModel.updateVerificationCode(value)
-                                    Log.d(
-                                        "VerificationScreen",
-                                        "State: ${currentState.verificationCode}, ViewModel: ${signUpViewModel.signUpState.value.verificationCode}"
-                                    )
                                     isOtpFilled = otpFilled
                                     if (otpFilled) {
                                         keyboardController?.hide()
@@ -184,8 +206,12 @@ class VerificationEmailSignUpScreen(
 
                     Button(
                         onClick = {
-                            signUpViewModel.updateVerificationCode("")
-                            navigator?.replace(SuccessfulSignUpScreen())
+                            scope.launch {
+                                signUpViewModel.verifyCode(
+                                    email = currentState.email,
+                                    verifyCode = currentState.verificationCode
+                                )
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -205,6 +231,7 @@ class VerificationEmailSignUpScreen(
                         )
                     }
                 }
+                CustomProgressIndicator(show = currentState.isLoading)
             }
         }
     }

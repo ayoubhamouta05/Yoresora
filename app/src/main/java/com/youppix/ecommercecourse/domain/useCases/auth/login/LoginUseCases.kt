@@ -5,5 +5,6 @@ import com.youppix.ecommercecourse.domain.useCases.auth.CheckPasswordUseCase
 
 data class LoginUseCases(
     val checkEmail: CheckEmailUseCase,
-    val checkPassword: CheckPasswordUseCase
+    val checkPassword: CheckPasswordUseCase,
+    val login : LoginUseCase
 )
