@@ -82,6 +82,7 @@ dependencies {
     //Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+    implementation (libs.converter.scalars)
 
     //Dagger Hilt
     implementation (libs.hilt.android)

@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -53,10 +54,12 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.domain.model.User
 import com.youppix.ecommercecourse.presentation.auth.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class SignUpScreen : Screen {
@@ -71,6 +74,7 @@ class SignUpScreen : Screen {
         val viewModel: SignUpViewModel = hiltViewModel()
         val state = viewModel.signUpState.value
         val context = LocalContext.current
+        val scope = rememberCoroutineScope()
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -210,17 +214,36 @@ class SignUpScreen : Screen {
 
                     Button(
                         onClick = {
-                            if (viewModel.validateForm(
-                                    context = context,
-                                    userName = state.userName,
-                                    email = state.email,
-                                    password = state.password,
-                                    phone = state.phone
+//                            if (viewModel.validateForm(
+//                                    context = context,
+//                                    userName = state.userName,
+//                                    email = state.email,
+//                                    password = state.password,
+//                                    phone = state.phone
+//                                )
+//                            ) {
+//                                val user = User(
+//                                    usersName = state.userName,
+//                                    usersEmail = state.email,
+//                                    usersPassword = state.password,
+//                                    usersPhone = state.phone
+//                                )
+                                val user = User(
+                                    usersName = "djamel",
+                                    usersEmail = "djamel@gmail.com",
+                                    usersPassword = "djamel",
+                                    usersPhone = "0601010101"
                                 )
-                            )
-                                navigator?.push(
-                                    VerificationEmailSignUpScreen(state)
-                                )
+                                scope.launch{
+                                    viewModel.addUser(user)
+                                }
+                                if (state.signUpSuccessful){
+                                    navigator?.push(
+                                        VerificationEmailSignUpScreen(state)
+                                    )
+                                }
+
+                           // }
                         },
                         modifier = Modifier
                             .fillMaxWidth()

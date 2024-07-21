@@ -1,9 +1,12 @@
 package com.youppix.ecommercecourse.di
 
 import android.app.Application
+import com.google.gson.GsonBuilder
+import com.youppix.ecommercecourse.common.Constant.BASE_URL
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
 import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
 import com.youppix.ecommercecourse.data.manager.NetworkConnectivityManagerImpl
+import com.youppix.ecommercecourse.data.remote.auth.SignUpApi
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
@@ -24,6 +27,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.CheckPasswordUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ForgotPasswordUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ResetPasswordUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
+import com.youppix.ecommercecourse.domain.useCases.auth.signUp.AddUserUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
@@ -32,6 +36,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 
@@ -88,8 +95,8 @@ object AppModule {
     // SignUp
     @Provides
     @Singleton
-    fun provideSignUpRepository(): SignUpRepository =
-        SignUpRepositoryImpl()
+    fun provideSignUpRepository(signUpApi: SignUpApi): SignUpRepository =
+        SignUpRepositoryImpl(signUpApi)
 
     @Provides
     @Singleton
@@ -98,7 +105,8 @@ object AppModule {
             checkEmail = CheckEmailUseCase(signUpRepository = signUpRepository),
             checkPassword = CheckPasswordUseCase(signUpRepository = signUpRepository),
             checkUserName = CheckUserNameUseCase(signUpRepository = signUpRepository),
-            checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository)
+            checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository),
+            addUser = AddUserUseCase(signUpRepository = signUpRepository)
         )
 
 
@@ -125,5 +133,17 @@ object AppModule {
     fun provideNetworkConnectivityUseCase(networkConnectivityManager: NetworkConnectivityManager): NetworkConnectivityManagerUseCase =
         NetworkConnectivityManagerUseCase(networkConnectivityManager)
 
+
+    @Provides
+    @Singleton
+    fun provideSignUpApi() : SignUpApi{
+        val gson = GsonBuilder().setLenient().create()
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(SignUpApi::class.java)
+    }
 
 }
