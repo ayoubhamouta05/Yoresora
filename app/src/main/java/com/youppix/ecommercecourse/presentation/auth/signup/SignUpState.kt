@@ -15,5 +15,5 @@ data class SignUpState(
     val passwordError: String? = null,
     val verificationCode: String = "",
     val signUpSuccessful: Boolean = false,
-    val signUpError : String = ""
+    val signUpErrorMessage : String?=null
 ) : Serializable

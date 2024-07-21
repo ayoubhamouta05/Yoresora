@@ -1,12 +1,10 @@
 package com.youppix.ecommercecourse.di
 
 import android.app.Application
-import com.google.gson.GsonBuilder
-import com.youppix.ecommercecourse.common.Constant.BASE_URL
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
 import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
 import com.youppix.ecommercecourse.data.manager.NetworkConnectivityManagerImpl
-import com.youppix.ecommercecourse.data.remote.auth.SignUpApi
+import com.youppix.ecommercecourse.data.remote.auth.SignUpService
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
@@ -36,9 +34,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 
@@ -95,8 +100,8 @@ object AppModule {
     // SignUp
     @Provides
     @Singleton
-    fun provideSignUpRepository(signUpApi: SignUpApi): SignUpRepository =
-        SignUpRepositoryImpl(signUpApi)
+    fun provideSignUpRepository(signUpService: SignUpService): SignUpRepository =
+        SignUpRepositoryImpl(signUpService)
 
     @Provides
     @Singleton
@@ -134,16 +139,41 @@ object AppModule {
         NetworkConnectivityManagerUseCase(networkConnectivityManager)
 
 
+    //Ktor Client
     @Provides
     @Singleton
-    fun provideSignUpApi() : SignUpApi{
-        val gson = GsonBuilder().setLenient().create()
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-            .create(SignUpApi::class.java)
+    fun provideKtorClient() : HttpClient {
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            encodeDefaults = true
+        }
+        val client = HttpClient(CIO){
+
+            install(ContentNegotiation){
+                json(json)
+            }
+            install(HttpTimeout){
+                requestTimeoutMillis = 30_000L
+                connectTimeoutMillis = 30_000L
+                socketTimeoutMillis = 30_000L
+            }
+
+
+            defaultRequest {
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+            }
+
+
+        }
+        return client
     }
+
+    @Provides
+    @Singleton
+    fun provideSignUpService(client: HttpClient) : SignUpService =
+        SignUpService(client)
+
 
 }

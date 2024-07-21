@@ -163,32 +163,44 @@ class SignUpViewModel @Inject constructor(
                 && validatePassword(password, context)
     }
 
-    suspend fun addUser(user : User){
+    suspend fun addUser(user: User) {
         signUpUseCases.addUser(user).onEach { result ->
-            when(result){
+            when (result) {
                 is Resource.Loading -> {
                     _signUpState.value = signUpState.value.copy(
                         isLoading = true
                     )
                 }
+
                 is Resource.Error -> {
                     _signUpState.value = signUpState.value.copy(
                         isLoading = false,
-                        signUpError = result.message ?: ""
+                        signUpErrorMessage = result.message,
+                        signUpSuccessful = false
                     )
                 }
-                is Resource.Successful-> {
+
+                is Resource.Successful -> {
                     _signUpState.value = signUpState.value.copy(
                         isLoading = false,
+                        signUpErrorMessage = null,
                         signUpSuccessful = true
                     )
                 }
             }
 
-            Log.d("SignUpViewModel", "addUser: ${result.message}")
+            Log.d("SignUpViewModel", "result : ${result.message?:result.data}" )
 
         }.launchIn(viewModelScope)
+
+
     }
 
+    fun resetState(){
+        _signUpState.value = signUpState.value.copy(
+            signUpSuccessful = false ,
+            signUpErrorMessage = null
+        )
+    }
 
 }
