@@ -4,6 +4,7 @@ import android.app.Application
 import com.youppix.ecommercecourse.data.manager.LanguageManagerImpl
 import com.youppix.ecommercecourse.data.manager.LocaleUserEntryManagerImpl
 import com.youppix.ecommercecourse.data.manager.NetworkConnectivityManagerImpl
+import com.youppix.ecommercecourse.data.remote.auth.SignUpService
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
@@ -24,6 +25,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.CheckPasswordUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ForgotPasswordUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.ResetPasswordUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
+import com.youppix.ecommercecourse.domain.useCases.auth.signUp.AddUserUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
@@ -32,6 +34,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 
@@ -88,8 +100,8 @@ object AppModule {
     // SignUp
     @Provides
     @Singleton
-    fun provideSignUpRepository(): SignUpRepository =
-        SignUpRepositoryImpl()
+    fun provideSignUpRepository(signUpService: SignUpService): SignUpRepository =
+        SignUpRepositoryImpl(signUpService)
 
     @Provides
     @Singleton
@@ -98,7 +110,8 @@ object AppModule {
             checkEmail = CheckEmailUseCase(signUpRepository = signUpRepository),
             checkPassword = CheckPasswordUseCase(signUpRepository = signUpRepository),
             checkUserName = CheckUserNameUseCase(signUpRepository = signUpRepository),
-            checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository)
+            checkPhone = CheckPhoneUseCase(signUpRepository = signUpRepository),
+            addUser = AddUserUseCase(signUpRepository = signUpRepository)
         )
 
 
@@ -125,5 +138,41 @@ object AppModule {
     fun provideNetworkConnectivityUseCase(networkConnectivityManager: NetworkConnectivityManager): NetworkConnectivityManagerUseCase =
         NetworkConnectivityManagerUseCase(networkConnectivityManager)
 
+
+    //Ktor Client
+    @Provides
+    @Singleton
+    fun provideKtorClient() : HttpClient {
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            encodeDefaults = true
+        }
+        val client = HttpClient(CIO){
+
+            install(ContentNegotiation){
+                json(json)
+            }
+            install(HttpTimeout){
+                requestTimeoutMillis = 30_000L
+                connectTimeoutMillis = 30_000L
+                socketTimeoutMillis = 30_000L
+            }
+
+
+            defaultRequest {
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+            }
+
+
+        }
+        return client
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpService(client: HttpClient) : SignUpService =
+        SignUpService(client)
 
 }

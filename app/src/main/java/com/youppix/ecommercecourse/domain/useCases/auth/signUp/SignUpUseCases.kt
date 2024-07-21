@@ -7,6 +7,6 @@ data class SignUpUseCases (
     val checkEmail : CheckEmailUseCase,
     val checkPassword: CheckPasswordUseCase ,
     val checkUserName: CheckUserNameUseCase  ,
-    val checkPhone : CheckPhoneUseCase
-
+    val checkPhone : CheckPhoneUseCase,
+    val addUser : AddUserUseCase
 )

@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.presentation.auth.signup
 import java.io.Serializable
 
 data class SignUpState(
+    val isLoading : Boolean = false,
     val userName: String = "",
     val email: String = "",
     val phone: String = "",
@@ -13,5 +14,6 @@ data class SignUpState(
     val phoneError: String? = null,
     val passwordError: String? = null,
     val verificationCode: String = "",
-    val signUpSuccessful: Boolean = false
+    val signUpSuccessful: Boolean = false,
+    val signUpErrorMessage : String?=null
 ) : Serializable

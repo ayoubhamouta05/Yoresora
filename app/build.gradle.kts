@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt.android)
     id ("kotlin-kapt")
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -72,19 +73,25 @@ dependencies {
     implementation (libs.androidx.material.icons.extended)
 
     //Voyager
-
     // Navigator
     implementation(libs.voyager.navigator)
 
     //datastore
     implementation (libs.androidx.datastore.preferences)
 
-    //Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+
 
     //Dagger Hilt
     implementation (libs.hilt.android)
     kapt (libs.hilt.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
+
+    //ktor
+    val ktor_version="2.3.12"
+
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+
 }

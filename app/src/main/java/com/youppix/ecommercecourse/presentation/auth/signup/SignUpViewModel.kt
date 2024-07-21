@@ -2,14 +2,19 @@ package com.youppix.ecommercecourse.presentation.auth.signup
 
 import android.R.attr.name
 import android.content.Context
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.common.Constant.COUNTRY_CODE
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.User
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -158,5 +163,45 @@ class SignUpViewModel @Inject constructor(
                 && validatePassword(password, context)
     }
 
+
+    suspend fun addUser(user: User) {
+        signUpUseCases.addUser(user).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = false,
+                        signUpErrorMessage = result.message,
+                        signUpSuccessful = false
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _signUpState.value = signUpState.value.copy(
+                        isLoading = false,
+                        signUpErrorMessage = null,
+                        signUpSuccessful = true
+                    )
+                }
+            }
+
+            Log.d("SignUpViewModel", "result : ${result.message?:result.data}" )
+
+        }.launchIn(viewModelScope)
+
+
+    }
+
+    fun resetState(){
+        _signUpState.value = signUpState.value.copy(
+            signUpSuccessful = false ,
+            signUpErrorMessage = null
+        )
+    }
 
 }

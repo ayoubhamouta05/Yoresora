@@ -17,6 +17,9 @@ object Constant {
 
     const val APP_ENTRY = "appEntry"
 
+    const val BASE_URL = "http://192.168.213.86:8080/ecommerce_course/"
+    const val SIGNUP_URL = "$BASE_URL/auth/signup.php"
+
     val pages = listOf(
         OnBoarding(
             title = R.string.onboardingtitle1,
