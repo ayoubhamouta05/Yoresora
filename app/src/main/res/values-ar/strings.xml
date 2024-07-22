@@ -54,4 +54,8 @@
     <string name="doYouReallyWantToLeave">هل تريد حقًا مغادرة التطبيق ؟</string>
     <string name="networkStatusAvailable">متصل</string>
     <string name="networkStatusUnavailable">لا يوجد اتصال بالإنترنت</string>
+    <string name="verifyEmail">تحقق من البريد الإلكتروني</string>
+    <string name="verifyEmailBody">يرجى التحقق من البريد الإلكتروني الخاص بك لتسجيل الدخول</string>
+    <string name="emailVerifiedSuccessfully">تم التحقق من البريد الإلكتروني بنجاح</string>
+    <string name="ok">حسنا</string>
 </resources>

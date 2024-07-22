@@ -101,39 +101,54 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    suspend fun login(email : String , password : String) {
-        loginUseCases.login(email , password).onEach { result ->
-            when(result){
+    suspend fun login(email: String, password: String) {
+        loginUseCases.login(email, password).onEach { result ->
+            when (result) {
                 is Resource.Loading -> {
                     _loginState.value = loginState.value.copy(
                         isLoading = true,
                     )
                 }
+
                 is Resource.Error -> {
                     _loginState.value = loginState.value.copy(
                         isLoading = false,
                         loginError = result.message,
                         loginSuccessful = false,
                     )
-                    Log.d("LoginViewModel" , "result : ${result.message}")
+                    Log.d("LoginViewModel", "result : ${result.message}")
                 }
-                is Resource.Successful->{
-                    _loginState.value = loginState.value.copy(
-                        isLoading = false,
-                        loginSuccessful = true,
-                        loginError = null
-                    )
-                    Log.d("LoginViewModel" , "result : ${result.data}")
+
+                is Resource.Successful -> {
+                    if (result.message != null) {
+                        _loginState.value = loginState.value.copy(
+                            isLoading = false,
+                            loginSuccessful = false,
+                            loginError = null,
+                            needUserApprove = true
+                        )
+                    } else {
+                        _loginState.value = loginState.value.copy(
+                            isLoading = false,
+                            loginSuccessful = true,
+                            loginError = null,
+                            needUserApprove = false
+                        )
+
+                    }
+
+                    Log.d("LoginViewModel", "result : ${result.data}")
                 }
             }
 
         }.launchIn(viewModelScope)
     }
 
-    fun resetState(){
+    fun resetState() {
         _loginState.value = loginState.value.copy(
-            loginSuccessful = false ,
-            loginError = null
+            loginSuccessful = false,
+            loginError = null,
+            needUserApprove = null
         )
     }
 

@@ -92,8 +92,8 @@ class SignUpScreen : Screen {
                     state.signUpErrorMessage,
                     Toast.LENGTH_SHORT
                 ).show()
-                viewModel.resetState()
             }
+            viewModel.resetState()
 
         }
 

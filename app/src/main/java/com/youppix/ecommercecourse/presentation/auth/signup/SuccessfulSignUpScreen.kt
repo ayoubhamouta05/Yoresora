@@ -25,7 +25,7 @@ import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 
-class SuccessfulSignUpScreen() : Screen {
+class SuccessfulSignUpScreen(private val verificationSuccessfulMsg : Int? = null ) : Screen {
     @Composable
     override fun Content() {
 
@@ -50,7 +50,8 @@ class SuccessfulSignUpScreen() : Screen {
                     contentDescription = null,
                 )
                 Text(
-                    text = stringResource(id = R.string.successfullyRegistered), Modifier.padding(vertical = Dimens.ExtraSmallPadding),
+                    text = stringResource(id = verificationSuccessfulMsg ?: R.string.successfullyRegistered
+                    ), Modifier.padding(vertical = Dimens.ExtraSmallPadding),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )

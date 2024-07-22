@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.auth.forgotPassword
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -44,6 +47,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.auth.verification.VerificationEmailForgotPasswordScreen
 import com.youppix.ecommercecourse.presentation.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class CheckEmailValidationScreen : Screen {
@@ -59,6 +63,24 @@ class CheckEmailValidationScreen : Screen {
         val viewModel: ForgotPasswordViewModel = hiltViewModel()
 
         val state = viewModel.forgotPasswordState.value
+
+        val context = LocalContext.current
+
+        val scope = rememberCoroutineScope()
+
+        LaunchedEffect(state.checkEmailError , state.checkEmailSuccessful) {
+            if(state.checkEmailSuccessful){
+                navigator?.replace(
+                    VerificationEmailForgotPasswordScreen(
+                        forgotPasswordState = viewModel.forgotPasswordState.value
+                    )
+                )
+            }else if (state.checkEmailError != null){
+                Toast.makeText(context, state.checkEmailError, Toast.LENGTH_SHORT).show()
+            }
+            viewModel.resetState()
+
+        }
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -153,15 +175,15 @@ class CheckEmailValidationScreen : Screen {
 
                     Button(
                         onClick = {
-                            if (viewModel.checkEmail(
+                            if (
+                                viewModel.checkEmail(
                                     email = state.email, context
                                 )
                             ) {
-                                navigator?.replace(
-                                    VerificationEmailForgotPasswordScreen(
-                                        forgotPasswordState = viewModel.forgotPasswordState.value
-                                    )
-                                )
+                               scope.launch {
+                                   viewModel.checkEmail(state.email)
+                               }
+
                             }
                         },
                         modifier = Modifier

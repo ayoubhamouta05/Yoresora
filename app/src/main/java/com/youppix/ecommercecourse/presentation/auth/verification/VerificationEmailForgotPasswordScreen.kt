@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.auth.verification
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -51,7 +53,9 @@ import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordState
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordViewModel
 import com.youppix.ecommercecourse.presentation.auth.components.OtpInputField
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.resetPassword.ResetPasswordScreen
 import com.youppix.ecommercecourse.presentation.auth.signup.SuccessfulSignUpScreen
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class VerificationEmailForgotPasswordScreen(
@@ -81,6 +85,19 @@ class VerificationEmailForgotPasswordScreen(
         }
 
         val currentState by forgotPasswordViewModel.forgotPasswordState
+
+        val scope = rememberCoroutineScope()
+        val context = LocalContext.current
+
+        LaunchedEffect (currentState.verificationCodeError , currentState.verificationErrorMessage){
+            Log.d("VerificationScreen" , currentState.toString())
+            if(currentState.verificationCodeError!= null && currentState.verificationCodeError != true){ // success
+                navigator?.replace(ResetPasswordScreen(currentState))
+            }else if (currentState.verificationErrorMessage != null){
+                Toast.makeText(context, currentState.verificationErrorMessage, Toast.LENGTH_SHORT).show()
+            }
+            forgotPasswordViewModel.resetState()
+        }
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -189,8 +206,9 @@ class VerificationEmailForgotPasswordScreen(
 
                     Button(
                         onClick = {
-                            forgotPasswordViewModel.updateVerificationCode("")
-                            navigator?.replace(SuccessfulSignUpScreen())
+                            scope.launch {
+                                forgotPasswordViewModel.verifyCode(currentState.email , currentState.verificationCode)
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()

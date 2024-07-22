@@ -21,6 +21,9 @@ object Constant {
     const val SIGNUP_URL = "$BASE_URL/auth/signup.php"
     const val VERIFY_CODE_URL = "$BASE_URL/auth/verifyCode.php"
     const val LOGIN_URL = "$BASE_URL/auth/login.php"
+    const val CHECK_EMAIL_URL = "$BASE_URL/auth/forgotPassword/checkEmail.php"
+    const val VERIFY_CODE_FORGOT_PASSWORD_URL = "$BASE_URL/auth/forgotPassword/verifycode.php"
+    const val RESET_PASSWORD_URL = "$BASE_URL/auth/forgotPassword/resetPassword.php"
 
     val pages = listOf(
         OnBoarding(

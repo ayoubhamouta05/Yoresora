@@ -5,12 +5,10 @@ import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import kotlinx.coroutines.flow.Flow
 
-class ResetPasswordUseCase(
+class VerifyCodeUseCase(
     private val forgotPasswordRepository: ForgotPasswordRepository
 ) {
-
-    suspend operator fun invoke(email: String , password : String) : Flow<Resource<AuthResponse>> {
-        return forgotPasswordRepository.resetPassword(email , password)
+    suspend operator fun invoke(email : String , verifyCode: String) : Flow<Resource<AuthResponse>> {
+        return forgotPasswordRepository.verifyCode(email, verifyCode)
     }
-
 }

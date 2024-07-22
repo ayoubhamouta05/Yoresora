@@ -57,6 +57,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
+import com.youppix.ecommercecourse.common.CustomDialog
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
@@ -65,6 +66,8 @@ import com.youppix.ecommercecourse.presentation.activities.HomeActivity
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.CheckEmailValidationScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
+import com.youppix.ecommercecourse.presentation.auth.signup.SignUpState
+import com.youppix.ecommercecourse.presentation.auth.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import kotlinx.coroutines.launch
@@ -86,17 +89,18 @@ class LoginScreen() : Screen {
 
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
-        setLocal(currentLang , context)
+        setLocal(currentLang, context)
 
-        LaunchedEffect(loginState.loginSuccessful , loginState.loginError) {
-
-            if (loginState.loginSuccessful){
+        LaunchedEffect(loginState.loginSuccessful,loginState.needUserApprove, loginState.loginError) {
+            if (loginState.loginSuccessful) {
                 context.startActivity(Intent(context, HomeActivity::class.java))
                 (context as Activity).finish()
-            }else if (!loginState.loginError.isNullOrEmpty()){
+                viewModel.resetState()
+            } else if (!loginState.loginError.isNullOrEmpty()) {
                 Toast.makeText(context, loginState.loginError, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
             }
-            viewModel.resetState()
+
         }
 
         CompositionLocalProvider(
@@ -233,7 +237,7 @@ class LoginScreen() : Screen {
                                     context
                                 )
                             ) {
-                                scope.launch{
+                                scope.launch {
                                     viewModel.login(loginState.email, loginState.password)
                                 }
                             }
@@ -313,6 +317,18 @@ class LoginScreen() : Screen {
 
 
                 }
+
+                CustomDialog(
+                    title = stringResource(id = R.string.verifyEmail),
+                    message = stringResource(id = R.string.verifyEmailBody),
+                    showDialog = loginState.needUserApprove ?: false,
+                    onConfirmRequest = {
+                        navigator?.push(VerificationEmailSignUpScreen(SignUpState(email = loginState.email)))
+                        viewModel.resetState()
+                    },
+                    onDismissRequest = {
+                        viewModel.resetState()
+                    })
 
             }
         }

@@ -91,7 +91,10 @@ class VerificationEmailSignUpScreen(
 
         LaunchedEffect(currentState.signUpSuccessful, currentState.signUpErrorMessage) {
             if (currentState.signUpSuccessful) {
-                navigator?.replace(SuccessfulSignUpScreen())
+                if (currentState.userName.isEmpty())
+                    navigator?.replace(SuccessfulSignUpScreen(R.string.emailVerifiedSuccessfully))
+                else
+                    navigator?.replace(SuccessfulSignUpScreen())
             } else if (!currentState.signUpErrorMessage.isNullOrEmpty()) {
                 Toast.makeText(
                     context,

@@ -81,15 +81,16 @@ object AppModule {
         return LoginUseCases(
             checkEmail = CheckEmailUseCase(loginRepository),
             checkPassword = CheckPasswordUseCase(loginRepository),
-            login = LoginUseCase(loginRepository)
-        )
+            login = LoginUseCase(loginRepository),
+
+            )
     }
 
     // ForgotPassword
     @Provides
     @Singleton
-    fun provideForgotPasswordRepository(): ForgotPasswordRepository =
-        ForgotPasswordRepositoryImpl()
+    fun provideForgotPasswordRepository(authService: AuthService): ForgotPasswordRepository =
+        ForgotPasswordRepositoryImpl(authService)
 
     @Provides
     @Singleton
@@ -97,7 +98,13 @@ object AppModule {
         ForgotPasswordUseCases(
             checkEmail = CheckEmailUseCase(forgotPasswordRepository = forgotPasswordRepository),
             checkPassword = CheckPasswordUseCase(forgotPasswordRepository = forgotPasswordRepository),
-            resetPassword = ResetPasswordUseCase(forgotPasswordRepository = forgotPasswordRepository)
+            resetPassword = ResetPasswordUseCase(forgotPasswordRepository = forgotPasswordRepository),
+            checkEmailDb = com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.CheckEmailUseCase(
+                forgotPasswordRepository
+            ),
+            verifyCode = com.youppix.ecommercecourse.domain.useCases.auth.forgotPassword.VerifyCodeUseCase(
+                forgotPasswordRepository
+            )
         )
 
     // SignUp
@@ -146,18 +153,18 @@ object AppModule {
     //Ktor Client
     @Provides
     @Singleton
-    fun provideKtorClient() : HttpClient {
+    fun provideKtorClient(): HttpClient {
         val json = Json {
             ignoreUnknownKeys = true
             isLenient = true
             encodeDefaults = true
         }
-        val client = HttpClient(CIO){
+        val client = HttpClient(CIO) {
 
-            install(ContentNegotiation){
+            install(ContentNegotiation) {
                 json(json)
             }
-            install(HttpTimeout){
+            install(HttpTimeout) {
                 requestTimeoutMillis = 30_000L
                 connectTimeoutMillis = 30_000L
                 socketTimeoutMillis = 30_000L
@@ -176,9 +183,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(client: HttpClient) : AuthService =
+    fun provideAuthService(client: HttpClient): AuthService =
         AuthService(client)
-
 
 
 }

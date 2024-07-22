@@ -1,5 +1,7 @@
 package com.youppix.ecommercecourse.presentation.auth.forgotPassword.resetPassword
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -41,11 +45,15 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordState
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.ForgotPasswordViewModel
+import kotlinx.coroutines.launch
 import java.util.Locale
 
-class ResetPasswordScreen : Screen {
+class ResetPasswordScreen(
+    private var forgotPasswordState: ForgotPasswordState
+) : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -57,7 +65,23 @@ class ResetPasswordScreen : Screen {
         val viewModel: ForgotPasswordViewModel = hiltViewModel()
         val state = viewModel.forgotPasswordState.value
 
+        LaunchedEffect(Unit) {
+            viewModel.setState(forgotPasswordState)
+        }
+
         val context = LocalContext.current
+        val scope = rememberCoroutineScope()
+        LaunchedEffect(state.resetPasswordError, state.resetPasswordSuccessful) {
+            Log.d("ResetPasswordScreen", "Content: $state")
+            if (state.resetPasswordSuccessful) {
+                navigator?.replace(SuccessfulResetPasswordScreen())
+                viewModel.resetState()
+            } else if (state.resetPasswordError != null) {
+                Toast.makeText(context, state.resetPasswordError, Toast.LENGTH_SHORT).show()
+                viewModel.resetState()
+            }
+
+        }
 
         CompositionLocalProvider(
             if (isEnglish) {
@@ -150,13 +174,20 @@ class ResetPasswordScreen : Screen {
                         onShowPassword = {
                             viewModel.showPassword(it)
                         },
-                        errorMessage = state.passwordError?:""
+                        errorMessage = state.passwordError ?: ""
                     )
 
                     Button(
                         onClick = {
-                            if(viewModel.checkPassword(password = state.newPassword , context = context))
-                                navigator?.push(SuccessfulResetPasswordScreen())
+                            if (viewModel.checkPassword(
+                                    password = state.newPassword,
+                                    context = context
+                                )
+                            ) {
+                                scope.launch {
+                                    viewModel.resetPassword(state.email, state.newPassword)
+                                }
+                            }
 
                         },
                         modifier = Modifier

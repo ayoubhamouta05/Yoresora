@@ -12,5 +12,6 @@ data class LoginState(
     val passwordError: String? = null,
     val rememberMe: Boolean = false,
     val loginSuccessful: Boolean = false,
-    val loginError: String? = null
+    val loginError: String? = null,
+    val needUserApprove :Boolean?=null
 ) : Serializable

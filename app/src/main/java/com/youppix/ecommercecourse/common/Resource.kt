@@ -2,7 +2,7 @@ package com.youppix.ecommercecourse.common
 
 sealed class Resource<T>(val data: T?= null , val message : String? = null) {
 
-    class Successful<T>(data: T?) :Resource<T>(data)
+    class Successful<T>(data: T? , message: String? =null) :Resource<T>(data,message)
 
     class Error<T>(message: String? , data : T? = null) : Resource<T>(data , message)
 
@@ -10,5 +10,5 @@ sealed class Resource<T>(val data: T?= null , val message : String? = null) {
 
 }
 enum class StatusResponse {
-    success, failure
+    success, failure , NeedApprove
 }
