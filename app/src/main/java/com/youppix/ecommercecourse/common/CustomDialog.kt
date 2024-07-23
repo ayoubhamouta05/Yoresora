@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.youppix.ecommercecourse.R
+import java.util.Locale
 
 
 @Composable
@@ -144,8 +145,10 @@ fun CustomDialog(
 
 }
 
+
 @Composable
-fun LeavingAppDialog(currentLang : String , showDialog: Boolean , onConfirmRequest: () -> Unit , onDismissRequest: () -> Unit){
+fun LeavingAppDialog( showDialog: Boolean , onConfirmRequest: () -> Unit , onDismissRequest: () -> Unit){
+   val currentLang = Locale.getDefault().language
     CompositionLocalProvider(
         if (currentLang == "en")
             LocalLayoutDirection provides LayoutDirection.Ltr

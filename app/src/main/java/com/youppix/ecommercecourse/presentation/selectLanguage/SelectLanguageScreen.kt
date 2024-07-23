@@ -84,7 +84,7 @@ class SelectLanguageScreen() :
                     text = stringResource(id = R.string.arabic)
                 ) {
                     viewModel.saveLanguage(APP_LANG, "ar")
-                    setLocal("en" , context)
+                    setLocal("ar" , context)
                     navigator?.push(OnBoardingScreen())
                 }
 

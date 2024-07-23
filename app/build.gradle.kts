@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     id ("kotlin-kapt")
     alias(libs.plugins.serialization)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -65,6 +66,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -88,11 +90,12 @@ dependencies {
     implementation (libs.androidx.hilt.navigation.compose)
 
     //ktor
-
-
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+
+    //Firebase
+    implementation(platform(libs.firebase.bom))
 
 }

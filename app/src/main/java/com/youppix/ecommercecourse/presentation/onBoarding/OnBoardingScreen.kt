@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.onBoarding
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -24,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +42,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
@@ -65,12 +68,9 @@ class OnBoardingScreen() : Screen {
             pages.size
         }
         val navigator = LocalNavigator.current
-        val currentLang = LocalContext.current.getSharedPreferences(Constant.APP_LANG, 0)
-            .getString(Constant.APP_LANG, Locale.getDefault().language) ?: "en"
-        setLocal(currentLang, LocalContext.current)
+        val currentLang = Locale.getDefault().language
 
         val viewModel = hiltViewModel<OnBoardingViewModel>()
-
         CompositionLocalProvider(
             if (currentLang == "en") {
                 LocalLayoutDirection provides LayoutDirection.Ltr
@@ -160,7 +160,7 @@ class OnBoardingScreen() : Screen {
                         }
                         if (pagerState.currentPage == pagerState.pageCount - 1) {
                             navigator?.replaceAll(LoginScreen())
-                            viewModel.saveAppEntry(APP_ENTRY, true)
+                            viewModel.saveAppEntry(APP_ENTRY, "1")
                         }
                     }) {
                         Text(

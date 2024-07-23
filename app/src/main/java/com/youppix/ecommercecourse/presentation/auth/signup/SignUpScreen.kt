@@ -244,15 +244,9 @@ class SignUpScreen : Screen {
                                     phone = state.phone
                                 )
                             ) {
-                                val user = User(
-                                    usersName = state.userName,
-                                    usersEmail = state.email,
-                                    usersPassword = state.password,
-                                    usersPhone = state.phone
-                                )
 
                                 scope.launch {
-                                    viewModel.addUser(user)
+                                    viewModel.addUser(state.userName , state.email , state.phone, state.password)
                                 }
                             }
                         },

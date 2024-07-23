@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1088806344257",
+    "project_id": "ecommercecourse-8dfeb",
+    "storage_bucket": "ecommercecourse-8dfeb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088806344257:android:07f97c15f7b271ed7ad8c0",
+        "android_client_info": {
+          "package_name": "com.youppix.ecommercecourse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXqyzGZr6EAdr60tTV1SwcEkT_hewioL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

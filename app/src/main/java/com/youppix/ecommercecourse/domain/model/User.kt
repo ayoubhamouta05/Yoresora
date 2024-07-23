@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
-    val usersName : String,
-    val usersEmail : String ,
-    val usersPassword : String ,
-    val usersPhone : String
+    val userId : Int ,
+    val userName : String,
+    val userEmail : String ,
+    val userPhone : String
 )

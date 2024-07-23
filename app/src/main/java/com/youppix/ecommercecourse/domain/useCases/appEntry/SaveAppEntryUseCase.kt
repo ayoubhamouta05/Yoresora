@@ -5,7 +5,7 @@ import com.youppix.ecommercecourse.domain.manager.LocaleUserEntryManager
 class SaveAppEntryUseCase(
     private val localeUserEntryManager: LocaleUserEntryManager
 ) {
-    operator fun invoke(key: String, value: Boolean) {
+    operator fun invoke(key: String, value: String) {
         return localeUserEntryManager.saveAppEntry(key, value)
     }
 }

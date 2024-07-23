@@ -7,9 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.User
+import com.youppix.ecommercecourse.domain.model.toUser
 import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -21,6 +22,8 @@ class LoginViewModel @Inject constructor(
 
     private var _loginState = mutableStateOf(LoginState())
     val loginState: State<LoginState> = _loginState
+
+    private var userData = mutableStateOf<User?>(null)
 
 
     fun updateEmail(value: String) {
@@ -128,6 +131,9 @@ class LoginViewModel @Inject constructor(
                             needUserApprove = true
                         )
                     } else {
+                        if (result.data?.data != null) {
+                            userData.value = result.data.data.toUser()
+                        }
                         _loginState.value = loginState.value.copy(
                             isLoading = false,
                             loginSuccessful = true,
@@ -137,7 +143,6 @@ class LoginViewModel @Inject constructor(
 
                     }
 
-                    Log.d("LoginViewModel", "result : ${result.data}")
                 }
             }
 
@@ -152,5 +157,22 @@ class LoginViewModel @Inject constructor(
         )
     }
 
+    fun saveAppEntry(key: String, value: String) {
+        loginUseCases.saveAppEntry?.let { it(key, value) }
+    }
+
+    fun saveUserInformation() {
+        userData.value?.let { user ->
+            loginUseCases.saveAppEntry?.let {
+                it("userName", user.userName)
+                it("userId", user.userId.toString())
+                it("userEmail", user.userEmail)
+                it("userPhone", user.userPhone)
+            }
+        }
+
+    }
 
 }
+
+

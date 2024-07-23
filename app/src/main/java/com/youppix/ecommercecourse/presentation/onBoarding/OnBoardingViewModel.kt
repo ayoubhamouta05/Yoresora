@@ -10,7 +10,7 @@ class OnBoardingViewModel @Inject constructor(
     private val appEntryUseCases: AppEntryUseCases
 ) : ViewModel() {
 
-    fun saveAppEntry(key: String, value: Boolean) {
+    fun saveAppEntry(key: String, value: String) {
         appEntryUseCases.saveAppEntryUseCase(key, value)
     }
 

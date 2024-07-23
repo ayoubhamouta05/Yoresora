@@ -1,10 +1,10 @@
 package com.youppix.ecommercecourse.presentation.auth.login
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,20 +13,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,10 +34,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -55,14 +49,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Constant.APP_LANG
-import com.youppix.ecommercecourse.common.Constant.setLocal
+import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.CustomDialog
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.activities.HomeActivity
+import com.youppix.ecommercecourse.presentation.activities.homeActivity.HomeActivity
 import com.youppix.ecommercecourse.presentation.auth.forgotPassword.CheckEmailValidationScreen
 import com.youppix.ecommercecourse.presentation.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.auth.signup.SignUpScreen
@@ -78,9 +71,8 @@ class LoginScreen() : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val currentLang = LocalContext.current.getSharedPreferences(APP_LANG, 0)
-            .getString(APP_LANG, Locale.getDefault().language) ?: "en"
-        val isEnglish = currentLang == "en"
+
+        val isEnglish = Locale.getDefault().language == "en"
 
         val navigator = LocalNavigator.current
 
@@ -89,12 +81,11 @@ class LoginScreen() : Screen {
 
         val context = LocalContext.current
         val scope = rememberCoroutineScope()
-        setLocal(currentLang, context)
+
 
         LaunchedEffect(loginState.loginSuccessful,loginState.needUserApprove, loginState.loginError) {
             if (loginState.loginSuccessful) {
-                context.startActivity(Intent(context, HomeActivity::class.java))
-                (context as Activity).finish()
+                loginSuccessful(viewModel , context)
                 viewModel.resetState()
             } else if (!loginState.loginError.isNullOrEmpty()) {
                 Toast.makeText(context, loginState.loginError, Toast.LENGTH_SHORT).show()
@@ -332,6 +323,22 @@ class LoginScreen() : Screen {
 
             }
         }
+    }
+
+    private fun loginSuccessful(viewModel: LoginViewModel, context: Context) {
+        viewModel.apply {
+
+            if (viewModel.loginState.value.rememberMe){
+                // save user login state
+                saveAppEntry(APP_ENTRY , "2")
+
+            }
+            // save user Information
+            saveUserInformation()
+        }
+        context.startActivity(Intent(context, HomeActivity::class.java))
+        (context as Activity).finish()
+
     }
 }
 

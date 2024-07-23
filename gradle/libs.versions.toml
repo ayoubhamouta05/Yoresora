@@ -1,6 +1,7 @@
 [versions]
 agp = "8.4.2"
 datastorePreferences = "1.1.1"
+firebaseBom = "33.1.2"
 hiltAndroid = "2.49"
 hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
@@ -21,12 +22,15 @@ serialization = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.0"
+google-services = "4.4.2"
+firebaseMessaging = "24.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -50,12 +54,13 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
 hilt-android = {id ="com.google.dagger.hilt.android", version.ref = "hiltAndroid"}
 serialization = {id ="org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization"}
+google-services = {id="com.google.gms.google-services", version.ref = "google-services"}
 

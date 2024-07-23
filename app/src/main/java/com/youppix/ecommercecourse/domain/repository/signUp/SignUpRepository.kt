@@ -12,6 +12,6 @@ interface SignUpRepository {
     fun checkEmail (email : String , context: Context) : Resource<Boolean>//Flow<Resource<Boolean>>
     fun checkPhone(phone : String , context : Context) : Resource<Boolean>
     fun checkPassword(password : String,context: Context) : Resource<Boolean>// Flow<Resource<Boolean>>
-    suspend fun addUser(user : User) : Flow<Resource<AuthResponse>>
+    suspend fun addUser(name : String , email : String , phone : String , password : String) : Flow<Resource<AuthResponse>>
     suspend fun verifyCode(email  :String , verifyCode: String) : Flow<Resource<AuthResponse>>
 }

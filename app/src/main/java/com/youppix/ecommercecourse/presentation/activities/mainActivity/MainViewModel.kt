@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.activities
+package com.youppix.ecommercecourse.presentation.activities.mainActivity
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     private val networkConnectivityManagerUseCase: NetworkConnectivityManagerUseCase
 ) : ViewModel() {
 
-    private var _appEntry = mutableStateOf(false)
-    val appEntry: State<Boolean> = _appEntry
+    private var _appEntry = mutableStateOf("")
+    val appEntry: State<String> = _appEntry
 
     private var _status = mutableStateOf(NetworkConnectivityManager.Status.Unavailable)
     val status: State<NetworkConnectivityManager.Status> = _status
@@ -38,7 +38,12 @@ class MainViewModel @Inject constructor(
         _appEntry.value = appEntryUseCases.getAppEntryUseCase(APP_ENTRY, _appEntry.value)
     }
 
+    fun readAppEntry(key : String, value : String) : String{
+        return appEntryUseCases.getAppEntryUseCase(key, value)
+    }
+
     private fun handleNetworkConnectivity() {
+        // todo : handle this error here
         networkConnectivityManagerUseCase().onEach {
             _status.value = it
             if (firstTime && status.value == NetworkConnectivityManager.Status.Available) {

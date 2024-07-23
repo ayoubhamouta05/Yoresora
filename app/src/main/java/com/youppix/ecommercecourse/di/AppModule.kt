@@ -77,12 +77,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginUseCases(loginRepository: LoginRepository): LoginUseCases {
+    fun provideLoginUseCases(loginRepository: LoginRepository , localeUserEntryManager: LocaleUserEntryManager?=null): LoginUseCases {
         return LoginUseCases(
             checkEmail = CheckEmailUseCase(loginRepository),
             checkPassword = CheckPasswordUseCase(loginRepository),
             login = LoginUseCase(loginRepository),
-
+            saveAppEntry = if (localeUserEntryManager!=null) SaveAppEntryUseCase(localeUserEntryManager) else null
             )
     }
 

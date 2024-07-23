@@ -29,8 +29,8 @@ class SignUpRepositoryImpl(
     }
 
 
-    override suspend fun addUser(user: User): Flow<Resource<AuthResponse>> {
-        return authService.addUser(user)
+    override suspend fun addUser(name : String , email : String , phone : String , password : String): Flow<Resource<AuthResponse>> {
+        return authService.addUser(name  , email  , phone , password )
     }
 
     override suspend fun verifyCode(email:String , verifyCode: String): Flow<Resource<AuthResponse>> {

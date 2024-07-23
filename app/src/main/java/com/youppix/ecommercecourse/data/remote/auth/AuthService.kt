@@ -1,7 +1,6 @@
 package com.youppix.ecommercecourse.data.remote.auth
 
 import android.util.Log
-import androidx.compose.ui.res.stringResource
 import com.youppix.ecommercecourse.common.Constant.CHECK_EMAIL_URL
 import com.youppix.ecommercecourse.common.Constant.LOGIN_URL
 import com.youppix.ecommercecourse.common.Constant.RESET_PASSWORD_URL
@@ -11,7 +10,7 @@ import com.youppix.ecommercecourse.common.Constant.VERIFY_CODE_URL
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.common.StatusResponse
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
-import com.youppix.ecommercecourse.domain.model.User
+import com.youppix.ecommercecourse.data.remote.auth.dto.LoginResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -26,11 +25,18 @@ import kotlinx.serialization.SerializationException
 
 class AuthService(private val client: HttpClient) {
 
-    suspend fun addUser(user: User): Flow<Resource<AuthResponse>> = flow {
+    suspend fun addUser(name : String , email : String , phone : String , password : String): Flow<Resource<AuthResponse>> = flow {
         try {
             emit(Resource.Loading())
+            @Serializable
+            data class Data(
+                val usersName : String,
+                val usersEmail : String ,
+                val usersPassword : String ,
+                val usersPhone : String
+            )
             val response = client.post(SIGNUP_URL) {
-                setBody(user)
+                setBody(Data(name, email , password,phone))
             }
             val responseBody = response.body<AuthResponse>()
             if (responseBody.status == StatusResponse.failure.name) {
@@ -104,7 +110,7 @@ class AuthService(private val client: HttpClient) {
         }
     }
 
-    suspend fun login(email: String, password: String): Flow<Resource<AuthResponse>> = flow {
+    suspend fun login(email: String, password: String): Flow<Resource<LoginResponse>> = flow {
         try {
             @Serializable
             data class Data(
@@ -120,7 +126,7 @@ class AuthService(private val client: HttpClient) {
                     )
                 )
             }
-            val responseBody = response.body<AuthResponse>()
+            val responseBody = response.body<LoginResponse>()
             when (responseBody.status) {
                 StatusResponse.failure.name -> {
                     emit(Resource.Error(responseBody.message))
