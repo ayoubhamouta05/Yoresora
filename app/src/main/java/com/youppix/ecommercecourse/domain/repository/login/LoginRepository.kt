@@ -2,9 +2,7 @@ package com.youppix.ecommercecourse.domain.repository.login
 
 import android.content.Context
 import com.youppix.ecommercecourse.common.Resource
-import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.auth.dto.LoginResponse
-import com.youppix.ecommercecourse.presentation.auth.login.LoginState
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {

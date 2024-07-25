@@ -58,4 +58,6 @@
     <string name="verifyEmailBody">يرجى التحقق من البريد الإلكتروني الخاص بك لتسجيل الدخول</string>
     <string name="emailVerifiedSuccessfully">تم التحقق من البريد الإلكتروني بنجاح</string>
     <string name="ok">حسنا</string>
+    <string name="search">بحث</string>
+    <string name="findYourStyle">ابحث عن ذوقك</string>
 </resources>

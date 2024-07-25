@@ -13,4 +13,7 @@ object Dimens {
    val SmallPadding = 10.dp
    val ExtraSmallPadding = 6.dp
    val ExtraSmallPadding2 = 3.dp
+   val SearchBarHeight = 50.dp
+   val HorizontalPagerCardHeight = 280.dp
+   val HorizontalPagerContentPadding = 100.dp
 }

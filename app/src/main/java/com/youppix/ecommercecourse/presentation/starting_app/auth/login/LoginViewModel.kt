@@ -1,0 +1,178 @@
+package com.youppix.ecommercecourse.presentation.starting_app.auth.login
+
+import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.User
+import com.youppix.ecommercecourse.domain.model.toUser
+import com.youppix.ecommercecourse.domain.useCases.auth.login.LoginUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val loginUseCases: LoginUseCases
+) : ViewModel() {
+
+    private var _loginState = mutableStateOf(LoginState())
+    val loginState: State<LoginState> = _loginState
+
+    private var userData = mutableStateOf<User?>(null)
+
+
+    fun updateEmail(value: String) {
+        _loginState.value = loginState.value.copy(
+            email = value,
+        )
+    }
+
+    fun updatePassword(value: String) {
+        _loginState.value = loginState.value.copy(
+            password = value,
+        )
+    }
+
+    fun updateRememberMe(value: Boolean) {
+        _loginState.value = loginState.value.copy(
+            rememberMe = value,
+        )
+    }
+
+    fun showPassword(showPassword: Boolean) {
+        _loginState.value = loginState.value.copy(
+            showPassword = showPassword,
+        )
+    }
+
+    private fun checkEmail(email: String, context: Context): Boolean {
+
+        when (val result = loginUseCases.checkEmail(email, context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _loginState.value = loginState.value.copy(
+                    emailError = result.message,
+                )
+            }
+
+            is Resource.Successful -> {
+                _loginState.value = loginState.value.copy(
+                    emailError = null
+                )
+
+            }
+        }
+        return loginState.value.emailError.isNullOrEmpty()
+    }
+
+    private fun checkPassword(password: String, context: Context): Boolean {
+
+
+        when (val result = loginUseCases.checkPassword(password, context)) {
+            is Resource.Loading -> {
+                // Handle loading state
+            }
+
+            is Resource.Error -> {
+                _loginState.value = loginState.value.copy(
+                    passwordError = result.message,
+                )
+            }
+
+            is Resource.Successful -> {
+                _loginState.value = loginState.value.copy(
+                    passwordError = null
+                )
+            }
+        }
+
+        return loginState.value.passwordError.isNullOrEmpty()
+    }
+
+    fun validateForm(email: String, password: String, context: Context): Boolean {
+
+        return checkEmail(email, context) && checkPassword(password, context)
+
+
+    }
+
+    suspend fun login(email: String, password: String) {
+        loginUseCases.login(email, password).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _loginState.value = loginState.value.copy(
+                        isLoading = true,
+                    )
+                }
+
+                is Resource.Error -> {
+                    _loginState.value = loginState.value.copy(
+                        isLoading = false,
+                        loginError = result.message,
+                        loginSuccessful = false,
+                    )
+                    Log.d("LoginViewModel", "result : ${result.message}")
+                }
+
+                is Resource.Successful -> {
+                    if (result.message != null) {
+                        _loginState.value = loginState.value.copy(
+                            isLoading = false,
+                            loginSuccessful = false,
+                            loginError = null,
+                            needUserApprove = true
+                        )
+                    } else {
+                        if (result.data?.data != null) {
+                            userData.value = result.data.data.toUser()
+                        }
+                        _loginState.value = loginState.value.copy(
+                            isLoading = false,
+                            loginSuccessful = true,
+                            loginError = null,
+                            needUserApprove = false
+                        )
+
+                    }
+
+                }
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    fun resetState() {
+        _loginState.value = loginState.value.copy(
+            loginSuccessful = false,
+            loginError = null,
+            needUserApprove = null
+        )
+    }
+
+    fun saveAppEntry(key: String, value: String) {
+        loginUseCases.saveAppEntry?.let { it(key, value) }
+    }
+
+    fun saveUserInformation() {
+        userData.value?.let { user ->
+            loginUseCases.saveAppEntry?.let {
+                it("userName", user.userName)
+                it("userId", user.userId.toString())
+                it("userEmail", user.userEmail)
+                it("userPhone", user.userPhone)
+            }
+        }
+
+    }
+
+}
+
+

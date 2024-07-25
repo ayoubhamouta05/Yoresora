@@ -58,6 +58,8 @@ or continue with social media</string>
     <string name="verifyEmailBody">Please verify your email to login</string>
     <string name="emailVerifiedSuccessfully">Email Verified Successfully</string>
     <string name="exit">Exit</string>
+    <string name="search">Search</string>
+    <string name="findYourStyle">Find Your Style</string>
 
 
 </resources>
