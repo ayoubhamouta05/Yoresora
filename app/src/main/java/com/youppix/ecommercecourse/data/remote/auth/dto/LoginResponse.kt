@@ -1,6 +1,6 @@
 package com.youppix.ecommercecourse.data.remote.auth.dto
 
-import com.youppix.ecommercecourse.domain.model.UserDataResponse
+import com.youppix.ecommercecourse.domain.model.user.UserDataResponse
 import kotlinx.serialization.Serializable
 
 @Serializable

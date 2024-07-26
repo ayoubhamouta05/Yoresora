@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.domain.model
+package com.youppix.ecommercecourse.domain.model.user
 
 import kotlinx.serialization.Serializable
 
@@ -14,7 +14,7 @@ data class UserDataResponse(
     val users_verifycode: Int
 )
 
-fun UserDataResponse.toUser():User{
+fun UserDataResponse.toUser(): User {
     return User(
         userName = users_name,
         userId = users_id,

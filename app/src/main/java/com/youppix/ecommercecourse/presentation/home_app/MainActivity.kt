@@ -25,6 +25,7 @@ import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
+import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
@@ -34,8 +35,10 @@ import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.home_app.shop.ShopScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private var navigator: Navigator? = null
@@ -84,22 +87,50 @@ class MainActivity : ComponentActivity() {
             EcommerceCourseTheme {
                 LaunchedEffect(currentScreen) {
                     when (currentScreen) {
-                        0 -> { navigator?.push(HomeScreen()) }
-                        1 -> { navigator?.push(ShopScreen()) }
-                        2 -> { navigator?.push(FavoritesScreen()) }
-                        3 -> { navigator?.push(ChatScreen()) }
-                        4 -> { navigator?.push(ProfileScreen()) }
+                        0 -> {
+                            navigator?.push(HomeScreen())
+                        }
+
+                        1 -> {
+                            navigator?.push(ShopScreen())
+                        }
+
+                        2 -> {
+                            navigator?.push(FavoritesScreen())
+                        }
+
+                        3 -> {
+                            navigator?.push(ChatScreen())
+                        }
+
+                        4 -> {
+                            navigator?.push(ProfileScreen())
+                        }
                     }
                 }
                 LaunchedEffect(navigator?.items) {
 
                     navigator?.let {
                         when (navigator!!.lastItem.javaClass.toString()) {
-                            HomeScreen().javaClass.toString() -> { currentScreen = 0 }
-                            ShopScreen().javaClass.toString() -> { currentScreen = 1 }
-                            FavoritesScreen().javaClass.toString() -> { currentScreen = 2 }
-                            ChatScreen().javaClass.toString() -> { currentScreen = 3 }
-                            ProfileScreen().javaClass.toString() -> { currentScreen = 4 }
+                            HomeScreen().javaClass.toString() -> {
+                                currentScreen = 0
+                            }
+
+                            ShopScreen().javaClass.toString() -> {
+                                currentScreen = 1
+                            }
+
+                            FavoritesScreen().javaClass.toString() -> {
+                                currentScreen = 2
+                            }
+
+                            ChatScreen().javaClass.toString() -> {
+                                currentScreen = 3
+                            }
+
+                            ProfileScreen().javaClass.toString() -> {
+                                currentScreen = 4
+                            }
                         }
                     }
                 }
@@ -107,7 +138,11 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         CustomBottomBar(
                             currentScreen = currentScreen,
-                            modifier = Modifier.padding(MediumPadding)
+                            modifier = Modifier.padding(
+                                start = MediumPadding,
+                                end = MediumPadding,
+                                bottom = SmallPadding
+                            )
                         ) {
                             currentScreen = it
                             onBackClicked = false
@@ -160,7 +195,6 @@ class MainActivity : ComponentActivity() {
     fun performBackPress() {
         onBackPressedDispatcher.onBackPressed()
     }
-
 
 
 }

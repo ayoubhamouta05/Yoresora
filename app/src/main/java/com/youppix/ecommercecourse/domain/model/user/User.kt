@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.domain.model
+package com.youppix.ecommercecourse.domain.model.user
 
 import kotlinx.serialization.Serializable
 

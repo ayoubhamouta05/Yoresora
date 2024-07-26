@@ -3,7 +3,6 @@ package com.youppix.ecommercecourse.domain.repository.signUp
 import android.content.Context
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
-import com.youppix.ecommercecourse.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface SignUpRepository {

@@ -1,12 +1,12 @@
 package com.youppix.ecommercecourse.data.remote.auth
 
 import android.util.Log
-import com.youppix.ecommercecourse.common.Constant.CHECK_EMAIL_URL
-import com.youppix.ecommercecourse.common.Constant.LOGIN_URL
-import com.youppix.ecommercecourse.common.Constant.RESET_PASSWORD_URL
-import com.youppix.ecommercecourse.common.Constant.SIGNUP_URL
-import com.youppix.ecommercecourse.common.Constant.VERIFY_CODE_FORGOT_PASSWORD_URL
-import com.youppix.ecommercecourse.common.Constant.VERIFY_CODE_URL
+import com.youppix.ecommercecourse.common.Urls.CHECK_EMAIL_URL
+import com.youppix.ecommercecourse.common.Urls.LOGIN_URL
+import com.youppix.ecommercecourse.common.Urls.RESET_PASSWORD_URL
+import com.youppix.ecommercecourse.common.Urls.SIGNUP_URL
+import com.youppix.ecommercecourse.common.Urls.VERIFY_CODE_FORGOT_PASSWORD_URL
+import com.youppix.ecommercecourse.common.Urls.VERIFY_CODE_URL
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.common.StatusResponse
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse

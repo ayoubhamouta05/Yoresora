@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.Patterns
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.domain.model.OnBoarding
+import com.youppix.ecommercecourse.domain.model.onBoarding.OnBoarding
 import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -16,14 +16,6 @@ object Constant {
     const val COUNTRY_CODE = "213+"
 
     const val APP_ENTRY = "appEntry"
-
-    const val BASE_URL = "http://192.168.213.86:8080/ecommerce_course/"
-    const val SIGNUP_URL = "$BASE_URL/auth/signup.php"
-    const val VERIFY_CODE_URL = "$BASE_URL/auth/verifyCode.php"
-    const val LOGIN_URL = "$BASE_URL/auth/login.php"
-    const val CHECK_EMAIL_URL = "$BASE_URL/auth/forgotPassword/checkEmail.php"
-    const val VERIFY_CODE_FORGOT_PASSWORD_URL = "$BASE_URL/auth/forgotPassword/verifycode.php"
-    const val RESET_PASSWORD_URL = "$BASE_URL/auth/forgotPassword/resetPassword.php"
 
     val pages = listOf(
         OnBoarding(

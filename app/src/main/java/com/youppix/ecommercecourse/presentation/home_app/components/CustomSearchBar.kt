@@ -19,10 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -40,17 +36,19 @@ import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
-fun CustomSearchBar(modifier: Modifier = Modifier,
+fun CustomSearchBar(
+    modifier: Modifier = Modifier,
+    value: String,
     hint: String = stringResource(id = R.string.search),
     isEnabled: (Boolean) = true,
     height: Dp = SearchBarHeight,
     elevation: Dp = ExtraSmallPadding2,
     cornerShape: Shape = CircleShape,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    onTextCleared : () -> Unit ,
     onSearchClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
 ) {
-    var text by remember { mutableStateOf(TextFieldValue()) }
     Row(
         modifier = modifier
             .height(height)
@@ -63,15 +61,14 @@ fun CustomSearchBar(modifier: Modifier = Modifier,
             modifier = Modifier
                 .weight(5f)
                 .padding(start = MediumPadding, end = SmallPadding),
-            value = text,
+            value = value,
             onValueChange = {
-                text = it
-                onTextChange(it.text)
+                onTextChange(it)
             },
             enabled = isEnabled,
             textStyle = MaterialTheme.typography.bodyMedium,
             decorationBox = { innerTextField ->
-                if (text.text.isEmpty()) {
+                if (value.isEmpty()) {
                     Text(
                         text = hint,
                         style = MaterialTheme.typography.bodyMedium
@@ -92,13 +89,12 @@ fun CustomSearchBar(modifier: Modifier = Modifier,
                 .wrapContentSize()
                 .background(color = Color.Transparent, shape = CircleShape)
                 .clickable {
-                    if (text.text.isNotEmpty()) {
-                        text = TextFieldValue(text = "")
-                        onTextChange("")
+                    if (value.isNotEmpty()) {
+                        onTextCleared()
                     }
                 },
         ) {
-            if (text.text.isNotEmpty()) {
+            if (value.isNotEmpty()) {
                 Icon(
                     modifier = Modifier
                         .fillMaxSize()

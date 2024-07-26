@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.common.Resource
-import com.youppix.ecommercecourse.domain.model.User
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
