@@ -6,6 +6,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -15,21 +21,25 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
+import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
-import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
-import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
 import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
+import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
+import com.youppix.ecommercecourse.presentation.home_app.components.shadow
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
@@ -70,10 +80,6 @@ class MainActivity : ComponentActivity() {
             var showDialog by remember {
                 mutableStateOf(false)
             }
-            onBackButtonPressed {
-                showDialog = !backPressedState
-                backPressedState
-            }
 
             var currentScreen by remember {
                 mutableIntStateOf(0)
@@ -83,65 +89,41 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(false)
             }
 
+            onBackButtonPressed {
+                showDialog = !backPressedState
+                backPressedState
+            }
 
             EcommerceCourseTheme {
                 LaunchedEffect(currentScreen) {
                     when (currentScreen) {
-                        0 -> {
-                            navigator?.push(HomeScreen())
-                        }
-
-                        1 -> {
-                            navigator?.push(ShopScreen())
-                        }
-
-                        2 -> {
-                            navigator?.push(FavoritesScreen())
-                        }
-
-                        3 -> {
-                            navigator?.push(ChatScreen())
-                        }
-
-                        4 -> {
-                            navigator?.push(ProfileScreen())
-                        }
+                        0 -> navigator?.push(HomeScreen())
+                        1 -> navigator?.push(ShopScreen())
+                        2 -> navigator?.push(FavoritesScreen())
+                        3 -> navigator?.push(ChatScreen())
+                        4 -> navigator?.push(ProfileScreen())
                     }
                 }
                 LaunchedEffect(navigator?.items) {
 
                     navigator?.let {
-                        when (navigator!!.lastItem.javaClass.toString()) {
-                            HomeScreen().javaClass.toString() -> {
-                                currentScreen = 0
-                            }
-
-                            ShopScreen().javaClass.toString() -> {
-                                currentScreen = 1
-                            }
-
-                            FavoritesScreen().javaClass.toString() -> {
-                                currentScreen = 2
-                            }
-
-                            ChatScreen().javaClass.toString() -> {
-                                currentScreen = 3
-                            }
-
-                            ProfileScreen().javaClass.toString() -> {
-                                currentScreen = 4
-                            }
+                        when (navigator!!.lastItem::class.java.simpleName) {
+                            HomeScreen::class.java.simpleName -> currentScreen = 0
+                            ShopScreen::class.java.simpleName -> currentScreen = 1
+                            FavoritesScreen::class.java.simpleName -> currentScreen = 2
+                            ChatScreen::class.java.simpleName -> currentScreen = 3
+                            ProfileScreen::class.java.simpleName -> currentScreen = 4
                         }
                     }
                 }
                 Scaffold(
                     bottomBar = {
                         CustomBottomBar(
-                            currentScreen = currentScreen,
+                            currentScreen,
                             modifier = Modifier.padding(
                                 start = MediumPadding,
                                 end = MediumPadding,
-                                bottom = SmallPadding
+                                bottom = MediumPadding
                             )
                         ) {
                             currentScreen = it
@@ -149,17 +131,31 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    Navigator(screen = HomeScreen(),
-                        onBackPressed = {
-                            if (navigator?.lastItem == it && onBackClicked) {
-                                navigator?.pop()
-                            }
-                            onBackClicked = true
-                            true
-                        }) { navigator ->
-                        this.navigator = navigator
-                        CurrentScreen()
-                        backPressedState = navigator.canPop
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Navigator(screen = HomeScreen(),
+                            onBackPressed = {
+                                if (navigator?.lastItem == it && onBackClicked) {
+                                    navigator?.pop()
+                                }
+                                onBackClicked = true
+                                true
+                            }) { navigator ->
+                            this@MainActivity.navigator = navigator
+                            CurrentScreen()
+                            backPressedState = navigator.canPop
+                        }
+                        Spacer(
+                            modifier = Modifier
+                                .height(BottomBarHeight)
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .shadow(
+                                    MaterialTheme.colorScheme.background,
+                                    offsetY = BottomBarHeight,
+                                    spread = MediumPadding * 2,
+                                    blurRadius = (MediumPadding.value * 1.5).dp
+                                )
+                        )
                     }
                 }
 

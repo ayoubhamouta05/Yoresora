@@ -9,5 +9,8 @@ data class HomeState(
     val haveNotification : Boolean = false,
     val categories : List<Category> = emptyList(),
     val categorySelected : String= "All",
+    val flashSaleItems : List<Item> = emptyList(),
+    val newArrivals : List<Item> = emptyList(),
     val items : List<Item> = emptyList(),
+    val errorMsg : String? = null
 )

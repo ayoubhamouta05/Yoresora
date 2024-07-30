@@ -1,21 +1,27 @@
 package com.youppix.ecommercecourse.presentation.home_app.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.StableMarker
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.google.android.material.bottomsheet.BottomSheetBehavior.StableState
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPagerCardHeight
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
@@ -42,25 +48,28 @@ fun CustomHorizontalPager(
             state = pagerState,
             modifier
                 .height(HorizontalPagerCardHeight)
-                .padding(bottom = MediumPadding)
+                .padding(bottom = SmallPadding),
+            key =  {
+                items[it].itemName
+            }
         ) { page ->
             val actualPage = page % items.size
+            val item = remember(items[actualPage]) { items[actualPage] }
             MostPopularItem(
-                imageUrl = IMAGES_URL + items[actualPage].itemImage,
-                itemName = items[actualPage].itemName,
-                itemDiscount = items[actualPage].itemDiscount.toString(),
-                itemPrice = items[actualPage].itemPrice.toString(),
-                time = items[actualPage].itemPrice.toString()
+                item = item
             ) {
-                onDetailsClick(items[actualPage])
+                onDetailsClick(item)
             }
+
         }
 
-        PageIndicator(
-            pageSize = items.size, selectedPage = pagerState.currentPage,
-            modifier = Modifier.align(CenterHorizontally),
-            indicatorSize = SmallPadding
-        )
+//        PageIndicator(
+//            pageSize = items.size, selectedPage = pagerState.currentPage,
+//            modifier = Modifier.align(CenterHorizontally),
+//            indicatorSize = SmallPadding,
+//            selectedColor = MaterialTheme.colorScheme.primary,
+//            unselectedColor = if ( isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
+//        )
     }
 
 

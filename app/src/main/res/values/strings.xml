@@ -60,6 +60,11 @@ or continue with social media</string>
     <string name="exit">Exit</string>
     <string name="search">Search</string>
     <string name="findYourStyle">Find Your Style</string>
+    <string name="newArrivals">New Arrivals</string>
+    <string name="categories">Categories</string>
+    <string name="flashSalle">Flash Sale</string>
+    <string name="seeAll">See All</string>
+    <string name="orderNow">Order Now</string>
 
 
 </resources>

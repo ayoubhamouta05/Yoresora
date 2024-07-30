@@ -60,4 +60,9 @@
     <string name="ok">حسنا</string>
     <string name="search">بحث</string>
     <string name="findYourStyle">ابحث عن ذوقك</string>
+    <string name="newArrivals">أحدث المنتجات</string>
+    <string name="categories">الأقسام</string>
+    <string name="flashSalle">تخفيضات سريعة</string>
+    <string name="seeAll">الكل</string>
+    <string name="orderNow">اطلب الآن</string>
 </resources>

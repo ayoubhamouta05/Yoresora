@@ -105,7 +105,8 @@ private fun ItemsListItemPreview() {
                 itemColor = "",
                 itemDiscount = 0,
                 itemDesc = "",
-                itemDescAr = ""
+                itemDescAr = "",
+                itemId = 0
             )
         )
     }

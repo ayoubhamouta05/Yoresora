@@ -12,6 +12,7 @@ import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,13 +23,25 @@ class HomeViewModel @Inject constructor(
     private var _homeState = mutableStateOf(HomeState())
     val homeState: State<HomeState> = _homeState
 
+    private var _selectedCategory = mutableStateOf("All")
+    val selectedCategory: State<String> = _selectedCategory
+
     fun updateSearchQuery(value: String) {
         _homeState.value = homeState.value.copy(searchQuery = value)
     }
 
-    fun updateCategorySelected(category: String) {
-        _homeState.value = homeState.value.copy(categorySelected = category)
+    fun updateCategorySelected(category: String, id: Int) {
+        _selectedCategory.value = category
+
+        viewModelScope.launch {
+            if (id > 1)
+                getItemsByCategory(id)
+            else
+                getAllItems()
+        }
+
     }
+
 
     suspend fun getHomeData() {
         homeUseCases.getHomeData().onEach { result ->
@@ -46,10 +59,12 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is Resource.Successful -> {
+
                     _homeState.value = homeState.value.copy(
-                        isLoading = false ,
-                        categories = result.data?.categories?.toCategories()?: emptyList(),
-                        items = result.data?.items?.toItems()?: emptyList()
+                        isLoading = false,
+                        categories = result.data?.categories?.toCategories() ?: emptyList(),
+                        flashSaleItems = result.data?.flashSaleItems?.toItems() ?: emptyList(),
+                        newArrivals = result.data?.newArrivals?.toItems() ?: emptyList(),
                     )
                 }
             }
@@ -58,5 +73,63 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    suspend fun getAllItems() {
+        homeUseCases.getAllItems().onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = false,
+                        errorMsg = result.data?.message ?: result.message
+                        ?: "An Unexpected Error Occurred"
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = false,
+                        items = result.data?.data?.toItems() ?: emptyList(),
+                        errorMsg = null
+                    )
+                }
+            }
+            Log.d("HomeViewModel", "getAllItems: ${result.data}")
+        }.launchIn(viewModelScope)
+    }
+
+
+    suspend fun getItemsByCategory(category: Int) {
+        homeUseCases.getItemsByCategory(category).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = false,
+                        errorMsg = result.data?.message ?: result.message
+                        ?: "An Unexpected Error Occurred"
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _homeState.value = homeState.value.copy(
+                        isLoading = false,
+                        items = result.data?.data?.toItems() ?: emptyList(),
+                        errorMsg = null
+                    )
+                }
+            }
+            Log.d("HomeViewModel", "getItemsByCategory: ${result.data}")
+        }.launchIn(viewModelScope)
+    }
 
 }

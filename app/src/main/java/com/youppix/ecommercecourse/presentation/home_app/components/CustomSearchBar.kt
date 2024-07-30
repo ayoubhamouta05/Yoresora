@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
@@ -66,7 +67,10 @@ fun CustomSearchBar(
                 onTextChange(it)
             },
             enabled = isEnabled,
-            textStyle = MaterialTheme.typography.bodyMedium,
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.primary
+            ),
+
             decorationBox = { innerTextField ->
                 if (value.isEmpty()) {
                     Text(
@@ -81,7 +85,8 @@ fun CustomSearchBar(
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
-            singleLine = true
+            singleLine = true,
+            cursorBrush = Brush.verticalGradient(colors = listOf(MaterialTheme.colorScheme.primary,MaterialTheme.colorScheme.primary))
         )
         Box(
             modifier = Modifier

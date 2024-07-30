@@ -34,7 +34,9 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
+import com.youppix.ecommercecourse.domain.useCases.home.GetAllItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
+import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import dagger.Module
@@ -209,7 +211,9 @@ object AppModule {
     @Singleton
     fun providesHomeUseCases(homeRepository: HomeRepository) : HomeUseCases =
         HomeUseCases(
-            getHomeData = GetHomeDataUseCase(homeRepository)
+            getHomeData = GetHomeDataUseCase(homeRepository) ,
+            getAllItems = GetAllItemsUseCase(homeRepository) ,
+            getItemsByCategory = GetItemsByCategoryUseCase(homeRepository)
         )
 
 

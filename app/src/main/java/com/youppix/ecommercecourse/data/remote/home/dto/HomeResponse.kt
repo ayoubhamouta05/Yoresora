@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HomeResponse(
     val categories: List<CategoryData>? = emptyList(),
-    val items: List<ItemData>? = emptyList(),
+    val flashSaleItems: List<ItemData>? = emptyList(),
+    val newArrivals: List<ItemData>? = emptyList(),
     val status: String
 )

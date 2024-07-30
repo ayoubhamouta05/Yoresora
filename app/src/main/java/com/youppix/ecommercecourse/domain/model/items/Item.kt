@@ -1,7 +1,11 @@
 package com.youppix.ecommercecourse.domain.model.items
 
+import androidx.compose.runtime.Immutable
 
+
+@Immutable
 data class Item(
+    val itemId : Int ,
     val itemColor: String,
     val itemDesc: String,
     val itemDescAr: String,
@@ -15,6 +19,7 @@ data class Item(
 
 fun ItemData.toItem(): Item {
     return Item(
+        itemId= items_id,
         itemColor = items_color,
         itemDesc = items_desc,
         itemDescAr = items_desc_ar,

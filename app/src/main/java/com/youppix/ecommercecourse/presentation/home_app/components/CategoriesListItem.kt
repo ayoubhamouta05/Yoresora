@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,16 +24,18 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 
+@Stable
 @Composable
 fun CategoriesListItem(
-    name: String, selected: Boolean ,
-    onClick  : (String) -> Unit
+    name: String,
+    selected: Boolean,
+    onClick: (String) -> Unit
 ) {
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = SmallPadding)
+            .padding(end = MediumPadding)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
                 onClick(name)
@@ -45,8 +48,8 @@ fun CategoriesListItem(
         Text(
             modifier = Modifier.padding(horizontal = MediumPadding, vertical = ExtraSmallPadding),
             text = name,
-            color = if (selected) Color.White
-            else Color.Black,
+            color = if (selected) MaterialTheme.colorScheme.background
+            else MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyMedium
         )
     }
@@ -64,16 +67,16 @@ fun CategoriesListItemPreview() {
             horizontalArrangement = Arrangement.Center
         ) {
             item {
-                CategoriesListItem(name = "All", selected = false){}
+                CategoriesListItem(name = "All", selected = false) {}
             }
             item {
-                CategoriesListItem(name = "Men", selected = false){}
+                CategoriesListItem(name = "Men", selected = false) {}
             }
             item {
-                CategoriesListItem(name = "Women", selected = true){}
+                CategoriesListItem(name = "Women", selected = true) {}
             }
             item {
-                CategoriesListItem(name = "Kids", selected = false){}
+                CategoriesListItem(name = "Kids", selected = false) {}
             }
         }
     }

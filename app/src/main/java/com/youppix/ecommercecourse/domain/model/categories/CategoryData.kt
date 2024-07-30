@@ -12,14 +12,4 @@ data class CategoryData(
 )
 
 
-fun CategoryData.toCategory() : Category{
-    return Category(
-        name = categories_name,
-        nameAr = categories_name_ar,
-        image = categories_image
-    )
-}
 
-fun List<CategoryData>.toCategories() : List<Category>{
-    return this.map { it.toCategory() }
-}
