@@ -2,10 +2,12 @@ package com.youppix.ecommercecourse.presentation.home_app.home
 
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.categories.Category
 import com.youppix.ecommercecourse.domain.model.categories.toCategories
 import com.youppix.ecommercecourse.domain.model.items.toItems
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
@@ -20,18 +22,19 @@ class HomeViewModel @Inject constructor(
     private val homeUseCases: HomeUseCases
 ) : ViewModel() {
 
-    private var _homeState = mutableStateOf(HomeState())
+    private var _homeState = mutableStateOf(HomeState(isLoading = true))
     val homeState: State<HomeState> = _homeState
 
-    private var _selectedCategory = mutableStateOf("All")
-    val selectedCategory: State<String> = _selectedCategory
+
 
     fun updateSearchQuery(value: String) {
         _homeState.value = homeState.value.copy(searchQuery = value)
     }
 
-    fun updateCategorySelected(category: String, id: Int) {
-        _selectedCategory.value = category
+    fun updateCategorySelected(id : Int) {
+        _homeState.value = homeState.value.copy(
+            categorySelected = id
+        )
 
         viewModelScope.launch {
             if (id > 1)
@@ -54,7 +57,8 @@ class HomeViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _homeState.value = homeState.value.copy(
-                        isLoading = false
+                        isLoading = false ,
+                        getHomeDataError = result.message
                     )
                 }
 
@@ -65,6 +69,7 @@ class HomeViewModel @Inject constructor(
                         categories = result.data?.categories?.toCategories() ?: emptyList(),
                         flashSaleItems = result.data?.flashSaleItems?.toItems() ?: emptyList(),
                         newArrivals = result.data?.newArrivals?.toItems() ?: emptyList(),
+                        getHomeDataError = null
                     )
                 }
             }
@@ -85,7 +90,7 @@ class HomeViewModel @Inject constructor(
                 is Resource.Error -> {
                     _homeState.value = homeState.value.copy(
                         isLoading = false,
-                        errorMsg = result.data?.message ?: result.message
+                        getItemsError = result.data?.message ?: result.message
                         ?: "An Unexpected Error Occurred"
                     )
                 }
@@ -94,7 +99,7 @@ class HomeViewModel @Inject constructor(
                     _homeState.value = homeState.value.copy(
                         isLoading = false,
                         items = result.data?.data?.toItems() ?: emptyList(),
-                        errorMsg = null
+                        getItemsError = null
                     )
                 }
             }
@@ -115,7 +120,7 @@ class HomeViewModel @Inject constructor(
                 is Resource.Error -> {
                     _homeState.value = homeState.value.copy(
                         isLoading = false,
-                        errorMsg = result.data?.message ?: result.message
+                        getItemsError = result.data?.message ?: result.message
                         ?: "An Unexpected Error Occurred"
                     )
                 }
@@ -124,7 +129,7 @@ class HomeViewModel @Inject constructor(
                     _homeState.value = homeState.value.copy(
                         isLoading = false,
                         items = result.data?.data?.toItems() ?: emptyList(),
-                        errorMsg = null
+                        getItemsError = null
                     )
                 }
             }

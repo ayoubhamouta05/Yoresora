@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.presentation.home_app.home
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -40,11 +40,16 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
+import com.youppix.ecommercecourse.presentation.components.ItemsListItemShimmerEffect
+import com.youppix.ecommercecourse.presentation.components.MostPopularItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
-import com.youppix.ecommercecourse.presentation.home_app.components.CustomHorizontalPager
+import com.youppix.ecommercecourse.presentation.home_app.home.components.CustomHorizontalPagerFlashSale
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconItem
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
+import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsListItem
+import com.youppix.ecommercecourse.presentation.home_app.home.components.CustomHorizontalPagerNewArrivals
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -65,10 +70,6 @@ class HomeScreen : Screen {
                 viewModel.getHomeData()
                 viewModel.getAllItems()
             }
-        }
-
-        LaunchedEffect(viewModel.selectedCategory) {
-
         }
 
         Scaffold(
@@ -97,116 +98,169 @@ class HomeScreen : Screen {
                 }
             }
         ) { innerPadding ->
-            LazyColumn(
-                state = lazyListState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-            ) {
-                item {
-                    Text(
-                        text = stringResource(id = R.string.findYourStyle),
-                        style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = MediumPadding),
-                        textAlign = TextAlign.Start
-                    )
-                }
 
-                item {
-                    // Flash Sale Part
-                    SectionTitle(
-                        title = stringResource(id = R.string.flashSalle),
-                        onSeeAllClick = { /* Navigate to categories screen */ }
-                    )
-
-                    CustomHorizontalPager(
-                        items = state.flashSaleItems,
-                    ) { itemSelected ->
-                        // Handle item selected
+            if (state.getHomeDataError != null) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    EmptyScreen(state.getHomeDataError) {
+                        scope.launch {
+                            viewModel.getHomeData()
+                            viewModel.updateCategorySelected(state.categorySelected) // to refresh the items either
+                        }
                     }
                 }
-
-                item {
-                    // New Arrivals Part
-                    SectionTitle(
-                        title = stringResource(id = R.string.newArrivals),
-                        onSeeAllClick = { /* Navigate to categories screen */ }
-                    )
-
-                    CustomHorizontalPager(
-                        items = state.newArrivals
-                    ) { itemSelected ->
-                        // Handle item selected
+            } else {
+                LazyColumn(
+                    state = lazyListState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    item {
+                        Text(
+                            text = stringResource(id = R.string.findYourStyle),
+                            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = MediumPadding, vertical = SmallPadding),
+                            textAlign = TextAlign.Start
+                        )
                     }
-                }
 
-                stickyHeader {
-                    // Categories Part (Sticky Header)
-                    SectionTitle(
-                        title = stringResource(id = R.string.categories),
-                        onSeeAllClick = { /* Navigate to categories screen */ }
-                    )
-
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(
-                                start = SmallPadding.plus(ExtraSmallPadding2),
-                                bottom = SmallPadding,
-                            ),
-                        contentPadding = PaddingValues(horizontal = ExtraSmallPadding),
-                    ) {
-                        items(state.categories.size,
-                            key = { state.categories[it].name }
-                        ) { index ->
-                            val currentCategory = state.categories[index]
-
-                            CategoriesListItem(
-                                name = if (isArabic) currentCategory.nameAr else currentCategory.name,
-                                selected = viewModel.selectedCategory.value == currentCategory.name ||
-                                        viewModel.selectedCategory.value == currentCategory.nameAr
-                            ) {
-                                viewModel.updateCategorySelected(
-                                    it,
-                                    index + 1
-                                )// todo : handle this from backend
+                    item {
+                        // Flash Sale Part
+                        SectionTitle(
+                            title = stringResource(id = R.string.flashSalle),
+                            onSeeAllClick = { /* Navigate to categories screen */ }
+                        )
+                        if (state.isLoading) {
+                            MostPopularItemShimmerEffect()
+                        } else {
+                            CustomHorizontalPagerFlashSale(
+                                items = state.flashSaleItems,
+                            ) { itemSelected ->
+                                // Handle item selected
                             }
                         }
                     }
-                }
 
-                item {
-                    FlowRow(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(
-                                start = MediumPadding,
-                                end = MediumPadding,
-                                top = SmallPadding,
-                                bottom = BottomBarHeight
-                                    .plus(MediumPadding)
-                                    .plus(SmallPadding)
-                            ),
-                        horizontalArrangement = Arrangement.spacedBy(MediumPadding),
-                        maxItemsInEachRow = 3
-                    ) {
-                        state.items.forEach { item ->
-                            ItemsListItem(
-                                item = item,
-                                modifier = Modifier
-                                    .width(screenSize / 3)
-                                    .weight(1f)
-                            )
+                    item {
+                        // New Arrivals Part
+                        SectionTitle(
+                            title = stringResource(id = R.string.newArrivals),
+                            onSeeAllClick = { /* Navigate to categories screen */ }
+                        )
+
+                        if (state.isLoading) {
+                            MostPopularItemShimmerEffect()
+                        } else {
+                            CustomHorizontalPagerNewArrivals(
+                                items = state.newArrivals
+                            ) { itemSelected ->
+                                // Handle item selected
+                            }
                         }
                     }
-                }
 
-                if (state.isLoading) {
+                    stickyHeader {
+                        // Categories Part (Sticky Header)
+                        SectionTitle(
+                            title = stringResource(id = R.string.categories),
+                            onSeeAllClick = { /* Navigate to categories screen */ }
+                        )
+
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background)
+                                .padding(
+                                    start = SmallPadding.plus(ExtraSmallPadding2),
+                                    bottom = SmallPadding,
+                                ),
+                            contentPadding = PaddingValues(horizontal = ExtraSmallPadding),
+                        ) {
+                            if (state.isLoading) {
+                                items(4) {
+                                    CategoriesItemShimmerEffect()
+                                }
+                            } else {
+                                items(state.categories.size,
+                                    key = { state.categories[it].name }
+                                ) { index ->
+                                    val currentCategory = state.categories[index]
+
+                                    CategoriesListItem(
+                                        name = if (isArabic) currentCategory.nameAr else currentCategory.name,
+                                        selected = state.categorySelected == currentCategory.id,
+                                        id = currentCategory.id
+                                    ) {
+                                        viewModel.updateCategorySelected(
+                                            state.categories[it].id
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+
                     item {
-                        CircularProgressIndicator(modifier = Modifier)
+                        if (state.getItemsError != null) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(
+                                        start = MediumPadding,
+                                        end = MediumPadding,
+                                        top = SmallPadding,
+                                        bottom = BottomBarHeight
+                                            .plus(SmallPadding)
+                                    )
+                            ) {
+                                EmptyScreen(state.getItemsError) {
+                                    scope.launch {
+                                        if (state.categorySelected > 1)
+                                            viewModel.getItemsByCategory(state.categorySelected)
+                                        else
+                                            viewModel.getAllItems()
+                                    }
+                                }
+                            }
+
+                        } else {
+                            FlowRow(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(
+                                        start = MediumPadding,
+                                        end = MediumPadding,
+                                        top = SmallPadding,
+                                        bottom = BottomBarHeight
+                                            .plus(SmallPadding)
+                                    ),
+                                horizontalArrangement = Arrangement.spacedBy(MediumPadding),
+                                maxItemsInEachRow = 3
+                            ) {
+                                if (state.isLoading) {
+                                    repeat(2) {
+                                        ItemsListItemShimmerEffect(
+                                            Modifier
+                                                .width(screenSize / 2.5f)
+                                                .weight(1f)
+                                        )
+                                    }
+                                } else {
+                                    state.items.forEach { item ->
+                                        ItemsListItem(
+                                            item = item,
+                                            modifier = Modifier
+                                                .width(screenSize / 2.5f)
+                                                .weight(1f)
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -232,7 +286,9 @@ fun SectionTitle(title: String, onSeeAllClick: () -> Unit) {
         TextButton(onClick = onSeeAllClick) {
             Text(
                 text = stringResource(id = R.string.seeAll),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Normal
+                )
             )
         }
     }

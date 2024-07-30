@@ -26,7 +26,6 @@ class EcommerceApplication : Application() ,ImageLoaderFactory{
             }
             .logger(DebugLogger())
             .respectCacheHeaders(false)
-            .placeholder(R.drawable.ic_launcher_background)
             .build()
     }
 }

@@ -4,14 +4,17 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.sp
 import com.youppix.ecommercecourse.R
 
 
 val Cairo = FontFamily(
-    Font(R.font.cairo_black,FontWeight.Black),
+    Font(R.font.cairo_black,FontWeight.Black ),
     Font(R.font.cairo_bold,FontWeight.Bold),
     Font(R.font.cairo_semibold,FontWeight.SemiBold),
     Font(R.font.cairo_regular,FontWeight.Normal),
@@ -27,15 +30,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
     ),
-//    titleMedium = ,
-//    titleLarge = ,
 
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        lineHeight = 24.sp
     ),
      //Other default text styles to override
     displaySmall = TextStyle(
@@ -48,7 +48,7 @@ val Typography = Typography(
         fontSize = 32.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        lineHeight = 48.sp,
+        lineHeight = 24.sp,
     ),
     bodySmall = TextStyle(
         fontSize = 14.sp,
@@ -60,7 +60,7 @@ val Typography = Typography(
         fontSize = 16.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 24.sp,
+        lineHeight = 20.sp,
     ),
     labelSmall = TextStyle(
         fontSize = 13.sp,

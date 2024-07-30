@@ -27,9 +27,10 @@ import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 @Stable
 @Composable
 fun CategoriesListItem(
-    name: String,
+    name : String ,
+    id: Int,
     selected: Boolean,
-    onClick: (String) -> Unit
+    onClick: (Int) -> Unit
 ) {
 
     Box(
@@ -38,7 +39,7 @@ fun CategoriesListItem(
             .padding(end = MediumPadding)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
-                onClick(name)
+                onClick(id-1) // id's starts from 1 but index starts from 0
             }
             .background(
                 color = if (selected) MaterialTheme.colorScheme.primary
@@ -46,7 +47,7 @@ fun CategoriesListItem(
             )
     ) {
         Text(
-            modifier = Modifier.padding(horizontal = MediumPadding, vertical = ExtraSmallPadding),
+            modifier = Modifier.padding(horizontal = MediumPadding , vertical = ExtraSmallPadding),
             text = name,
             color = if (selected) MaterialTheme.colorScheme.background
             else MaterialTheme.colorScheme.primary,
@@ -67,16 +68,16 @@ fun CategoriesListItemPreview() {
             horizontalArrangement = Arrangement.Center
         ) {
             item {
-                CategoriesListItem(name = "All", selected = false) {}
+                CategoriesListItem(name = "All", selected = false , id = 0) {}
             }
             item {
-                CategoriesListItem(name = "Men", selected = false) {}
+                CategoriesListItem(name = "Men", selected = false , id = 1) {}
             }
             item {
-                CategoriesListItem(name = "Women", selected = true) {}
+                CategoriesListItem(name = "Women", selected = true,id = 2) {}
             }
             item {
-                CategoriesListItem(name = "Kids", selected = false) {}
+                CategoriesListItem(name = "Kids", selected = false,id = 3) {}
             }
         }
     }
