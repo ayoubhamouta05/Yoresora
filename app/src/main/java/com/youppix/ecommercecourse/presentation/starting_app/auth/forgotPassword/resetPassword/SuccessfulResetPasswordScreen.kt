@@ -1,13 +1,14 @@
 package com.youppix.ecommercecourse.presentation.starting_app.auth.forgotPassword.resetPassword
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
@@ -46,9 +47,11 @@ class SuccessfulResetPasswordScreen : Screen {
                 ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.successfull_img),
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(150.dp)
                 )
                 Text(
                     text = stringResource(id = R.string.successfullyResetPassword), Modifier.padding(vertical = Dimens.ExtraSmallPadding),

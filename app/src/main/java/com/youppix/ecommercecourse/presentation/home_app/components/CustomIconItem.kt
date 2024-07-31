@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
@@ -40,21 +41,20 @@ fun CustomIconItem(
                     onCLick()
                 }
                 .background(
-                    MaterialTheme.colorScheme.surfaceContainer,
+                    MaterialTheme.colorScheme.primary,
                     shape = CircleShape
                 )
                 .padding(
-                    SmallPadding
+                    SmallPadding.plus(ExtraSmallPadding2)
                 ),
-            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.background)
         )
 
         if (hasNotification) {
             Badge(
                 modifier = Modifier
-
-                    .size(16.dp)
-                    .offset(x = (-14).dp, y = 4.dp)
+                    .size(17.5.dp.minus(ExtraSmallPadding2))
+                    .offset(x = (-17).dp, y = 9.dp)
                     .align(Alignment.TopEnd)
                     .padding(top = ExtraSmallPadding , start = ExtraSmallPadding)
                     .clip(CircleShape)

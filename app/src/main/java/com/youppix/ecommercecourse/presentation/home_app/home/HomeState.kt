@@ -1,8 +1,10 @@
 package com.youppix.ecommercecourse.presentation.home_app.home
 
+import androidx.compose.runtime.Immutable
 import com.youppix.ecommercecourse.domain.model.categories.Category
 import com.youppix.ecommercecourse.domain.model.items.Item
 
+@Immutable
 data class HomeState(
     val isLoading: Boolean = false,
     val searchQuery: String = "",

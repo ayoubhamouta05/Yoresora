@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.presentation.components
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
@@ -13,7 +14,8 @@ import androidx.core.view.WindowCompat
 fun StatusBarColor() {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
-    val color = if(darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+//    val color = if(darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+    val color = MaterialTheme.colorScheme.background.toArgb()
 
     if (!view.isInEditMode) {
         SideEffect {

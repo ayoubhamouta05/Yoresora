@@ -79,9 +79,10 @@ fun CustomDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp , horizontal = 16.dp),
-                    fontSize = 19.sp,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Normal
+                    )
                 )
 
                 Row(

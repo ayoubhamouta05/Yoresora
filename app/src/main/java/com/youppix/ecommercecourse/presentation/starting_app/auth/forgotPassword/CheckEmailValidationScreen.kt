@@ -136,7 +136,8 @@ class CheckEmailValidationScreen : Screen {
 
                     Text(
                         text = stringResource(id = R.string.checkEmail),
-                        style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold,
+                            ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(

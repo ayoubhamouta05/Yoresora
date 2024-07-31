@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -40,6 +42,7 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.items.Item
@@ -62,6 +65,8 @@ fun NewArrivalsItem(
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCachePolicy(CachePolicy.ENABLED)
         .build()
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -71,14 +76,15 @@ fun NewArrivalsItem(
             defaultElevation = 4.dp,
         ),
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = MaterialTheme.colorScheme.surface,
         )
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Card(
                 modifier = Modifier
-                    .width(150.dp)
-                    .defaultMinSize(minHeight = 200.dp),
+                    .width(screenWidth / 2.5f)
+                    .defaultMinSize(minHeight = 200.dp)
+                ,
                 shape = RoundedCornerShape(
                     topEnd = 0.dp,
                 ),
@@ -91,7 +97,7 @@ fun NewArrivalsItem(
                     model = imageRequest,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
 
@@ -100,7 +106,7 @@ fun NewArrivalsItem(
                     .padding(horizontal = Dimens.SmallPadding)
                     .fillMaxSize()
                     .defaultMinSize(minHeight = 200.dp),
-                verticalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = item.itemName,
@@ -112,6 +118,7 @@ fun NewArrivalsItem(
                 Row(
                     modifier = Modifier
                         .padding(end = Dimens.SmallPadding),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     Text(
@@ -119,18 +126,19 @@ fun NewArrivalsItem(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        color = Color.Green,
+                        color = Color.Black,
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = "DA", style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.primary
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
                         ),
                         modifier = Modifier.padding(horizontal = Dimens.ExtraSmallPadding)
                     )
                     Icon(
                         painterResource(id = R.drawable.ic_money_cash), contentDescription = null,
-                        Modifier.size(23.dp),
+                        Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.primary
                     )
 
@@ -145,9 +153,8 @@ fun NewArrivalsItem(
 
                     Text(
                         text = item.itemDesc,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = colorResource(id = R.color.text_medium),
-                            fontSize = 12.sp,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = colorResource(id = R.color.text_medium)
                         ),
 
                         modifier = Modifier
@@ -176,7 +183,7 @@ fun NewArrivalsItem(
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(
                             horizontal = Dimens.SmallPadding,
-                            vertical = Dimens.SmallPadding
+                            vertical = ExtraSmallPadding2
                         )
                     )
                 }

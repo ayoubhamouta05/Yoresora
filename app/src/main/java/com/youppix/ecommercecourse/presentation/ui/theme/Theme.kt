@@ -10,6 +10,8 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
+import com.youppix.ecommercecourse.presentation.components.StatusBarColor
 
 private val DarkColorScheme = darkColorScheme(
     primary = Color.White,
@@ -19,11 +21,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color.Black,
+//    primary = Color.Black,
+    primary = Primary40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = Color.White,
-
+//    background = Color.White,
+    background = Background40,
+    onBackground = OnBackground40,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -38,7 +42,8 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun EcommerceCourseTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+//    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme :Boolean = false,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -52,6 +57,7 @@ fun EcommerceCourseTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+    StatusBarColor()
 
     MaterialTheme(
         colorScheme = colorScheme,

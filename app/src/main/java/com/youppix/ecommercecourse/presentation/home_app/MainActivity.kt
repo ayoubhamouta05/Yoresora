@@ -61,13 +61,12 @@ class MainActivity : ComponentActivity() {
         val currentLang =
             getSharedPreferences(APP_LANG, 0).getString(APP_LANG, Locale.getDefault().language)
                 ?: Locale.getDefault().language
-        val currentUser =
-            getSharedPreferences(APP_ENTRY, 0).getString("userName", "null")
+
         setLocal(currentLang, this)
 
 
         setContent {
-            StatusBarColor()
+
             val activity = LocalContext.current as Activity
             val backgroundArgb = MaterialTheme.colorScheme.background.toArgb()
             activity.window.statusBarColor = backgroundArgb
@@ -85,19 +84,16 @@ class MainActivity : ComponentActivity() {
                 mutableIntStateOf(0)
             }
 
-            var onBackClicked by remember {
-                mutableStateOf(false)
-            }
-
             onBackButtonPressed {
                 showDialog = !backPressedState
                 backPressedState
             }
 
             EcommerceCourseTheme {
+                StatusBarColor()
                 LaunchedEffect(currentScreen) {
                     when (currentScreen) {
-                        0 -> navigator?.push(HomeScreen())
+                        0 -> navigator?.replaceAll(HomeScreen())
                         1 -> navigator?.push(ShopScreen())
                         2 -> navigator?.push(FavoritesScreen())
                         3 -> navigator?.push(ChatScreen())
@@ -127,19 +123,18 @@ class MainActivity : ComponentActivity() {
                             )
                         ) {
                             currentScreen = it
-                            onBackClicked = false
                         }
                     }
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Navigator(screen = HomeScreen(),
                             onBackPressed = {
-                                if (navigator?.lastItem == it && onBackClicked) {
-                                    navigator?.pop()
+                                if(navigator?.canPop == true){
+                                    navigator?.replaceAll(HomeScreen())
                                 }
-                                onBackClicked = true
                                 true
-                            }) { navigator ->
+                            }
+                        ) { navigator ->
                             this@MainActivity.navigator = navigator
                             CurrentScreen()
                             backPressedState = navigator.canPop

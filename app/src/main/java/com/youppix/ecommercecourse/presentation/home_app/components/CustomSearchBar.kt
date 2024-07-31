@@ -46,7 +46,7 @@ fun CustomSearchBar(
     height: Dp = SearchBarHeight,
     elevation: Dp = ExtraSmallPadding2,
     cornerShape: Shape = CircleShape,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     onTextCleared : () -> Unit ,
     onSearchClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},

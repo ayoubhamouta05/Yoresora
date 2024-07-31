@@ -43,7 +43,7 @@ fun CategoriesListItem(
             }
             .background(
                 color = if (selected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.surfaceContainer
+                else MaterialTheme.colorScheme.background
             )
     ) {
         Text(

@@ -187,15 +187,15 @@ class VerificationEmailSignUpScreen(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .padding(24.dp),
-                        color = Color.White
+                            .padding(24.dp) ,
+                        color = MaterialTheme.colorScheme.background
                     ) {
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                             OtpInputField(
                                 modifier = Modifier
                                     .padding(top = 48.dp)
-                                    .focusRequester(focusRequester),
+                                    .focusRequester(focusRequester)
+                                    .background(MaterialTheme.colorScheme.background),
                                 otpText = currentState.verificationCode,
                                 shouldCursorBlink = false,
                                 onOtpModified = { value, otpFilled ->

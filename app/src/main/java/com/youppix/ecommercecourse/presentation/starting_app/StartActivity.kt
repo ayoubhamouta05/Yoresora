@@ -62,6 +62,7 @@ class StartActivity : ComponentActivity() {
                     backPressedState
                 }
                 EcommerceCourseTheme {
+                    StatusBarColor()
                     Scaffold(
                         topBar = {
                             if (showNetworkStatus) {

@@ -22,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +41,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.components.ItemsListItemShimmerEffect
-import com.youppix.ecommercecourse.presentation.components.MostPopularItemShimmerEffect
+import com.youppix.ecommercecourse.presentation.components.FlashSaleItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
 import com.youppix.ecommercecourse.presentation.home_app.home.components.CustomHorizontalPagerFlashSale
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconItem
@@ -64,13 +63,6 @@ class HomeScreen : Screen {
         val scope = rememberCoroutineScope()
         val lazyListState = rememberLazyListState()
         val screenSize: Dp = LocalConfiguration.current.screenWidthDp.dp
-
-        LaunchedEffect(Unit) {
-            scope.launch {
-                viewModel.getHomeData()
-                viewModel.getAllItems()
-            }
-        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -118,11 +110,12 @@ class HomeScreen : Screen {
                     item {
                         Text(
                             text = stringResource(id = R.string.findYourStyle),
-                            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
+                            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = MediumPadding, vertical = SmallPadding),
-                            textAlign = TextAlign.Start
+                                .padding(horizontal = MediumPadding, vertical = ExtraSmallPadding),
+                            textAlign = TextAlign.Center
                         )
                     }
 
@@ -133,7 +126,7 @@ class HomeScreen : Screen {
                             onSeeAllClick = { /* Navigate to categories screen */ }
                         )
                         if (state.isLoading) {
-                            MostPopularItemShimmerEffect()
+                            FlashSaleItemShimmerEffect()
                         } else {
                             CustomHorizontalPagerFlashSale(
                                 items = state.flashSaleItems,
@@ -151,7 +144,7 @@ class HomeScreen : Screen {
                         )
 
                         if (state.isLoading) {
-                            MostPopularItemShimmerEffect()
+                            FlashSaleItemShimmerEffect()
                         } else {
                             CustomHorizontalPagerNewArrivals(
                                 items = state.newArrivals
@@ -286,9 +279,7 @@ fun SectionTitle(title: String, onSeeAllClick: () -> Unit) {
         TextButton(onClick = onSeeAllClick) {
             Text(
                 text = stringResource(id = R.string.seeAll),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Normal
-                )
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

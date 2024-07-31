@@ -183,9 +183,8 @@ class VerificationEmailForgotPasswordScreen(
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
                             .padding(24.dp),
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.background
                     ) {
                         CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
                             OtpInputField(

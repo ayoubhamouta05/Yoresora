@@ -29,44 +29,45 @@ val Typography = Typography(
         fontFamily = Cairo,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
+        lineHeight = 26.sp // don't touch
     ),
 
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
-        lineHeight = 24.sp
+        lineHeight = 20.sp
     ),
      //Other default text styles to override
     displaySmall = TextStyle(
         fontSize = 20.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        lineHeight = 36.sp,
+        lineHeight = 30.sp // don't touch
     ),
     displayMedium = TextStyle(
         fontSize = 32.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        lineHeight = 24.sp,
+        lineHeight = 42.sp, // don't touch
     ),
     bodySmall = TextStyle(
         fontSize = 14.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        lineHeight = 21.sp,
+        lineHeight = 20.sp,
     ),
     bodyMedium = TextStyle(
         fontSize = 16.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.SemiBold,
-        lineHeight = 20.sp,
+        lineHeight = 24.sp, // don't touch
     ),
     labelSmall = TextStyle(
         fontSize = 13.sp,
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        lineHeight = 19.sp,
+        lineHeight = 16.sp, // don't touch
     ),
 
 

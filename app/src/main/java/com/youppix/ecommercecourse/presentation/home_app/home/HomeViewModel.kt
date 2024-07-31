@@ -25,7 +25,12 @@ class HomeViewModel @Inject constructor(
     private var _homeState = mutableStateOf(HomeState(isLoading = true))
     val homeState: State<HomeState> = _homeState
 
-
+    init {
+        viewModelScope.launch {
+            getHomeData()
+            getAllItems()
+        }
+    }
 
     fun updateSearchQuery(value: String) {
         _homeState.value = homeState.value.copy(searchQuery = value)

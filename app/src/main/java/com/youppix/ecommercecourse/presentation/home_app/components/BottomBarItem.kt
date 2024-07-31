@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -32,7 +33,7 @@ fun BottomBarItem(
     Box(
         modifier = Modifier
             .background(
-                color = if (item.screen == currentScreen) Color.LightGray else Color.Transparent,
+                color = if (item.screen == currentScreen) MaterialTheme.colorScheme.background else Color.Transparent,
                 shape = CircleShape
             )
             .padding(Dimens.SmallPadding)
@@ -43,7 +44,7 @@ fun BottomBarItem(
         Icon(
             imageVector = if (item.screen == currentScreen) item.selectedIcon else item.unselectedIcon,
             contentDescription = item.title,
-            tint = if (item.screen == currentScreen) Color.Black else Color.Gray,
+            tint = if (item.screen == currentScreen) MaterialTheme.colorScheme.primary else Color.Gray,
             modifier = Modifier.size(25.dp)
         )
     }

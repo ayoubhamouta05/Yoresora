@@ -312,7 +312,7 @@ class LoginScreen() : Screen {
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
-                                color = MaterialTheme.colorScheme.primary
+                                color = Color.Black
                             )
 
                         }
