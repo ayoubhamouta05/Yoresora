@@ -66,4 +66,6 @@
     <string name="seeAll">الكل</string>
     <string name="orderNow">اطلب الآن</string>
     <string name="details">التفاصيل</string>
+    <string name="da">دج</string>
+    <string name="seeAllItems">رؤية جميع العناصر</string>
 </resources>

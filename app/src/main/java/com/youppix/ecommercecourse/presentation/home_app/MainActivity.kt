@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
@@ -92,12 +93,15 @@ class MainActivity : ComponentActivity() {
             EcommerceCourseTheme {
                 StatusBarColor()
                 LaunchedEffect(currentScreen) {
-                    when (currentScreen) {
-                        0 -> navigator?.replaceAll(HomeScreen())
-                        1 -> navigator?.push(ShopScreen())
-                        2 -> navigator?.push(FavoritesScreen())
-                        3 -> navigator?.push(ChatScreen())
-                        4 -> navigator?.push(ProfileScreen())
+                    if (currentScreen == 0) {
+                        navigator?.replaceAll(HomeScreen())
+                    } else {
+                        when (currentScreen) {
+                            1 -> navigator?.push(ShopScreen())
+                            2 -> navigator?.push(FavoritesScreen())
+                            3 -> navigator?.push(ChatScreen())
+                            4 -> navigator?.push(ProfileScreen())
+                        }
                     }
                 }
                 LaunchedEffect(navigator?.items) {
@@ -136,7 +140,7 @@ class MainActivity : ComponentActivity() {
                             }
                         ) { navigator ->
                             this@MainActivity.navigator = navigator
-                            CurrentScreen()
+                            SlideTransition(navigator = navigator)
                             backPressedState = navigator.canPop
                         }
                         Spacer(

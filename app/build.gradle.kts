@@ -79,6 +79,7 @@ dependencies {
     //Voyager
     // Navigator
     implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
 
     //datastore
     implementation (libs.androidx.datastore.preferences)

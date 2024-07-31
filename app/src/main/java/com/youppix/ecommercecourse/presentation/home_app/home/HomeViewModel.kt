@@ -32,11 +32,38 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchQuery(value: String) {
+    fun onEvent(event : HomeEvent){
+        when(event){
+            is HomeEvent.UpdateSearchQuery -> {
+                updateSearchQuery(event.value)
+            }
+            is HomeEvent.UpdateCategorySelected->{
+                updateCategorySelected(event.id)
+            }
+            is HomeEvent.GetHomeData->{
+                viewModelScope.launch {
+                    getHomeData()
+                }
+            }
+            is HomeEvent.GetAllItems->{
+                viewModelScope.launch {
+                    getAllItems()
+                }
+            }
+            is HomeEvent.GetItemsByCategory->{
+                viewModelScope.launch {
+                    getItemsByCategory(event.category)
+                }
+            }
+
+        }
+    }
+
+    private fun updateSearchQuery(value: String) {
         _homeState.value = homeState.value.copy(searchQuery = value)
     }
 
-    fun updateCategorySelected(id : Int) {
+    private fun updateCategorySelected(id : Int) {
         _homeState.value = homeState.value.copy(
             categorySelected = id
         )
@@ -51,7 +78,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    suspend fun getHomeData() {
+    private suspend fun getHomeData() {
         homeUseCases.getHomeData().onEach { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -83,7 +110,7 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    suspend fun getAllItems() {
+    private suspend fun getAllItems() {
         homeUseCases.getAllItems().onEach { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -113,7 +140,7 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    suspend fun getItemsByCategory(category: Int) {
+    private suspend fun getItemsByCategory(category: Int) {
         homeUseCases.getItemsByCategory(category).onEach { result ->
             when (result) {
                 is Resource.Loading -> {

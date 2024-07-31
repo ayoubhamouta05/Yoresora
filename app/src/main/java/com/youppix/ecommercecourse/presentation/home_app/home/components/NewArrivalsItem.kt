@@ -1,13 +1,11 @@
 package com.youppix.ecommercecourse.presentation.home_app.home.components
 
-import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -33,20 +31,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.items.Item
 import kotlinx.coroutines.Dispatchers
+import java.util.Locale
 
 @Stable
 @Composable
@@ -67,6 +62,7 @@ fun NewArrivalsItem(
         .build()
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val isArabic = Locale.getDefault().language == "ar"
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -83,8 +79,7 @@ fun NewArrivalsItem(
             Card(
                 modifier = Modifier
                     .width(screenWidth / 2.5f)
-                    .defaultMinSize(minHeight = 200.dp)
-                ,
+                    .defaultMinSize(minHeight = 200.dp),
                 shape = RoundedCornerShape(
                     topEnd = 0.dp,
                 ),
@@ -109,7 +104,7 @@ fun NewArrivalsItem(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = item.itemName,
+                    text = if (isArabic) item.itemNameAr else item.itemName,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start,
                     maxLines = 2,
@@ -130,7 +125,8 @@ fun NewArrivalsItem(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "DA", style = MaterialTheme.typography.bodyMedium.copy(
+                        text = stringResource(id = R.string.da),
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         ),
@@ -152,7 +148,7 @@ fun NewArrivalsItem(
                 ) {
 
                     Text(
-                        text = item.itemDesc,
+                        text = if (isArabic) item.itemDescAr else item.itemDesc,
                         style = MaterialTheme.typography.labelSmall.copy(
                             color = colorResource(id = R.color.text_medium)
                         ),

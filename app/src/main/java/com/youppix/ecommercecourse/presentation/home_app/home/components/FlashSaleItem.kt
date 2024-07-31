@@ -35,6 +35,7 @@ import com.youppix.ecommercecourse.common.Urls.IMAGES_URL
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import kotlinx.coroutines.Dispatchers
+import java.util.Locale
 
 
 @Stable
@@ -55,6 +56,7 @@ fun FlashSaleItem(
         .memoryCachePolicy(CachePolicy.ENABLED)
         .build()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val isArabic = Locale.getDefault().language == "ar"
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -96,7 +98,7 @@ fun FlashSaleItem(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = item.itemName,
+                    text = if (isArabic) item.itemNameAr else item.itemName,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start,
                     maxLines = 2
@@ -116,7 +118,7 @@ fun FlashSaleItem(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "DA", style = MaterialTheme.typography.bodyMedium.copy(
+                        text = stringResource(id = R.string.da), style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         ),

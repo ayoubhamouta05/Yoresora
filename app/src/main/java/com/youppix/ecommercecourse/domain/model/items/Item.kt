@@ -5,14 +5,14 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class Item(
-    val itemId : Int ,
+    val itemId : Int,
     val itemColor: String,
     val itemDesc: String,
     val itemDescAr: String,
     val itemDiscount: Int,
     val itemImage: String,
     val itemName: String,
-    val itemsNameAr: String,
+    val itemNameAr: String,
     val itemPrice: Int
 )
 
@@ -26,7 +26,7 @@ fun ItemData.toItem(): Item {
         itemDiscount = items_discount,
         itemImage = items_image,
         itemName = items_name,
-        itemsNameAr = items_name_ar,
+        itemNameAr = items_name_ar,
         itemPrice = items_price,
     )
 }
