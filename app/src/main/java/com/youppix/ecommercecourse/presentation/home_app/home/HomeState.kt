@@ -6,7 +6,8 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 
 @Immutable
 data class HomeState(
-    val isLoading: Boolean = false,
+    val isHomeLoading: Boolean = false,
+    val isItemsCategoriesLoading : Boolean = false,
     val searchQuery: String = "",
     val haveNotification: Boolean = false,
     val categories: List<Category> = emptyList(),

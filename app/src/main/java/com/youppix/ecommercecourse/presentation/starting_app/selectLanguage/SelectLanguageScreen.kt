@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -69,7 +70,7 @@ class SelectLanguageScreen() :
                 CustomButton(
                     modifier = Modifier
                         .padding(top = 10.dp)
-                        .width(100.dp),
+                        .wrapContentWidth(),
                     text = stringResource(id = R.string.english),
                 ) {
                     viewModel.saveLanguage(APP_LANG, "en")
@@ -80,7 +81,7 @@ class SelectLanguageScreen() :
                 CustomButton(
                     modifier = Modifier
                         .padding(vertical = 10.dp)
-                        .width(100.dp),
+                        .wrapContentWidth(),
                     text = stringResource(id = R.string.arabic)
                 ) {
                     viewModel.saveLanguage(APP_LANG, "ar")

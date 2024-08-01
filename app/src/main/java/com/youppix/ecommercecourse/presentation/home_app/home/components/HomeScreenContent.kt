@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,12 +24,10 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,21 +36,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.components.FlashSaleItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.components.ItemsListItemShimmerEffect
-import com.youppix.ecommercecourse.presentation.components.ShimmerEffect
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
 import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsListItem
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeEvent
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
@@ -70,7 +64,6 @@ fun HomeScreenContent(
     val isArabic = Locale.getDefault().language == "ar"
     val lazyListState = rememberLazyListState()
     var showButton by remember { mutableStateOf(false) }
-    var showItems by remember { mutableStateOf(false) }
 
     LaunchedEffect(lazyListState.canScrollForward, state.getItemsError) {
         snapshotFlow { lazyListState.canScrollForward }.collectLatest {
@@ -78,16 +71,18 @@ fun HomeScreenContent(
                 !lazyListState.canScrollForward && state.items.size >= 6 && state.getItemsError == null
         }
     }
-    val scope = rememberCoroutineScope()
+    if (state.getHomeDataError != null) {
+        Box(modifier = Modifier.fillMaxSize().padding(top = SearchBarHeight.plus(MediumPadding))) {
+            EmptyScreen(state.getHomeDataError) {
 
-    LaunchedEffect(Unit) {
-        scope.launch {
-            delay(500)
-            showItems = true
+                event(HomeEvent.GetHomeData)
+                event(
+                    HomeEvent.UpdateCategorySelected(state.categorySelected) // to refresh the items either
+                )
+
+            }
         }
-    }
-
-    if (showItems) {
+    }else {
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn(
                 modifier = modifier,
@@ -116,7 +111,7 @@ fun HomeScreenContent(
                         title = stringResource(id = R.string.flashSalle),
                         onSeeAllClick = { /* Navigate to categories screen */ }
                     )
-                    if (state.isLoading) {
+                    if (state.isHomeLoading) {
                         FlashSaleItemShimmerEffect()
                     } else {
                         CustomHorizontalPagerFlashSale(
@@ -134,7 +129,7 @@ fun HomeScreenContent(
                         onSeeAllClick = { /* Navigate to categories screen */ }
                     )
 
-                    if (state.isLoading) {
+                    if (state.isHomeLoading) {
                         FlashSaleItemShimmerEffect()
                     } else {
                         CustomHorizontalPagerNewArrivals(
@@ -162,7 +157,7 @@ fun HomeScreenContent(
                             ),
                         contentPadding = PaddingValues(horizontal = Dimens.ExtraSmallPadding),
                     ) {
-                        if (state.isLoading) {
+                        if (state.isHomeLoading) {
                             items(4) {
                                 CategoriesItemShimmerEffect()
                             }
@@ -178,9 +173,6 @@ fun HomeScreenContent(
                                     id = currentCategory.id
                                 ) {
                                     event(HomeEvent.UpdateCategorySelected(state.categories[it].id))
-//                                viewModel.updateCategorySelected(
-//                                    state.categories[it].id
-//                                )
                                 }
                             }
                         }
@@ -205,10 +197,8 @@ fun HomeScreenContent(
                             EmptyScreen(state.getItemsError) {
                                 if (state.categorySelected > 1)
                                     event(HomeEvent.GetItemsByCategory(state.categorySelected))
-//                                    viewModel.getItemsByCategory(state.categorySelected)
                                 else
                                     event(HomeEvent.GetAllItems)
-//                                    viewModel.getAllItems()
                             }
                         }
 
@@ -217,17 +207,16 @@ fun HomeScreenContent(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(
-                                    start = Dimens.MediumPadding,
-                                    end = Dimens.MediumPadding,
-                                    top = Dimens.SmallPadding,
-                                    bottom = Dimens.BottomBarHeight
-                                        .plus(Dimens.SmallPadding)
-//                                                .plus(if(showButton) BottomBarHeight else 0.dp)
+                                    start = MediumPadding,
+                                    end = MediumPadding,
+                                    top = SmallPadding,
+                                    bottom = BottomBarHeight
+                                        .plus(SmallPadding)
                                 ),
-                            horizontalArrangement = Arrangement.spacedBy(Dimens.MediumPadding),
+                            horizontalArrangement = Arrangement.spacedBy(MediumPadding),
                             maxItemsInEachRow = 3
                         ) {
-                            if (state.isLoading) {
+                            if (state.isItemsCategoriesLoading) {
                                 repeat(2) {
                                     ItemsListItemShimmerEffect(
                                         Modifier
@@ -251,19 +240,9 @@ fun HomeScreenContent(
             }
             ShowAllItemsButton(showButton = showButton)
         }
-
-    } else {
-        ShimmerEffect(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = SearchBarHeight.plus(
-                        MediumPadding
-                    )
-                ).clip(RoundedCornerShape(SmallPadding))
-                .background(MaterialTheme.colorScheme.background)
-        )
     }
+
+
 
 }
 
@@ -274,9 +253,9 @@ fun SectionTitle(title: String, onSeeAllClick: () -> Unit) {
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .padding(
-                start = Dimens.MediumPadding,
-                end = Dimens.MediumPadding,
-                bottom = Dimens.SmallPadding
+                start = MediumPadding,
+                end = MediumPadding,
+                bottom = SmallPadding
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

@@ -20,6 +20,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -144,11 +145,12 @@ class OnBoardingScreen() : Screen {
                     val scope = rememberCoroutineScope()
                     Button(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 30.dp, start = 30.dp, bottom = 30.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(10.dp)
-                        ), onClick = {
+                        .padding(end = 30.dp, start = 30.dp, bottom = 30.dp) ,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor  = MaterialTheme.colorScheme.primary,
+                        ),
+                        onClick = {
                         scope.launch {
                             pagerState.animateScrollToPage(
                                 page = pagerState.currentPage + 1,

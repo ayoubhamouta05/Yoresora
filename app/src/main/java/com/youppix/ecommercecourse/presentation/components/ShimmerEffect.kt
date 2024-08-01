@@ -25,19 +25,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
@@ -80,7 +78,7 @@ fun FlashSaleItemShimmerEffect() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.MediumPadding , vertical = SmallPadding),
+            .padding(start = MediumPadding, end = MediumPadding, bottom = SmallPadding),
         shape = RoundedCornerShape(26.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp,
@@ -90,39 +88,35 @@ fun FlashSaleItemShimmerEffect() {
         )
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-
-
-            ShimmerEffect(
+            Card(
                 modifier = Modifier
                     .width(150.dp)
-                    .defaultMinSize(minHeight = 200.dp)
-                    .clip(
-                        shape = RoundedCornerShape(
-                            topEnd = 0.dp, topStart = 26.dp,
-                            bottomStart = 26.dp, bottomEnd = 60.dp
-                        )
-                    )
-                    .shimmerEffect()
-            )
+                    .defaultMinSize(minHeight = 170.dp)
+                    .shimmerEffect(),
+                shape = RoundedCornerShape(
+                    topEnd = 0.dp,
+                ),
+                elevation = CardDefaults.elevatedCardElevation(
+                    defaultElevation = 4.dp
+                )
+            ) {
 
-
+                ShimmerEffect(
+                    modifier = Modifier.width(150.dp)
+                        .defaultMinSize(minHeight = 170.dp)
+                )
+            }
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = Dimens.SmallPadding)
                     .fillMaxSize()
-                    .defaultMinSize(minHeight = 200.dp),
+                    .defaultMinSize(minHeight = 170.dp)
+                    .padding(horizontal = SmallPadding),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 ShimmerEffect(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(24.dp)
-                )
-
-                ShimmerEffect(
-                    modifier = Modifier
-                        .fillMaxWidth()
                         .height(16.dp)
                 )
 
@@ -132,54 +126,22 @@ fun FlashSaleItemShimmerEffect() {
                         .height(16.dp)
                 )
 
+
                 ShimmerEffect(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(24.dp)
+                        .height(16.dp)
                 )
 
-            }
 
-            Row(
-                modifier = Modifier
-                    .padding(end = Dimens.SmallPadding)
-                    .shimmerEffect(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-
-                Text(
-                    text = "",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Red,
+                // Show details button
+                ShimmerEffect(
                     modifier = Modifier
-                        .padding(horizontal = Dimens.ExtraSmallPadding2)
+                        .fillMaxWidth()
+                        .height(16.dp)
                 )
-
-
             }
 
-            // Show details button
-            Card(
-                modifier = Modifier
-                    .padding(bottom = Dimens.SmallPadding)
-                    .shimmerEffect(),
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
-            ) {
-
-                Text(
-                    text = "",
-                    color = MaterialTheme.colorScheme.background,
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(
-                        horizontal = Dimens.ExtraSmallPadding,
-                        vertical = Dimens.ExtraSmallPadding
-                    ),
-
-                    )
-
-            }
         }
     }
 }

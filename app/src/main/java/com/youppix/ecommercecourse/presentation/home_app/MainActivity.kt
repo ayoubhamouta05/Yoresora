@@ -1,12 +1,10 @@
 package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,21 +15,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
-import cafe.adriel.voyager.navigator.CurrentScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
-import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
@@ -67,12 +59,8 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-
-            val activity = LocalContext.current as Activity
-            val backgroundArgb = MaterialTheme.colorScheme.background.toArgb()
-            activity.window.statusBarColor = backgroundArgb
-            val wic = WindowCompat.getInsetsController(window, window.decorView)
-            wic.isAppearanceLightStatusBars = true // Adapt it with your implementation
+            val viewModel: MainActivityViewModel = hiltViewModel()
+            val state = viewModel.state.value
 
             var backPressedState by remember {
                 mutableStateOf(false)
@@ -81,67 +69,61 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(false)
             }
 
-            var currentScreen by remember {
-                mutableIntStateOf(0)
-            }
-
             onBackButtonPressed {
                 showDialog = !backPressedState
-                backPressedState
+                if ( navigator!!.lastItem.javaClass.name != HomeScreen::class.java.name ){
+                    navigator!!.replace(HomeScreen())
+                    showDialog = false
+                }else{
+                    showDialog = true
+                }
             }
 
             EcommerceCourseTheme {
                 StatusBarColor()
-                LaunchedEffect(currentScreen) {
-                    if (currentScreen == 0) {
-                        navigator?.replaceAll(HomeScreen())
-                    } else {
-                        when (currentScreen) {
-                            1 -> navigator?.push(ShopScreen())
-                            2 -> navigator?.push(FavoritesScreen())
-                            3 -> navigator?.push(ChatScreen())
-                            4 -> navigator?.push(ProfileScreen())
-                        }
-                    }
-                }
                 LaunchedEffect(navigator?.items) {
-
                     navigator?.let {
-                        when (navigator!!.lastItem::class.java.simpleName) {
-                            HomeScreen::class.java.simpleName -> currentScreen = 0
-                            ShopScreen::class.java.simpleName -> currentScreen = 1
-                            FavoritesScreen::class.java.simpleName -> currentScreen = 2
-                            ChatScreen::class.java.simpleName -> currentScreen = 3
-                            ProfileScreen::class.java.simpleName -> currentScreen = 4
+                        viewModel.apply {
+                            when (navigator!!.lastItem::class.java.simpleName) {
+                                HomeScreen::class.java.simpleName -> setCurrentScreen(0)
+                                ShopScreen::class.java.simpleName -> setCurrentScreen(1)
+                                FavoritesScreen::class.java.simpleName -> setCurrentScreen(2)
+                                ChatScreen::class.java.simpleName -> setCurrentScreen(3)
+                                ProfileScreen::class.java.simpleName -> setCurrentScreen(4)
+                            }
                         }
                     }
                 }
                 Scaffold(
                     bottomBar = {
                         CustomBottomBar(
-                            currentScreen,
+                            state.currentScreen,
                             modifier = Modifier.padding(
                                 start = MediumPadding,
                                 end = MediumPadding,
                                 bottom = MediumPadding
                             )
                         ) {
-                            currentScreen = it
+                            if (state.currentScreen != it){
+                                when (it) {
+                                    0 -> navigator?.replace(HomeScreen())
+                                    1 -> navigator?.replace(ShopScreen())
+                                    2 -> navigator?.replace(FavoritesScreen())
+                                    3 -> navigator?.replace(ChatScreen())
+                                    4 -> navigator?.replace(ProfileScreen())
+                                }
+                                viewModel.setCurrentScreen(it)
+                            }
+
+
                         }
                     }
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        Navigator(screen = HomeScreen(),
-                            onBackPressed = {
-                                if(navigator?.canPop == true){
-                                    navigator?.replaceAll(HomeScreen())
-                                }
-                                true
-                            }
-                        ) { navigator ->
+                        Navigator(screen = HomeScreen()) { navigator ->
                             this@MainActivity.navigator = navigator
                             SlideTransition(navigator = navigator)
-                            backPressedState = navigator.canPop
+                            backPressedState = navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }
                         Spacer(
                             modifier = Modifier
@@ -173,23 +155,15 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun onBackButtonPressed(callback: (() -> Boolean)) {
+    private fun onBackButtonPressed(onBackPressed: () -> Unit) {
         onBackPressedDispatcher.addCallback(
             this@MainActivity,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    if (callback()) {
-                        navigator?.pop()
-                        remove()
-                        performBackPress()
-                    }
+                   onBackPressed()
                 }
-            })
+            }
+        )
     }
-
-    fun performBackPress() {
-        onBackPressedDispatcher.onBackPressed()
-    }
-
 
 }

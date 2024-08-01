@@ -80,6 +80,8 @@ dependencies {
     // Navigator
     implementation(libs.voyager.navigator)
     implementation(libs.voyager.transitions)
+    implementation(libs.voyager.screenmodel)
+    implementation(libs.voyager.hilt)
 
     //datastore
     implementation (libs.androidx.datastore.preferences)
