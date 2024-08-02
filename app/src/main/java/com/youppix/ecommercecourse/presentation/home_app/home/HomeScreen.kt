@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.home
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,28 +10,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
-import cafe.adriel.voyager.hilt.getScreenModel
-import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.domain.model.items.FilteringItems
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconItem
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
 import com.youppix.ecommercecourse.presentation.home_app.home.components.HomeScreenContent
+import com.youppix.ecommercecourse.presentation.home_app.search.SearchScreen
 
 class HomeScreen : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
+    @Stable
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -48,15 +48,21 @@ class HomeScreen : Screen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CustomSearchBar(
-                        value = state.searchQuery,
+                        value = "",
                         modifier = Modifier.weight(1f),
-                        onTextCleared = {
-                            viewModel.onEvent(HomeEvent.UpdateSearchQuery(""))
+                        isEnabled = false,
+                        onTextCleared = {},
+                        onSearchClicked = {
+                            navigator.push(
+                                SearchScreen(
+                                    fromSearching = true,
+                                    FilteringItems(
+                                        itemsCat = if (state.categorySelected == 1) null else state.categorySelected
+                                    )
+                                )
+                            )
                         },
-                        onSearchClicked = {},
-                        onTextChange = {
-                            viewModel.onEvent(HomeEvent.UpdateSearchQuery(it))
-                        }
+                        onTextChange = {}
                     )
 
                     CustomIconItem(
@@ -68,14 +74,34 @@ class HomeScreen : Screen {
             }
         ) { innerPadding ->
 
+            HomeScreenContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .animateContentSize(),
+                state = state,
+                goToSearch = { initialDiscount ->
+                    println(
+                        "flash sale items : ${
+                            FilteringItems(
+                                itemsCat = state.categorySelected,
+                                initialDiscount = initialDiscount
+                            )
+                        }"
+                    )
+                    navigator.push(
+                        SearchScreen(
+                            fromSearching = false,
+                            FilteringItems(
+                                itemsCat = if (state.categorySelected == 1) null else state.categorySelected,
+                                initialDiscount = initialDiscount
+                            )
+                        )
+                    )
 
-                HomeScreenContent(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    state = state,
-                    event = viewModel::onEvent
-                )
+                },
+                event = viewModel::onEvent
+            )
 
         }
 

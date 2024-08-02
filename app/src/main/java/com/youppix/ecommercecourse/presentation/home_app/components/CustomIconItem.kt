@@ -12,11 +12,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
@@ -24,15 +26,16 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
+@Stable
 @Composable
 fun CustomIconItem(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
-    hasNotification : Boolean = false,
+    hasNotification: Boolean = false,
     onCLick: () -> Unit
 ) {
 
-    Box(modifier = modifier){
+    Box(modifier = modifier) {
         Image(imageVector = imageVector, contentDescription = null,
             Modifier
                 .size(SearchBarHeight)
@@ -56,7 +59,7 @@ fun CustomIconItem(
                     .size(17.5.dp.minus(ExtraSmallPadding2))
                     .offset(x = (-17).dp, y = 9.dp)
                     .align(Alignment.TopEnd)
-                    .padding(top = ExtraSmallPadding , start = ExtraSmallPadding)
+                    .padding(top = ExtraSmallPadding, start = ExtraSmallPadding)
                     .clip(CircleShape)
                     .background(Color.Red)
                     .border(1.dp, color = Color.White, shape = CircleShape)
@@ -67,7 +70,33 @@ fun CustomIconItem(
     }
 
 
+}
 
+@Stable
+@Composable
+fun CustomIconItem(
+    modifier: Modifier = Modifier,
+    painter: Painter,
+    onCLick: () -> Unit
+) {
 
+    Box(modifier = modifier) {
+        Image(painter = painter, contentDescription = null,
+            Modifier
+                .size(SearchBarHeight)
+                .clip(CircleShape)
+                .clickable {
+                    onCLick()
+                }
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = CircleShape
+                )
+                .padding(
+                    SmallPadding.plus(ExtraSmallPadding2)
+                ),
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.background)
+        )
+    }
 
 }

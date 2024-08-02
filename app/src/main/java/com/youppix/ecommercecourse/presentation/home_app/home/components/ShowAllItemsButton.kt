@@ -20,8 +20,9 @@ import com.youppix.ecommercecourse.common.Dimens
 
 @Composable
 fun BoxScope.ShowAllItemsButton(
-    showButton : Boolean
-){
+    showButton: Boolean,
+    onClick: () -> Unit
+) {
     AnimatedVisibility(
         visible = showButton,
         enter = fadeIn() + slideInVertically(),
@@ -33,7 +34,7 @@ fun BoxScope.ShowAllItemsButton(
     ) {
         Button(
             onClick = {
-                // Navigate to the "See All Items" page
+                onClick()
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary.copy(0.9f),

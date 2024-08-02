@@ -3,20 +3,16 @@ package com.youppix.ecommercecourse.presentation.home_app.home
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.model.categories.toCategories
 import com.youppix.ecommercecourse.domain.model.items.toItems
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 
 class HomeViewModel @Inject constructor(
@@ -33,25 +29,25 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event : HomeEvent){
-        when(event){
-            is HomeEvent.UpdateSearchQuery -> {
-                updateSearchQuery(event.value)
-            }
-            is HomeEvent.UpdateCategorySelected->{
+    fun onEvent(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.UpdateCategorySelected -> {
                 updateCategorySelected(event.id)
             }
-            is HomeEvent.GetHomeData->{
+
+            is HomeEvent.GetHomeData -> {
                 screenModelScope.launch {
                     getHomeData()
                 }
             }
-            is HomeEvent.GetAllItems->{
+
+            is HomeEvent.GetAllItems -> {
                 screenModelScope.launch {
                     getAllItems()
                 }
             }
-            is HomeEvent.GetItemsByCategory->{
+
+            is HomeEvent.GetItemsByCategory -> {
                 screenModelScope.launch {
                     getItemsByCategory(event.category)
                 }
@@ -60,11 +56,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateSearchQuery(value: String) {
-        _homeState.value = homeState.value.copy(searchQuery = value)
-    }
 
-    private fun updateCategorySelected(id : Int) {
+    private fun updateCategorySelected(id: Int) {
         _homeState.value = homeState.value.copy(
             categorySelected = id
         )
@@ -90,7 +83,7 @@ class HomeViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _homeState.value = homeState.value.copy(
-                        isHomeLoading = false ,
+                        isHomeLoading = false,
                         getHomeDataError = result.message
                     )
                 }

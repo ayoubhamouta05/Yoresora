@@ -29,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
@@ -47,7 +46,7 @@ fun CustomSearchBar(
     elevation: Dp = ExtraSmallPadding2,
     cornerShape: Shape = CircleShape,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
-    onTextCleared : () -> Unit ,
+    onTextCleared: () -> Unit,
     onSearchClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
 ) {
@@ -90,16 +89,24 @@ fun CustomSearchBar(
             ),
             keyboardActions = KeyboardActions(onSearch = { onSearchClicked() }),
             singleLine = true,
-            cursorBrush = Brush.verticalGradient(colors = listOf(MaterialTheme.colorScheme.primary,MaterialTheme.colorScheme.primary))
+            cursorBrush = Brush.verticalGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.primary
+                )
+            )
         )
         Box(
             modifier = Modifier
                 .weight(1f)
                 .wrapContentSize()
                 .background(color = Color.Transparent, shape = CircleShape)
-                .clickable {
+                .clickable() {
                     if (value.isNotEmpty()) {
                         onTextCleared()
+                    }
+                    if (!isEnabled) {
+                        onSearchClicked()
                     }
                 },
         ) {

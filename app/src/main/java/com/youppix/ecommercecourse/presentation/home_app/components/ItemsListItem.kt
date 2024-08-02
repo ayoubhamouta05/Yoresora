@@ -1,5 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -31,6 +34,7 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Urls.IMAGES_URL
 import com.youppix.ecommercecourse.domain.model.items.Item
@@ -55,74 +59,107 @@ fun ItemsListItem(
         .build()
 
     val isArabic = Locale.getDefault().language == "ar"
-    Card(
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MediumPadding)
-            .sizeIn(maxHeight = 300.dp),
-        shape = RoundedCornerShape(26.dp),
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 4.dp,
-        ),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        )
+            .sizeIn(maxHeight = 300.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = CenterHorizontally
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = MediumPadding),
+            shape = RoundedCornerShape(26.dp),
+            elevation = CardDefaults.elevatedCardElevation(
+                defaultElevation = 4.dp,
+            ),
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            )
         ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = CenterHorizontally
+            ) {
 
-            AsyncImage(
-                model = imageRequest,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+                AsyncImage(
+                    model = imageRequest,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .sizeIn(
+                            maxWidth = (LocalConfiguration.current.screenWidthDp.dp / 2).minus(
+                                MediumPadding
+                            )
+                        )
+                        .weight(1f)
+                        .align(CenterHorizontally)
+                )
+
+                Text(
+                    text = if (isArabic) item.itemNameAr else item.itemName,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    modifier = Modifier.padding(horizontal = ExtraSmallPadding),
+                    maxLines = 2,
+                )
+
+                Row(
+                    modifier = Modifier.padding(start = ExtraSmallPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = item.itemPrice.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                        ),
+                    )
+                    Text(
+                        text = stringResource(id = R.string.da),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(horizontal = ExtraSmallPadding),
+                    )
+                    Icon(
+                        painterResource(id = R.drawable.ic_money_cash),
+                        contentDescription = null,
+                        Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+
+        if (item.itemDiscount > 1) {
+            Row(
                 modifier = Modifier
-                    .sizeIn(
-                        maxWidth = (LocalConfiguration.current.screenWidthDp.dp / 2).minus(
+                    .align(TopEnd)
+                    .padding(ExtraSmallPadding)
+                    .background(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.4f), RoundedCornerShape(
                             MediumPadding
                         )
                     )
-                    .weight(1f)
-                    .align(CenterHorizontally)
-            )
-
-            Text(
-                text = if(isArabic) item.itemNameAr else item.itemName, style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.SemiBold
-                ) ,
-                modifier = Modifier.padding( horizontal = ExtraSmallPadding),
-                maxLines = 2,
-            )
-
-            Row(
-                modifier = Modifier.padding( start = ExtraSmallPadding),
+                    .padding(ExtraSmallPadding2),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = item.itemPrice.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                    ),
-
-                )
-                Text(
-                    text = stringResource(id = R.string.da), style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.Black,
+                    text = "${item.itemDiscount}%",
+                    style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold
                     ),
-                    modifier = Modifier.padding(horizontal = ExtraSmallPadding),
-
+                    color = MaterialTheme.colorScheme.primary,
                 )
-
                 Icon(
-                    painterResource(id = R.drawable.ic_money_cash), contentDescription = null,
-                    Modifier.size(16.dp),
+                    painterResource(id = R.drawable.ic_discount),
+                    contentDescription = null,
+                    Modifier.size(17.dp),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
-
         }
     }
 }

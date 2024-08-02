@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.transitions.SlideTransition
+import cafe.adriel.voyager.transitions.FadeTransition
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
@@ -71,10 +71,10 @@ class MainActivity : ComponentActivity() {
 
             onBackButtonPressed {
                 showDialog = !backPressedState
-                if ( navigator!!.lastItem.javaClass.name != HomeScreen::class.java.name ){
+                if (navigator!!.lastItem.javaClass.name != HomeScreen::class.java.name) {
                     navigator!!.replace(HomeScreen())
                     showDialog = false
-                }else{
+                } else {
                     showDialog = true
                 }
             }
@@ -104,26 +104,42 @@ class MainActivity : ComponentActivity() {
                                 bottom = MediumPadding
                             )
                         ) {
-                            if (state.currentScreen != it){
-                                when (it) {
-                                    0 -> navigator?.replace(HomeScreen())
-                                    1 -> navigator?.replace(ShopScreen())
-                                    2 -> navigator?.replace(FavoritesScreen())
-                                    3 -> navigator?.replace(ChatScreen())
-                                    4 -> navigator?.replace(ProfileScreen())
+                            when (it) {
+                                0 -> {
+                                    if (navigator?.lastItem?.javaClass?.name != HomeScreen::class.java.name)
+                                        navigator?.replaceAll(HomeScreen())
                                 }
-                                viewModel.setCurrentScreen(it)
+
+                                1 -> {
+                                    if (navigator?.lastItem?.javaClass?.name != ShopScreen::class.java.name)
+                                        navigator?.replace(ShopScreen())
+                                }
+
+                                2 -> {
+                                    if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                        navigator?.replace(FavoritesScreen())
+                                }
+
+                                3 -> {
+                                    if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                        navigator?.replace(ChatScreen())
+                                }
+
+                                4 -> {
+                                    if (navigator?.lastItem?.javaClass?.name != ProfileScreen::class.java.name)
+                                        navigator?.replace(ProfileScreen())
+                                }
                             }
-
-
+                            viewModel.setCurrentScreen(it)
                         }
                     }
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
                         Navigator(screen = HomeScreen()) { navigator ->
                             this@MainActivity.navigator = navigator
-                            SlideTransition(navigator = navigator)
-                            backPressedState = navigator.lastItem.javaClass.name != HomeScreen::class.java.name
+                            FadeTransition(navigator = navigator)
+                            backPressedState =
+                                navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }
                         Spacer(
                             modifier = Modifier
@@ -160,7 +176,7 @@ class MainActivity : ComponentActivity() {
             this@MainActivity,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                   onBackPressed()
+                    onBackPressed()
                 }
             }
         )

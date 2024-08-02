@@ -9,6 +9,7 @@ import com.youppix.ecommercecourse.data.remote.home.HomeService
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.home.HomeRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
+import com.youppix.ecommercecourse.data.repository.search.SearchRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
 import com.youppix.ecommercecourse.domain.manager.LanguageManager
 import com.youppix.ecommercecourse.domain.manager.LocaleUserEntryManager
@@ -16,6 +17,7 @@ import com.youppix.ecommercecourse.domain.manager.NetworkConnectivityManager
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.home.HomeRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
+import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
 import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
 import com.youppix.ecommercecourse.domain.useCases.appEntry.GetAppEntryUseCase
@@ -39,6 +41,9 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
+import com.youppix.ecommercecourse.domain.useCases.search.GetItemsByFilteringUseCase
+import com.youppix.ecommercecourse.domain.useCases.search.SearchUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -84,13 +89,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLoginUseCases(loginRepository: LoginRepository , localeUserEntryManager: LocaleUserEntryManager?=null): LoginUseCases {
+    fun provideLoginUseCases(
+        loginRepository: LoginRepository,
+        localeUserEntryManager: LocaleUserEntryManager? = null
+    ): LoginUseCases {
         return LoginUseCases(
             checkEmail = CheckEmailUseCase(loginRepository),
             checkPassword = CheckPasswordUseCase(loginRepository),
             login = LoginUseCase(loginRepository),
-            saveAppEntry = if (localeUserEntryManager!=null) SaveAppEntryUseCase(localeUserEntryManager) else null
-            )
+            saveAppEntry = if (localeUserEntryManager != null) SaveAppEntryUseCase(
+                localeUserEntryManager
+            ) else null
+        )
     }
 
     // ForgotPassword
@@ -198,7 +208,7 @@ object AppModule {
     //Home Service
     @Provides
     @Singleton
-    fun provideHomeService(client: HttpClient) : HomeService =
+    fun provideHomeService(client: HttpClient): HomeService =
         HomeService(client)
 
     @Provides
@@ -209,11 +219,25 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesHomeUseCases(homeRepository: HomeRepository) : HomeUseCases =
+    fun providesHomeUseCases(homeRepository: HomeRepository): HomeUseCases =
         HomeUseCases(
-            getHomeData = GetHomeDataUseCase(homeRepository) ,
-            getAllItems = GetAllItemsUseCase(homeRepository) ,
+            getHomeData = GetHomeDataUseCase(homeRepository),
+            getAllItems = GetAllItemsUseCase(homeRepository),
             getItemsByCategory = GetItemsByCategoryUseCase(homeRepository)
+        )
+
+    /** Search */
+    @Provides
+    @Singleton
+    fun providesSearchRepository(homeService: HomeService): SearchRepository =
+        SearchRepositoryImpl(homeService)
+
+    @Provides
+    @Singleton
+    fun providesSearchUseCases(searchRepository: SearchRepository): SearchUseCases =
+        SearchUseCases(
+            getAllCategories = GetAllCategoriesUseCase(searchRepository),
+            getItemsByFiltering = GetItemsByFilteringUseCase(searchRepository),
         )
 
 
