@@ -68,4 +68,10 @@
     <string name="details">التفاصيل</string>
     <string name="da">دج</string>
     <string name="seeAllItems">رؤية جميع العناصر</string>
+    <string name="resetFilter">إعادة تعيين</string>
+    <string name="choseColors">اختر الألوان</string>
+    <string name="selectPrice">حدد السعر</string>
+    <string name="max">الحد الأقصى</string>
+    <string name="min">الحد الأدنى</string>
+    <string name="selectDiscount">حدد الخصم</string>
 </resources>

@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ItemsResponse(
     val data: List<ItemData>?,
-    val message: String,
+    val message: String="",
+    val maxPrice: Int ?= null,
+    val minPrice : Int? = null,
     val status: String
 )

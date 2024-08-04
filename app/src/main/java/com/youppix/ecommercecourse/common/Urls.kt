@@ -16,6 +16,7 @@ object Urls {
     /** home urls */
     const val HOME_URL = "$BASE_URL/home.php"
     const val CATEGORIES_URL = "$BASE_URL/categories/categories.php"
+    const val COlORS_URL = "$BASE_URL/colors/colors.php"
     const val ALL_ITEMS_URL = "$BASE_URL/items/items.php"
     const val ITEMS_BY_CATEGORY_URL = "$BASE_URL/items/itemsByCategory.php"
     const val ITEMS_BY_FILTERING_URL = "$BASE_URL/items/itemsByFiltering.php"

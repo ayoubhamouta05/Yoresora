@@ -46,7 +46,8 @@ fun CustomSearchBar(
     elevation: Dp = ExtraSmallPadding2,
     cornerShape: Shape = CircleShape,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
-    onTextCleared: () -> Unit,
+    onTextCleared: () -> Unit = {},
+    onBoxCLicked:() -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
 ) {
@@ -55,7 +56,7 @@ fun CustomSearchBar(
             .height(height)
             .shadow(elevation = elevation, shape = cornerShape)
             .background(color = backgroundColor, shape = cornerShape)
-            .clickable { onSearchClicked() },
+            .clickable { onBoxCLicked() },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BasicTextField(
@@ -106,7 +107,7 @@ fun CustomSearchBar(
                         onTextCleared()
                     }
                     if (!isEnabled) {
-                        onSearchClicked()
+                        onBoxCLicked()
                     }
                 },
         ) {

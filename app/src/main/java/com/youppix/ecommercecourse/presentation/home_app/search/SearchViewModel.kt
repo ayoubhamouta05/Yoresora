@@ -10,6 +10,11 @@ import com.youppix.ecommercecourse.domain.model.categories.toCategories
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
 import com.youppix.ecommercecourse.domain.model.items.toItems
 import com.youppix.ecommercecourse.domain.useCases.search.SearchUseCases
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -29,23 +34,43 @@ class SearchViewModel @Inject constructor(
     )
     val state: State<SearchState> = _state
 
+    private var _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
     init {
         screenModelScope.launch {
             getAllCategories()
             getItemsByFiltering(state.value.filteringItems)
+            getAllColors()
         }
     }
 
 
+    @OptIn(FlowPreview::class)
     private fun updateSearchQuery(value: String) {
-        _state.value = state.value.copy(searchQuery = value)
+        _searchQuery.value = value
+
+        screenModelScope.launch {
+            searchQuery.debounce(500).collectLatest { query ->
+                _state.value = state.value.copy(
+                    filteringItems = state.value.filteringItems.copy(
+                        itemsName = query
+                    )
+                )
+                getItemsByFiltering(state.value.filteringItems)
+            }
+        }
+
     }
 
-    private fun updateFilteringItems(filteringItems: FilteringItems){
+    private fun updateFilteringItems(filteringItems: FilteringItems , sendRequest : Boolean) {
         _state.value = state.value.copy(filteringItems = filteringItems)
-        screenModelScope.launch {
-            getItemsByFiltering(state.value.filteringItems)
+        if (sendRequest){
+            screenModelScope.launch {
+                getItemsByFiltering(state.value.filteringItems)
+            }
         }
+
     }
 
     fun onEvent(event: SearchEvent) {
@@ -58,8 +83,8 @@ class SearchViewModel @Inject constructor(
                 updateCategorySelected(event.id)
             }
 
-            is SearchEvent.UpdateFilteringItems ->{
-                updateFilteringItems(event.filteringItems)
+            is SearchEvent.UpdateFilteringItems -> {
+                updateFilteringItems(event.filteringItems , event.sendRequest)
             }
 
             is SearchEvent.GetAllCategories -> {
@@ -130,6 +155,7 @@ class SearchViewModel @Inject constructor(
 
 
     private suspend fun getItemsByFiltering(filteringItems: FilteringItems) {
+        Log.d("searchViewModel", "getItemsByFiltering : $filteringItems")
         searchUseCases.getItemsByFiltering(filteringItems).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -146,14 +172,54 @@ class SearchViewModel @Inject constructor(
                 }
 
                 is Resource.Successful -> {
+                    val maxPrice = result.data?.maxPrice
+                    if (maxPrice != null && maxPrice < state.value.filteringItems.finalPrice){
+                        _state.value = state.value.copy(
+                            filteringItems = state.value.filteringItems.copy(
+                                finalPrice =  maxPrice
+                            )
+                        )
+                    }
+                    val minPrice = result.data?.minPrice
+                    if (minPrice != null && minPrice > state.value.filteringItems.initialPrice){
+                        _state.value = state.value.copy(
+                            filteringItems = state.value.filteringItems.copy(
+                                initialPrice =  minPrice
+                            )
+                        )
+                    }
                     _state.value = state.value.copy(
+                        filteringItems = state.value.filteringItems.copy(
+                            maxPrice = result.data?.maxPrice?: state.value.filteringItems.maxPrice,
+                            minPrice = result.data?.minPrice?: state.value.filteringItems.minPrice
+                        ),
                         itemsLoading = false,
                         getItemsError = null,
                         items = result.data?.data?.toItems() ?: emptyList()
                     )
                 }
             }
-            Log.d("SearchViewModel", "items result : ${result.data}")
+            Log.d("searchViewModel", "getItemsByFiltering : result : ${result.data}")
         }.launchIn(screenModelScope)
     }
+
+
+    private suspend fun getAllColors(){
+        searchUseCases.getAllColors().onEach { result->
+            when (result) {
+                is Resource.Loading -> {}
+
+                is Resource.Error -> {}
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        allColors = result.data?: emptyList()
+                    )
+                }
+            }
+            Log.d("SearchViewModel", "items result : ${result.data}")
+        }.launchIn(screenModelScope)
+
+    }
+
 }

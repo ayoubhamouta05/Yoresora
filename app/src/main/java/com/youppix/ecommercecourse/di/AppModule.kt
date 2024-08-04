@@ -42,6 +42,7 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCas
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
+import com.youppix.ecommercecourse.domain.useCases.search.GetAllColorsUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetItemsByFilteringUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.SearchUseCases
 import dagger.Module
@@ -238,6 +239,7 @@ object AppModule {
         SearchUseCases(
             getAllCategories = GetAllCategoriesUseCase(searchRepository),
             getItemsByFiltering = GetItemsByFilteringUseCase(searchRepository),
+            getAllColors = GetAllColorsUseCase(searchRepository)
         )
 
 

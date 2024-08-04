@@ -12,7 +12,10 @@ sealed class SearchEvent {
     data class UpdateCategorySelected(val id: Int) : SearchEvent()
 
     @Immutable
-    data class UpdateFilteringItems(val filteringItems: FilteringItems) : SearchEvent()
+    data class UpdateFilteringItems(
+        val filteringItems: FilteringItems,
+        val sendRequest: Boolean = true
+    ) : SearchEvent()
 
     @Immutable
     data object GetAllCategories : SearchEvent()

@@ -1,0 +1,16 @@
+package com.youppix.ecommercecourse.domain.useCases.search
+
+import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.items.ColorData
+import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
+import kotlinx.coroutines.flow.Flow
+
+class GetAllColorsUseCase(
+    private val searchRepository: SearchRepository
+) {
+
+    suspend operator fun invoke(): Flow<Resource<List<ColorData>>> {
+        return searchRepository.getAllColors()
+    }
+
+}

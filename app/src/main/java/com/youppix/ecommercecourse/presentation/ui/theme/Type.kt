@@ -35,7 +35,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 18.sp,
         lineHeight = 20.sp
     ),
      //Other default text styles to override

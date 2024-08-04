@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -92,6 +94,10 @@ fun ItemsList(
     state: SearchState,
     event: (SearchEvent) -> Unit
 ) {
+
+    LaunchedEffect(state.items , state.itemsLoading) {
+        Log.d("ItemsList" , "ItemsList: ${state.itemsLoading}")
+    }
     val screenSize: Dp = LocalConfiguration.current.screenWidthDp.dp
     if (state.getItemsError != null) {
         Box(

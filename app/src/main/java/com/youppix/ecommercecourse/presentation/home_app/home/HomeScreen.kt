@@ -51,8 +51,7 @@ class HomeScreen : Screen {
                         value = "",
                         modifier = Modifier.weight(1f),
                         isEnabled = false,
-                        onTextCleared = {},
-                        onSearchClicked = {
+                        onBoxCLicked = {
                             navigator.push(
                                 SearchScreen(
                                     fromSearching = true,
@@ -61,8 +60,7 @@ class HomeScreen : Screen {
                                     )
                                 )
                             )
-                        },
-                        onTextChange = {}
+                        }
                     )
 
                     CustomIconItem(

@@ -21,9 +21,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,16 +51,18 @@ import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconIt
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsList
 import com.youppix.ecommercecourse.presentation.home_app.search.components.CategoriesListFlowRow
+import com.youppix.ecommercecourse.presentation.home_app.search.components.FilteringBottomSheet
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
 class SearchScreen(
     private val fromSearching: Boolean = false,
-    private val filteringItems: FilteringItems
+    private var filteringItems: FilteringItems?=null
 ) : Screen {
     @OptIn(
         ExperimentalFoundationApi::class,
-        ExperimentalMaterial3Api::class
     )
     @Stable
     @Composable
@@ -65,6 +70,7 @@ class SearchScreen(
         val navigator = LocalNavigator.currentOrThrow
         val viewModel: SearchViewModel = navigator.getNavigatorScreenModel()
         val state = viewModel.state.value
+        val searchQuery by viewModel.searchQuery.collectAsState()
         val isArabic = Locale.getDefault().language == "ar"
         val lazyListState = rememberLazyListState()
 
@@ -80,7 +86,12 @@ class SearchScreen(
                 focusRequester.requestFocus()
                 keyboardController?.show()
             }
-            viewModel.onEvent(SearchEvent.UpdateFilteringItems(filteringItems))
+            filteringItems?.let {
+                viewModel.onEvent(SearchEvent.UpdateFilteringItems(it))
+                filteringItems = null
+            }
+
+
         }
 
         Box(
@@ -98,14 +109,22 @@ class SearchScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        CustomSearchBar(value = state.searchQuery,
+                        CustomSearchBar(value = searchQuery,
                             modifier = Modifier
                                 .weight(1f)
                                 .focusRequester(focusRequester),
                             onTextCleared = {
                                 viewModel.onEvent(SearchEvent.UpdateSearchQuery(""))
                             },
-                            onSearchClicked = {},
+                            onSearchClicked = {
+                                viewModel.onEvent(
+                                    SearchEvent.UpdateFilteringItems(
+                                        state.filteringItems.copy(
+                                            itemsName = searchQuery
+                                        )
+                                    )
+                                )
+                            },
                             onTextChange = {
                                 viewModel.onEvent(SearchEvent.UpdateSearchQuery(it))
                             })
@@ -131,13 +150,15 @@ class SearchScreen(
 
                     stickyHeader {
                         if (state.categoriesLoading) {
-                            LazyRow(modifier = Modifier
-                                .fillMaxSize()
-                                .padding(
-                                    start = Dimens.SmallPadding.plus(Dimens.ExtraSmallPadding2),
-                                    bottom = Dimens.SmallPadding,
-                                ),
-                                contentPadding = PaddingValues(horizontal = Dimens.ExtraSmallPadding),) {
+                            LazyRow(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(
+                                        start = Dimens.SmallPadding.plus(Dimens.ExtraSmallPadding2),
+                                        bottom = Dimens.SmallPadding,
+                                    ),
+                                contentPadding = PaddingValues(horizontal = Dimens.ExtraSmallPadding),
+                            ) {
                                 items(4) {
                                     CategoriesItemShimmerEffect()
                                 }
@@ -161,16 +182,12 @@ class SearchScreen(
             }
         }
         if (showBottomSheet) {
-            ModalBottomSheet(onDismissRequest = { showBottomSheet = false }) {
-                LazyColumn {
-                    items(16) {
-                        CustomButton(
-                            text = "item : $it", modifier = Modifier.padding(bottom = MediumPadding)
-                        ) {
-                            showBottomSheet = false
-                        }
-                    }
-                }
+            FilteringBottomSheet(
+                allColors = state.allColors,
+                filteringItems = state.filteringItems,
+                event = viewModel::onEvent
+            ) {
+                showBottomSheet = false
             }
         }
 
