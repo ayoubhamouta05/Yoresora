@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopEnd
+import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -59,6 +60,7 @@ fun ItemsListItem(
         .build()
 
     val isArabic = Locale.getDefault().language == "ar"
+    val discountBoxAlignment = if (isArabic) TopStart else TopEnd
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -136,7 +138,7 @@ fun ItemsListItem(
         if (item.itemDiscount > 1) {
             Row(
                 modifier = Modifier
-                    .align(TopEnd)
+                    .align(discountBoxAlignment)
                     .padding(ExtraSmallPadding)
                     .background(
                         MaterialTheme.colorScheme.surface.copy(alpha = 0.4f), RoundedCornerShape(

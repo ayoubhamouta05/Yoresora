@@ -1,10 +1,9 @@
 package com.youppix.ecommercecourse.presentation.home_app.search.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -14,7 +13,6 @@ import com.youppix.ecommercecourse.domain.model.categories.Category
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchEvent
 
-@OptIn(ExperimentalLayoutApi::class)
 @Stable
 @Composable
 fun CategoriesListFlowRow(
@@ -24,8 +22,7 @@ fun CategoriesListFlowRow(
     searchEvent: (SearchEvent) -> Unit
 ) {
 
-
-    FlowRow(
+    LazyRow(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
@@ -34,10 +31,9 @@ fun CategoriesListFlowRow(
                 top = Dimens.SmallPadding,
                 bottom = Dimens.SmallPadding
             )
-
     ) {
-
-        list.forEach { category ->
+        items(list.size){index->
+            val category = list[index]
             CategoriesListItem(
                 name = if (isArabic) category.nameAr else category.name,
                 id = category.id,
@@ -45,7 +41,6 @@ fun CategoriesListFlowRow(
             ) {
                 searchEvent(SearchEvent.UpdateCategorySelected((category.id)))
             }
-
         }
     }
 

@@ -57,7 +57,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class SearchScreen(
+data class SearchScreen(
     private val fromSearching: Boolean = false,
     private var filteringItems: FilteringItems?=null
 ) : Screen {

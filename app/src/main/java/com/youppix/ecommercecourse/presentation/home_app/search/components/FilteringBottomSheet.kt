@@ -45,6 +45,7 @@ import com.youppix.ecommercecourse.domain.model.items.ColorData
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
 import com.youppix.ecommercecourse.presentation.home_app.components.ColorItem
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchEvent
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Stable
@@ -128,10 +129,11 @@ fun SelectDiscountSection(
             Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.min),
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(end = MediumPadding)
+                modifier = Modifier.padding(end = SmallPadding)
             )
             Row(
                 modifier = Modifier
@@ -155,11 +157,11 @@ fun SelectDiscountSection(
                 )
 
             }
-            Spacer(modifier = Modifier.width(MediumPadding * 2))
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.max),
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(end = MediumPadding)
+                modifier = Modifier.padding(end = SmallPadding)
             )
 
             Row(
@@ -184,9 +186,10 @@ fun SelectDiscountSection(
                 )
 
             }
+            Spacer(modifier = Modifier.weight(1f))
         }
         RangeSlider(
-            modifier = Modifier.padding(horizontal = MediumPadding),
+            modifier = Modifier.padding(horizontal = MediumPadding*2),
             value = discountRange,
             valueRange = 0f..100f,
             steps = 9,
@@ -224,7 +227,7 @@ fun SelectPriceSection(
     LaunchedEffect(Unit) {
         priceRange = filteringItems.initialPrice.toFloat()..filteringItems.finalPrice.toFloat()
     }
-
+    val isArabic = Locale.getDefault().language == "ar"
     Text(
         text = stringResource(id = R.string.selectPrice) + " :",
         style = MaterialTheme.typography.titleSmall.copy(
@@ -243,10 +246,11 @@ fun SelectPriceSection(
             Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.min),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(end = MediumPadding)
+                style =  MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(end = SmallPadding)
             )
             Row(
                 modifier = Modifier
@@ -270,11 +274,11 @@ fun SelectPriceSection(
                 )
 
             }
-            Spacer(modifier = Modifier.width(MediumPadding * 2))
+            Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.max),
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(end = MediumPadding)
+                modifier = Modifier.padding(end = SmallPadding)
             )
 
             Row(
@@ -299,9 +303,10 @@ fun SelectPriceSection(
                 )
 
             }
+            Spacer(modifier = Modifier.weight(1f))
         }
         RangeSlider(
-            modifier = Modifier.padding(horizontal = MediumPadding),
+            modifier = Modifier.padding(horizontal = MediumPadding * 2),
             value = priceRange,
             valueRange = filteringItems.minPrice.toFloat()..filteringItems.maxPrice.toFloat(),
             steps = 19,
@@ -386,7 +391,6 @@ private fun ResetConfirmRow(onConfirmCLick: () -> Unit, onResetClick: () -> Unit
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary
                 ),
-                modifier = Modifier.padding(vertical = ExtraSmallPadding2)
             )
         }
 
@@ -403,7 +407,6 @@ private fun ResetConfirmRow(onConfirmCLick: () -> Unit, onResetClick: () -> Unit
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background
                 ),
-                modifier = Modifier.padding(vertical = ExtraSmallPadding2)
             )
         }
 

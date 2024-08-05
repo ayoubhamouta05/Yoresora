@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = value
 
         screenModelScope.launch {
-            searchQuery.debounce(500).collectLatest { query ->
+            searchQuery.debounce(500).distinctUntilChanged().collectLatest { query ->
                 _state.value = state.value.copy(
                     filteringItems = state.value.filteringItems.copy(
                         itemsName = query
@@ -63,9 +64,9 @@ class SearchViewModel @Inject constructor(
 
     }
 
-    private fun updateFilteringItems(filteringItems: FilteringItems , sendRequest : Boolean) {
+    private fun updateFilteringItems(filteringItems: FilteringItems, sendRequest: Boolean) {
         _state.value = state.value.copy(filteringItems = filteringItems)
-        if (sendRequest){
+        if (sendRequest) {
             screenModelScope.launch {
                 getItemsByFiltering(state.value.filteringItems)
             }
@@ -84,7 +85,7 @@ class SearchViewModel @Inject constructor(
             }
 
             is SearchEvent.UpdateFilteringItems -> {
-                updateFilteringItems(event.filteringItems , event.sendRequest)
+                updateFilteringItems(event.filteringItems, event.sendRequest)
             }
 
             is SearchEvent.GetAllCategories -> {
@@ -103,25 +104,14 @@ class SearchViewModel @Inject constructor(
 
     private fun updateCategorySelected(id: Int) {
         _state.value = state.value.copy(
-            filteringItems = state.value.filteringItems.copy(itemsCat = id),
+            filteringItems = state.value.filteringItems.copy(itemsCat = if (id > 1) id else null)
         )
 
         screenModelScope.launch {
-            if (id > 1)
-                getItemsByFiltering(
-                    filteringItems = state.value.filteringItems.copy(
-                        itemsCat = id
-                    )
-                )
-            else
-                getItemsByFiltering(
-                    filteringItems = state.value.filteringItems.copy(
-                        itemsCat = null
-                    )
-                )
-
+            getItemsByFiltering(
+                filteringItems = state.value.filteringItems
+            )
         }
-
     }
 
 
@@ -173,25 +163,25 @@ class SearchViewModel @Inject constructor(
 
                 is Resource.Successful -> {
                     val maxPrice = result.data?.maxPrice
-                    if (maxPrice != null && maxPrice < state.value.filteringItems.finalPrice){
+                    if (maxPrice != null && maxPrice < state.value.filteringItems.finalPrice) {
                         _state.value = state.value.copy(
                             filteringItems = state.value.filteringItems.copy(
-                                finalPrice =  maxPrice
+                                finalPrice = maxPrice
                             )
                         )
                     }
                     val minPrice = result.data?.minPrice
-                    if (minPrice != null && minPrice > state.value.filteringItems.initialPrice){
+                    if (minPrice != null && minPrice > state.value.filteringItems.initialPrice) {
                         _state.value = state.value.copy(
                             filteringItems = state.value.filteringItems.copy(
-                                initialPrice =  minPrice
+                                initialPrice = minPrice
                             )
                         )
                     }
                     _state.value = state.value.copy(
                         filteringItems = state.value.filteringItems.copy(
-                            maxPrice = result.data?.maxPrice?: state.value.filteringItems.maxPrice,
-                            minPrice = result.data?.minPrice?: state.value.filteringItems.minPrice
+                            maxPrice = result.data?.maxPrice ?: state.value.filteringItems.maxPrice,
+                            minPrice = result.data?.minPrice ?: state.value.filteringItems.minPrice
                         ),
                         itemsLoading = false,
                         getItemsError = null,
@@ -204,8 +194,8 @@ class SearchViewModel @Inject constructor(
     }
 
 
-    private suspend fun getAllColors(){
-        searchUseCases.getAllColors().onEach { result->
+    private suspend fun getAllColors() {
+        searchUseCases.getAllColors().onEach { result ->
             when (result) {
                 is Resource.Loading -> {}
 
@@ -213,7 +203,7 @@ class SearchViewModel @Inject constructor(
 
                 is Resource.Successful -> {
                     _state.value = state.value.copy(
-                        allColors = result.data?: emptyList()
+                        allColors = result.data ?: emptyList()
                     )
                 }
             }
