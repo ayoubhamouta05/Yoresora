@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.ItemsListItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeEvent
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeState
@@ -28,6 +29,7 @@ import com.youppix.ecommercecourse.presentation.home_app.search.SearchState
 @Composable
 fun ItemsList(
     state: HomeState,
+    goToDetails : (Item) -> Unit ,
     event: (HomeEvent) -> Unit
 ) {
     val screenSize: Dp = LocalConfiguration.current.screenWidthDp.dp
@@ -80,7 +82,9 @@ fun ItemsList(
                         modifier = Modifier
                             .width(screenSize / 2.5f)
                             .weight(1f)
-                    )
+                    ){ itemSelected ->
+                        goToDetails(itemSelected)
+                    }
                 }
             }
         }
@@ -92,6 +96,7 @@ fun ItemsList(
 @Composable
 fun ItemsList(
     state: SearchState,
+    goToDetails: (Item) -> Unit ,
     event: (SearchEvent) -> Unit
 ) {
 
@@ -146,7 +151,9 @@ fun ItemsList(
                         modifier = Modifier
                             .width(screenSize / 2.5f)
                             .weight(1f)
-                    )
+                    ){ itemSelected ->
+                        goToDetails(itemSelected)
+                    }
                 }
             }
         }

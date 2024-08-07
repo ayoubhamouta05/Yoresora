@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +35,7 @@ import com.youppix.ecommercecourse.presentation.components.StatusBarColor
 import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.home_app.components.shadow
+import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
@@ -68,6 +71,9 @@ class MainActivity : ComponentActivity() {
             var showDialog by remember {
                 mutableStateOf(false)
             }
+            var showBottomBar by remember {
+                mutableStateOf(true)
+            }
 
             onBackButtonPressed {
                 showDialog = !backPressedState
@@ -96,41 +102,43 @@ class MainActivity : ComponentActivity() {
                 }
                 Scaffold(
                     bottomBar = {
-                        CustomBottomBar(
-                            state.currentScreen,
-                            modifier = Modifier.padding(
-                                start = MediumPadding,
-                                end = MediumPadding,
-                                bottom = MediumPadding
-                            )
-                        ) {
-                            when (it) {
-                                0 -> {
-                                    if (navigator?.lastItem?.javaClass?.name != HomeScreen::class.java.name)
-                                        navigator?.replaceAll(HomeScreen())
-                                }
+                        if (showBottomBar) {
+                            CustomBottomBar(
+                                state.currentScreen,
+                                modifier = Modifier.padding(
+                                    start = MediumPadding,
+                                    end = MediumPadding,
+                                    bottom = MediumPadding
+                                )
+                            ) {
+                                when (it) {
+                                    0 -> {
+                                        if (navigator?.lastItem?.javaClass?.name != HomeScreen::class.java.name)
+                                            navigator?.replaceAll(HomeScreen())
+                                    }
 
-                                1 -> {
-                                    if (navigator?.lastItem?.javaClass?.name != ShopScreen::class.java.name)
-                                        navigator?.replace(ShopScreen())
-                                }
+                                    1 -> {
+                                        if (navigator?.lastItem?.javaClass?.name != ShopScreen::class.java.name)
+                                            navigator?.replace(ShopScreen())
+                                    }
 
-                                2 -> {
-                                    if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
-                                        navigator?.replace(FavoritesScreen())
-                                }
+                                    2 -> {
+                                        if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                            navigator?.replace(FavoritesScreen())
+                                    }
 
-                                3 -> {
-                                    if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
-                                        navigator?.replace(ChatScreen())
-                                }
+                                    3 -> {
+                                        if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                            navigator?.replace(ChatScreen())
+                                    }
 
-                                4 -> {
-                                    if (navigator?.lastItem?.javaClass?.name != ProfileScreen::class.java.name)
-                                        navigator?.replace(ProfileScreen())
+                                    4 -> {
+                                        if (navigator?.lastItem?.javaClass?.name != ProfileScreen::class.java.name)
+                                            navigator?.replace(ProfileScreen())
+                                    }
                                 }
+                                viewModel.setCurrentScreen(it)
                             }
-                            viewModel.setCurrentScreen(it)
                         }
                     }
                 ) {
@@ -138,22 +146,27 @@ class MainActivity : ComponentActivity() {
                         Navigator(screen = HomeScreen()) { navigator ->
                             this@MainActivity.navigator = navigator
                             FadeTransition(navigator = navigator)
+                            showBottomBar =
+                                navigator.lastItem.javaClass.name != DetailsScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }
-                        Spacer(
-                            modifier = Modifier
-                                .height(BottomBarHeight)
-                                .fillMaxWidth()
-                                .align(Alignment.BottomCenter)
-                                .shadow(
-                                    MaterialTheme.colorScheme.background,
-                                    offsetY = BottomBarHeight,
-                                    spread = MediumPadding * 2,
-                                    blurRadius = (MediumPadding.value * 1.5).dp
-                                )
-                        )
+                        if (showBottomBar) {
+                            Spacer(
+                                modifier = Modifier
+                                    .height(BottomBarHeight)
+                                    .fillMaxWidth()
+                                    .align(Alignment.BottomCenter)
+                                    .shadow(
+                                        MaterialTheme.colorScheme.background,
+                                        offsetY = BottomBarHeight,
+                                        spread = MediumPadding * 2,
+                                        blurRadius = (MediumPadding.value * 1.5).dp
+                                    )
+                            )
+                        }
                     }
+
                 }
 
                 LeavingAppDialog(

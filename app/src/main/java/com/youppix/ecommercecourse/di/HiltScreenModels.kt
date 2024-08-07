@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.di
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.hilt.ScreenModelKey
+import com.youppix.ecommercecourse.presentation.home_app.details.DetailsViewModel
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeViewModel
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchViewModel
 import dagger.Binds
@@ -25,6 +26,11 @@ abstract class HiltScreenModels {
     @IntoMap
     @ScreenModelKey(SearchViewModel::class)
     abstract fun bindHiltSearchViewModel(searchViewModel: SearchViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(DetailsViewModel::class)
+    abstract fun bindHiltDetailsViewModel(detailsViewModel: DetailsViewModel) : ScreenModel
 
 
 }

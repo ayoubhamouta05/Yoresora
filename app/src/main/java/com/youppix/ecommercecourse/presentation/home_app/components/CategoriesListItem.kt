@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +35,7 @@ fun CategoriesListItem(
     Box(
         modifier = Modifier
             .padding(end = MediumPadding)
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(SmallPadding))
             .clickable {
                 onClick(id - 1) // id's starts from 1 but index starts from 0
             }
@@ -42,6 +43,7 @@ fun CategoriesListItem(
                 color = if (selected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.background
             )
+            .border(0.5.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(SmallPadding))
     ) {
         Text(
             modifier = Modifier.padding(horizontal = MediumPadding, vertical = ExtraSmallPadding),

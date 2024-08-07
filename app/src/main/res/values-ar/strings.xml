@@ -74,4 +74,7 @@
     <string name="max">الحد الأقصى</string>
     <string name="min">الحد الأدنى</string>
     <string name="selectDiscount">حدد الخصم</string>
+    <string name="selectSize">حدد الحجم</string>
+    <string name="totalPrice">السعر الإجمالي</string>
+    <string name="addToCart">أضف إلى السلة</string>
 </resources>

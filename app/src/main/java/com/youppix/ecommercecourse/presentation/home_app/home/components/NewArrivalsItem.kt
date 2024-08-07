@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.home.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -63,6 +66,14 @@ fun NewArrivalsItem(
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val isArabic = Locale.getDefault().language == "ar"
+
+    val brush = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.primary ),
+        start = Offset(1000f, 0f),
+        end = Offset(1000f, 1000f)
+    )
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -75,7 +86,9 @@ fun NewArrivalsItem(
             containerColor = MaterialTheme.colorScheme.surface,
         )
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().background(
+            brush = brush
+        )) {
             Card(
                 modifier = Modifier
                     .width(screenWidth / 2.5f)

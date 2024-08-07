@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 data class ItemData(
     val items_active: Int,
     val items_cat: Int,
-    val items_color: String,
     val items_count: Int,
     val items_date: String,
     val items_desc: String,

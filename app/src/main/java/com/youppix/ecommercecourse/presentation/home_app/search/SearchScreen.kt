@@ -50,6 +50,7 @@ import com.youppix.ecommercecourse.presentation.components.CustomButton
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconItem
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsList
+import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.search.components.CategoriesListFlowRow
 import com.youppix.ecommercecourse.presentation.home_app.search.components.FilteringBottomSheet
 import kotlinx.coroutines.delay
@@ -59,7 +60,7 @@ import java.util.Locale
 
 data class SearchScreen(
     private val fromSearching: Boolean = false,
-    private var filteringItems: FilteringItems?=null
+    private var filteringItems: FilteringItems? = null
 ) : Screen {
     @OptIn(
         ExperimentalFoundationApi::class,
@@ -175,7 +176,12 @@ data class SearchScreen(
                     }
 
                     item {
-                        ItemsList(state = state, event = viewModel::onEvent)
+                        ItemsList(
+                            state = state,
+                            event = viewModel::onEvent,
+                            goToDetails = { itemSelected ->
+                                navigator.push(DetailsScreen(itemSelected))
+                            })
                     }
                 }
 

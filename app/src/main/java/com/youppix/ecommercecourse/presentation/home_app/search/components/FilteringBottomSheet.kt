@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -360,7 +359,7 @@ private fun SelectColorSection(
             ColorItem(
                 modifier = Modifier.padding(ExtraSmallPadding),
                 color = color,
-                filteringItemsColors = filteringItems.colors
+                colorsList = filteringItems.colors
             ) {
                 if (filteringItems.colors.contains(color)) {
                     filteringItems.colors.remove(color)

@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -57,6 +60,14 @@ fun FlashSaleItem(
         .build()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val isArabic = Locale.getDefault().language == "ar"
+
+    val brush = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.primary ),
+        start = Offset(1000f, 0f),
+        end = Offset(1000f, 1000f)
+    )
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -69,7 +80,9 @@ fun FlashSaleItem(
             containerColor = MaterialTheme.colorScheme.surface,
         )
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().drawBehind {
+            drawRect(brush = brush)
+        }) {
             Card(
                 modifier = Modifier
                     .width(screenWidth / 2.5f)
@@ -146,7 +159,7 @@ fun FlashSaleItem(
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
-                        color = Color.Green,
+                        color = Color.Black,
                         modifier = Modifier
                             .padding(horizontal = ExtraSmallPadding2)
                     )
@@ -154,7 +167,7 @@ fun FlashSaleItem(
                         Icon(
                             painterResource(id = R.drawable.ic_discount), contentDescription = null,
                             Modifier.size(17.dp),
-                            tint = Color.Green
+                            tint = Color.Black
                         )
 
 

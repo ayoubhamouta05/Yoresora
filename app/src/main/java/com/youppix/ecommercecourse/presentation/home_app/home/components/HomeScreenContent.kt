@@ -33,6 +33,7 @@ import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.components.FlashSaleItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
@@ -50,6 +51,7 @@ fun HomeScreenContent(
     modifier: Modifier = Modifier,
     state: HomeState,
     goToSearch: (initialDiscount: Int) -> Unit,
+    goToDetails : (Item) -> Unit,
     event: (HomeEvent) -> Unit
 ) {
 
@@ -113,7 +115,7 @@ fun HomeScreenContent(
                         CustomHorizontalPagerFlashSale(
                             items = state.flashSaleItems,
                         ) { itemSelected ->
-                            // Handle item selected
+                            goToDetails(itemSelected)
                         }
                     }
                 }
@@ -131,7 +133,7 @@ fun HomeScreenContent(
                         CustomHorizontalPagerNewArrivals(
                             items = state.newArrivals
                         ) { itemSelected ->
-                            // Handle item selected
+                            goToDetails(itemSelected)
                         }
                     }
                 }
@@ -178,7 +180,7 @@ fun HomeScreenContent(
 
 
                 item {
-                    ItemsList(state = state, event)
+                    ItemsList(state = state,goToDetails = goToDetails , event= event)
                 }
             }
             ShowAllItemsButton(showButton = showButton) {

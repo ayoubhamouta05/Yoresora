@@ -1,26 +1,28 @@
 package com.youppix.ecommercecourse.domain.model.items
 
 import androidx.compose.runtime.Immutable
+import java.io.Serializable
 
 
 @Immutable
 data class Item(
-    val itemId : Int,
-    val itemColor: String,
-    val itemDesc: String,
-    val itemDescAr: String,
-    val itemDiscount: Int,
-    val itemImage: String,
-    val itemName: String,
-    val itemNameAr: String,
-    val itemPrice: Int
-)
+    val itemId : Int = 0,
+    val itemCat : Int = 0,
+    val itemDesc: String ="",
+    val itemDescAr: String ="",
+    val itemDiscount: Int = 0,
+    val itemImage: String = "",
+    val itemName: String = "",
+    val itemNameAr: String = "",
+    val itemPrice: Int = 0
+) : Serializable
 
 
 fun ItemData.toItem(): Item {
     return Item(
         itemId= items_id,
-        itemColor = items_color,
+        itemCat = items_cat,
+
         itemDesc = items_desc,
         itemDescAr = items_desc_ar,
         itemDiscount = items_discount,

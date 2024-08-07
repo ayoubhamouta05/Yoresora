@@ -24,6 +24,7 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconItem
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
+import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.components.HomeScreenContent
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchScreen
 
@@ -96,6 +97,10 @@ class HomeScreen : Screen {
                             )
                         )
                     )
+
+                },
+                goToDetails = { item ->
+                              navigator.push(DetailsScreen(item))
 
                 },
                 event = viewModel::onEvent

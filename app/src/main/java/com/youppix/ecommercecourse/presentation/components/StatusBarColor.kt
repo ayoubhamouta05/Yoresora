@@ -11,11 +11,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
-fun StatusBarColor() {
+fun StatusBarColor(color: Int =  MaterialTheme.colorScheme.background.toArgb()) {
     val view = LocalView.current
     val darkTheme = isSystemInDarkTheme()
 //    val color = if(darkTheme) Color.Black.toArgb() else Color.White.toArgb()
-    val color = MaterialTheme.colorScheme.background.toArgb()
+//    val color = MaterialTheme.colorScheme.background.toArgb()
 
     if (!view.isInEditMode) {
         SideEffect {

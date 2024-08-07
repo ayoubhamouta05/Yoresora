@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,9 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -34,9 +38,11 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
+import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls.IMAGES_URL
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
@@ -46,7 +52,8 @@ import java.util.Locale
 @Composable
 fun ItemsListItem(
     modifier: Modifier = Modifier,
-    item: Item
+    item: Item,
+    onClick: (Item) -> Unit
 ) {
     val context = LocalContext.current
     val imageUrl = IMAGES_URL + item.itemImage
@@ -61,6 +68,14 @@ fun ItemsListItem(
 
     val isArabic = Locale.getDefault().language == "ar"
     val discountBoxAlignment = if (isArabic) TopStart else TopEnd
+
+    val brush = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.primary ),
+        start = Offset(0f, 1000f),
+        end = Offset(2500f, 1000f)
+    )
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -79,7 +94,11 @@ fun ItemsListItem(
             )
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
+                    .clickable {
+                        onClick(item)
+                    }
+                    .background(brush = brush),
                 horizontalAlignment = CenterHorizontally
             ) {
 
@@ -177,12 +196,12 @@ private fun ItemsListItemPreview() {
                 itemNameAr = "اسم",
                 itemImage = "product_example.jpg",
                 itemPrice = 3500,
-                itemColor = "",
                 itemDiscount = 0,
                 itemDesc = "",
                 itemDescAr = "",
-                itemId = 0
+                itemId = 0,
+                itemCat = 0
             )
-        )
+        ) {}
     }
 }

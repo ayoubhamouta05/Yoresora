@@ -20,5 +20,6 @@ object Urls {
     const val ALL_ITEMS_URL = "$BASE_URL/items/items.php"
     const val ITEMS_BY_CATEGORY_URL = "$BASE_URL/items/itemsByCategory.php"
     const val ITEMS_BY_FILTERING_URL = "$BASE_URL/items/itemsByFiltering.php"
+    const val ITEM_DETAILS_URL = "$BASE_URL/details/details.php"
 
 }
