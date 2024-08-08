@@ -39,7 +39,7 @@ fun ColorItem(
 
     Box(
         modifier = modifier
-            .size(40.dp)
+            .size(30.dp)
             .clip(CircleShape)
             .clickable {
                 onClick()
@@ -49,7 +49,7 @@ fun ColorItem(
                 color = colorConverted.copy(alpha = if (selected) 0.2f else 1f),
                 shape = CircleShape
             )
-            .border(width = SmallPadding, color = colorConverted, shape = CircleShape)
+            .border(width = 8.dp, color = colorConverted, shape = CircleShape)
 
     )
 }
@@ -67,7 +67,7 @@ fun ColorItemWithId(
     Box(
         modifier = modifier
             .padding(end = ExtraSmallPadding)
-            .size(40.dp)
+            .size(30.dp)
             .clip(CircleShape)
             .clickable {
                 onClick()
@@ -76,7 +76,7 @@ fun ColorItemWithId(
                 color = colorConverted.copy(alpha = if (selected) 0.2f else 1f),
                 shape = CircleShape
             )
-            .border(width = SmallPadding, color = colorConverted, shape = CircleShape)
+            .border(width = 8.dp, color = colorConverted, shape = CircleShape)
 
     )
 }

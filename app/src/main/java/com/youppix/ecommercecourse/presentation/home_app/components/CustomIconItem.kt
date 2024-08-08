@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 
 @Stable
 @Composable
@@ -96,6 +99,37 @@ fun CustomIconItem(
                     SmallPadding.plus(ExtraSmallPadding2)
                 ),
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.background)
+        )
+    }
+
+}
+
+
+@Stable
+@Composable
+fun CustomIconBack(
+    modifier: Modifier = Modifier,
+    backgroundColor : Color= MaterialTheme.colorScheme.background,
+    iconColor : Color= MaterialTheme.colorScheme.onBackground,
+    onCLick: () -> Unit
+) {
+
+    Box(modifier = modifier) {
+        Image(imageVector = Icons.Default.ArrowBack, contentDescription = null,
+            Modifier
+                .size(SocialMediaItemSize)
+                .clip(CircleShape)
+                .clickable {
+                    onCLick()
+                }
+                .background(
+                    backgroundColor,
+                    shape = CircleShape
+                )
+                .padding(
+                    SmallPadding
+                ),
+            colorFilter = ColorFilter.tint(color = iconColor)
         )
     }
 

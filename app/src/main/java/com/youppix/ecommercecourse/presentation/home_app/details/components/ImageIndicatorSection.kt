@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.details.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -58,87 +59,93 @@ fun ImageIndicatorSection(
     val scope = rememberCoroutineScope()
     var showAllItemsInPager by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
         Card(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(vertical = Dimens.SmallPadding, horizontal = Dimens.MediumPadding * 2)
+                .padding(bottom = Dimens.SmallPadding)
+                .padding(horizontal = Dimens.MediumPadding * 2)
                 .clip(RoundedCornerShape(Dimens.SmallPadding))
-                .align(Alignment.Center),
+                .align(Alignment.Center)
+                .animateContentSize(),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             )
         ) {
-            LazyRow(
-                modifier = Modifier
-                    .padding(vertical = Dimens.ExtraSmallPadding)
-                    .padding(start = Dimens.ExtraSmallPadding)
-                    .wrapContentWidth()
-                    .clip(RoundedCornerShape(Dimens.SmallPadding))
-                    .height(50.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                items(if (!showAllItemsInPager && state.details.images.size > 5) 5 else state.details.images.size,
-                    key = { state.details.images[it] }) { index ->
-                    val imageRequest = ImageRequest.Builder(context)
-                        .data(Urls.IMAGES_URL + state.details.images[index])
-                        .dispatcher(Dispatchers.IO).diskCachePolicy(CachePolicy.ENABLED)
-                        .memoryCachePolicy(CachePolicy.ENABLED).build()
+            if (state.details.images.isNotEmpty()) {
+                LazyRow(
+                    modifier = Modifier
+                        .padding(vertical = Dimens.ExtraSmallPadding)
+                        .padding(start = Dimens.ExtraSmallPadding)
+                        .wrapContentWidth()
+                        .clip(RoundedCornerShape(Dimens.SmallPadding))
+                        .height(50.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    items(if (!showAllItemsInPager && state.details.images.size > 5) 5 else state.details.images.size,
+                        key = { state.details.images[it] }) { index ->
+                        val imageRequest = ImageRequest.Builder(context)
+                            .data(Urls.IMAGES_URL + state.details.images[index])
+                            .dispatcher(Dispatchers.IO).diskCachePolicy(CachePolicy.ENABLED)
+                            .memoryCachePolicy(CachePolicy.ENABLED).build()
 
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .padding(end = Dimens.ExtraSmallPadding)
-                            .wrapContentSize()
-                    ) {
-                        AsyncImage(
-                            model = imageRequest,
-                            contentDescription = null,
-                            contentScale = ContentScale.FillWidth,
+                        Box(
+                            contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .size(50.dp)
-                                .clip(RoundedCornerShape(Dimens.SmallPadding))
-                                .clickable {
-                                    scope.launch {
-                                        pagerState.animateScrollToPage(index)
-                                    }
-                                },
-                            colorFilter = if (index == pagerState.currentPage) ColorFilter.tint(
-                                Color.Gray, BlendMode.Modulate
-                            )
-                            else null
-                        )
-
-                        if (index == 4 && !showAllItemsInPager) {
-                            Box(
+                                .padding(end = Dimens.ExtraSmallPadding)
+                                .wrapContentSize()
+                        ) {
+                            AsyncImage(
+                                model = imageRequest,
+                                contentDescription = null,
+                                contentScale = ContentScale.FillWidth,
                                 modifier = Modifier
                                     .size(50.dp)
-                                    .background(
-                                        Color.Gray.copy(alpha = 0.5f),
-                                        shape = RoundedCornerShape(Dimens.SmallPadding)
-                                    )
+                                    .clip(RoundedCornerShape(Dimens.SmallPadding))
                                     .clickable {
-                                        showAllItemsInPager = true
-                                    }, contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    modifier = Modifier.align(Alignment.Center),
-                                    text = "+ ${state.details.images.size - 5}",
-                                    style = MaterialTheme.typography.bodyLarge.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.background
-                                    ),
-                                    textAlign = TextAlign.Center
-
+                                        scope.launch {
+                                            pagerState.animateScrollToPage(index)
+                                        }
+                                    },
+                                colorFilter = if (index == pagerState.currentPage) ColorFilter.tint(
+                                    Color.Gray, BlendMode.Modulate
                                 )
+                                else null
+                            )
+
+                            if (index == 4 && !showAllItemsInPager) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(50.dp)
+                                        .background(
+                                            Color.Gray.copy(alpha = 0.5f),
+                                            shape = RoundedCornerShape(Dimens.SmallPadding)
+                                        )
+                                        .clickable {
+                                            showAllItemsInPager = true
+                                        }, contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        modifier = Modifier.align(Alignment.Center),
+                                        text = "+ ${state.details.images.size - 5}",
+                                        style = MaterialTheme.typography.bodyLarge.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.background
+                                        ),
+                                        textAlign = TextAlign.Center
+
+                                    )
+                                }
                             }
+
                         }
 
+
                     }
-
-
                 }
             }
         }

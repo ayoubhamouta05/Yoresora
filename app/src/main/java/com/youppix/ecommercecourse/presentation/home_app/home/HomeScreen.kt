@@ -100,7 +100,7 @@ class HomeScreen : Screen {
 
                 },
                 goToDetails = { item ->
-                              navigator.push(DetailsScreen(item))
+                    navigator.push(DetailsScreen(item, true))
 
                 },
                 event = viewModel::onEvent

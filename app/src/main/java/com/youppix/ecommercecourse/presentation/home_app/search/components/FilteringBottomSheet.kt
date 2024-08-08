@@ -112,7 +112,7 @@ fun SelectDiscountSection(
 
     Text(
         text = stringResource(id = R.string.selectDiscount) + " :",
-        style = MaterialTheme.typography.titleSmall.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start
         ),
@@ -131,7 +131,9 @@ fun SelectDiscountSection(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.min),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(end = SmallPadding)
             )
             Row(
@@ -144,14 +146,18 @@ fun SelectDiscountSection(
             ) {
                 Text(
                     text = "${discountRange.start.toInt()}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
 
                 Text(
                     text = " %",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
@@ -159,7 +165,9 @@ fun SelectDiscountSection(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.max),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(end = SmallPadding)
             )
 
@@ -173,14 +181,18 @@ fun SelectDiscountSection(
             ) {
                 Text(
                     text = "${discountRange.endInclusive.toInt()}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
 
                 Text(
                     text = " %",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
@@ -205,10 +217,6 @@ fun SelectDiscountSection(
                         sendRequest = false
                     )
                 )
-                Log.d(
-                    "FilteringBottomSheet",
-                    "Filtering Items: ${filteringItems.initialDiscount} .. ${filteringItems.finalDiscount}"
-                )
             }
         )
     }
@@ -226,10 +234,9 @@ fun SelectPriceSection(
     LaunchedEffect(Unit) {
         priceRange = filteringItems.initialPrice.toFloat()..filteringItems.finalPrice.toFloat()
     }
-    val isArabic = Locale.getDefault().language == "ar"
     Text(
         text = stringResource(id = R.string.selectPrice) + " :",
-        style = MaterialTheme.typography.titleSmall.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start
         ),
@@ -248,7 +255,9 @@ fun SelectPriceSection(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.min),
-                style =  MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(end = SmallPadding)
             )
             Row(
@@ -261,14 +270,18 @@ fun SelectPriceSection(
             ) {
                 Text(
                     text = "${priceRange.start.toInt()}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
 
                 Text(
                     text = stringResource(id = R.string.da),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
@@ -276,7 +289,9 @@ fun SelectPriceSection(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = stringResource(id = R.string.max),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    fontWeight = FontWeight.SemiBold
+                ),
                 modifier = Modifier.padding(end = SmallPadding)
             )
 
@@ -290,14 +305,18 @@ fun SelectPriceSection(
             ) {
                 Text(
                     text = "${priceRange.endInclusive.toInt()}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
 
                 Text(
                     text = stringResource(id = R.string.da),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     modifier = Modifier.padding(horizontal = ExtraSmallPadding2)
                 )
 
@@ -322,10 +341,6 @@ fun SelectPriceSection(
                         sendRequest = false
                     )
                 )
-                Log.d(
-                    "FilteringBottomSheet",
-                    "Filtering Items: ${filteringItems.initialPrice} .. ${filteringItems.finalPrice}"
-                )
             }
         )
     }
@@ -340,7 +355,7 @@ private fun SelectColorSection(
 ) {
     Text(
         text = stringResource(id = R.string.choseColors) + " :",
-        style = MaterialTheme.typography.titleSmall.copy(
+        style = MaterialTheme.typography.bodyLarge.copy(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start
         ),
@@ -351,7 +366,7 @@ private fun SelectColorSection(
     FlowRow(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = MediumPadding, vertical = SmallPadding),
+            .padding(horizontal = MediumPadding).padding(bottom = SmallPadding),
         horizontalArrangement = Arrangement.Center,
 
         ) {
@@ -387,7 +402,7 @@ private fun ResetConfirmRow(onConfirmCLick: () -> Unit, onResetClick: () -> Unit
         ) {
             Text(
                 text = stringResource(id = R.string.resetFilter),
-                style = MaterialTheme.typography.bodyLarge.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary
                 ),
             )
@@ -403,7 +418,7 @@ private fun ResetConfirmRow(onConfirmCLick: () -> Unit, onResetClick: () -> Unit
         ) {
             Text(
                 text = stringResource(id = R.string.confirm),
-                style = MaterialTheme.typography.bodyLarge.copy(
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background
                 ),
             )

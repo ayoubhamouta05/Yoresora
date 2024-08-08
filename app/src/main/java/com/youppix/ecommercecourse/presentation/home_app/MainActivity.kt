@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
                                     }
 
                                     2 -> {
-                                        if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                        if (navigator?.lastItem?.javaClass?.name != FavoritesScreen::class.java.name)
                                             navigator?.replace(FavoritesScreen())
                                     }
 

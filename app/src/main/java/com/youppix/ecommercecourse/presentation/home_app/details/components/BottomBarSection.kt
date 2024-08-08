@@ -26,9 +26,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
+import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
 fun BottomBarSection(price: String) {
@@ -36,26 +39,26 @@ fun BottomBarSection(price: String) {
     Card(
         Modifier.wrapContentSize(),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 20.dp
+            defaultElevation = 4.dp
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        shape = RoundedCornerShape(topEnd = Dimens.MediumPadding, topStart = Dimens.MediumPadding)
+        shape = RoundedCornerShape(topEnd = MediumPadding, topStart = MediumPadding)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Dimens.BottomBarHeight.plus(Dimens.SmallPadding))
-                .padding(horizontal = Dimens.MediumPadding),
+                .height(BottomBarHeight.plus(SmallPadding))
+                .padding(horizontal = MediumPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f).padding(horizontal = MediumPadding)) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(id = R.string.totalPrice),
-                    style = MaterialTheme.typography.bodyMedium.copy(
+                    style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = colorResource(id = R.color.text_medium),
+                        color = colorResource(id = R.color.text_medium)
                     )
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -71,7 +74,7 @@ fun BottomBarSection(price: String) {
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.Black, fontWeight = FontWeight.Bold
                         ),
-                        modifier = Modifier.padding(horizontal = Dimens.ExtraSmallPadding),
+                        modifier = Modifier.padding(horizontal = Dimens.ExtraSmallPadding2),
                     )
                 }
             }
@@ -85,10 +88,10 @@ fun BottomBarSection(price: String) {
                 )
                 Text(
                     text = stringResource(id = R.string.addToCart),
-                    style = MaterialTheme.typography.titleSmall.copy(
+                    style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.background
                     ),
-                    modifier = Modifier.padding(horizontal = Dimens.SmallPadding)
+                    modifier = Modifier.padding(horizontal = SmallPadding)
                 )
 
             }

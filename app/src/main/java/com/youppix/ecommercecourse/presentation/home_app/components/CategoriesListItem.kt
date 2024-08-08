@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
@@ -56,6 +57,39 @@ fun CategoriesListItem(
 
 }
 
+
+@Stable
+@Composable
+fun SizesListItem(
+    name: String,
+    id: Int,
+    selected: Boolean,
+    onClick: (Int) -> Unit
+) {
+
+    Box(
+        modifier = Modifier
+            .padding(end = MediumPadding)
+            .clip(RoundedCornerShape(SmallPadding))
+            .clickable {
+                onClick(id - 1) // id's starts from 1 but index starts from 0
+            }
+            .background(
+                color = if (selected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.background
+            )
+            .border(0.5.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(SmallPadding))
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = MediumPadding),
+            text = name,
+            color = if (selected) MaterialTheme.colorScheme.background
+            else MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+
+}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

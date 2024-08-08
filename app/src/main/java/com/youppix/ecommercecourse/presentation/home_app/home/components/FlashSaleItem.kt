@@ -64,7 +64,8 @@ fun FlashSaleItem(
     val brush = Brush.linearGradient(
         listOf(
             MaterialTheme.colorScheme.background,
-            MaterialTheme.colorScheme.primary ),
+            MaterialTheme.colorScheme.primary
+        ),
         start = Offset(1000f, 0f),
         end = Offset(1000f, 1000f)
     )
@@ -80,9 +81,11 @@ fun FlashSaleItem(
             containerColor = MaterialTheme.colorScheme.surface,
         )
     ) {
-        Row(modifier = Modifier.fillMaxWidth().drawBehind {
-            drawRect(brush = brush)
-        }) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .drawBehind {
+                drawRect(brush = brush)
+            }) {
             Card(
                 modifier = Modifier
                     .width(screenWidth / 2.5f)
@@ -92,6 +95,9 @@ fun FlashSaleItem(
                 ),
                 elevation = CardDefaults.elevatedCardElevation(
                     defaultElevation = 4.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
 
@@ -131,7 +137,8 @@ fun FlashSaleItem(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = stringResource(id = R.string.da), style = MaterialTheme.typography.bodyMedium.copy(
+                        text = stringResource(id = R.string.da),
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
                         ),

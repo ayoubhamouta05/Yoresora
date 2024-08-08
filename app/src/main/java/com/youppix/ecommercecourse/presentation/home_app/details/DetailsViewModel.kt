@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.home_app.details
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -9,6 +8,7 @@ import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -19,19 +19,38 @@ class DetailsViewModel @Inject constructor(
     private val _state = mutableStateOf(DetailsState(isLoading = true))
     val state: State<DetailsState> = _state
 
+    fun onEvent(event: DetailsEvent) {
+        when (event) {
+            is DetailsEvent.GetItemDetails -> {
+                screenModelScope.launch {
+                    getItemDetails(event.itemId , event.categoryId)
+                }
+            }
 
-    fun updateSizeSelected(size: Int) {
+            is DetailsEvent.UpdateSizeSelected -> {
+                updateSizeSelected(event.size)
+            }
+
+            is DetailsEvent.UpdateColorSelected -> {
+                updateColorSelected(event.color)
+            }
+        }
+    }
+
+    private fun updateSizeSelected(size: Int) {
         _state.value = state.value.copy(
             selectedSize = size.plus(1)
         )
     }
-    fun updateColorSelected(color : Int){
-        _state.value= state.value.copy(
+
+    private fun updateColorSelected(color: Int) {
+        _state.value = state.value.copy(
             selectedColors = color
         )
     }
 
-    suspend fun getDetails(itemId: Int, categoryId: Int) {
+
+    private suspend fun getItemDetails(itemId: Int, categoryId: Int) {
         detailsRepository.getItemsDetails(itemId, categoryId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
