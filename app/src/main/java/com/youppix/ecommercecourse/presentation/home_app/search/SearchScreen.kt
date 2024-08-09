@@ -59,6 +59,7 @@ import java.util.Locale
 
 
 data class SearchScreen(
+    private val userId : String?,
     private val fromSearching: Boolean = false,
     private var filteringItems: FilteringItems? = null
 ) : Screen {
@@ -154,6 +155,7 @@ data class SearchScreen(
                             LazyRow(
                                 modifier = Modifier
                                     .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.background)
                                     .padding(
                                         start = Dimens.SmallPadding.plus(Dimens.ExtraSmallPadding2),
                                         bottom = Dimens.SmallPadding,
@@ -180,7 +182,7 @@ data class SearchScreen(
                             state = state,
                             event = viewModel::onEvent,
                             goToDetails = { itemSelected ->
-                                navigator.push(DetailsScreen(itemSelected))
+                                navigator.push(DetailsScreen(userId ,itemSelected))
                             })
                     }
                 }

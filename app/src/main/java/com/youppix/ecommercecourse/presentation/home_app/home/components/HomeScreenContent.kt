@@ -71,7 +71,7 @@ fun HomeScreenContent(
                 .fillMaxSize()
                 .padding(top = SearchBarHeight.plus(MediumPadding))
         ) {
-            EmptyScreen(state.getHomeDataError) {
+            EmptyScreen(error = state.getHomeDataError) {
 
                 event(HomeEvent.GetHomeData)
                 event(

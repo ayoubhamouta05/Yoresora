@@ -145,7 +145,6 @@ class SearchViewModel @Inject constructor(
 
 
     private suspend fun getItemsByFiltering(filteringItems: FilteringItems) {
-        Log.d("searchViewModel", "getItemsByFiltering : $filteringItems")
         searchUseCases.getItemsByFiltering(filteringItems).onEach { result ->
             when (result) {
                 is Resource.Loading -> {

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
+import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
 
         setLocal(currentLang, this)
 
+        val userId = getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId" , "")
 
         setContent {
             val viewModel: MainActivityViewModel = hiltViewModel()
@@ -124,7 +126,7 @@ class MainActivity : ComponentActivity() {
 
                                     2 -> {
                                         if (navigator?.lastItem?.javaClass?.name != FavoritesScreen::class.java.name)
-                                            navigator?.replace(FavoritesScreen())
+                                            navigator?.replace(FavoritesScreen(userId = userId))
                                     }
 
                                     3 -> {

@@ -77,4 +77,8 @@
     <string name="selectSize">حدد الحجم</string>
     <string name="totalPrice">السعر الإجمالي</string>
     <string name="addToCart">أضف إلى السلة</string>
+    <string name="wishList">قائمة المفضلات</string>
+    <string name="addedToWishlist">تمت إضافته إلى قائمة المفضلات</string>
+    <string name="removedFromWishlist">تمت إزالته من قائمة المفضلات</string>
+    <string name="emptyFavoritesMessage">! أنت لم تحفظ في قائمة المفضلات حتى الآن</string>
 </resources>

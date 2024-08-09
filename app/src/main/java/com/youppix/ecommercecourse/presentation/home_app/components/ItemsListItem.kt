@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.presentation.home_app.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -68,7 +71,6 @@ fun ItemsListItem(
 
     val isArabic = Locale.getDefault().language == "ar"
     val discountBoxAlignment = if (isArabic) TopStart else TopEnd
-
     val brush = Brush.linearGradient(
         listOf(
             MaterialTheme.colorScheme.background,
@@ -94,7 +96,8 @@ fun ItemsListItem(
             )
         ) {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .clickable {
                         onClick(item)
                     }
@@ -160,7 +163,7 @@ fun ItemsListItem(
                     .align(discountBoxAlignment)
                     .padding(ExtraSmallPadding)
                     .background(
-                        MaterialTheme.colorScheme.surface.copy(alpha = 0.4f), RoundedCornerShape(
+                        MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), RoundedCornerShape(
                             MediumPadding
                         )
                     )

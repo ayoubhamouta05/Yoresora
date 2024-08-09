@@ -38,16 +38,16 @@ class HomeService(private val client: HttpClient) {
             emit(Resource.Successful(responseBody))
             Log.d("SignUpService", response.body())
         } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+            emit(Resource.Error("Client request error"))
             Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
         } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+            emit(Resource.Error("Server response error"))
             Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
+            emit(Resource.Error("Couldn't reach server"))
             Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
         } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+            emit(Resource.Error("Serialization error"))
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
@@ -62,16 +62,16 @@ class HomeService(private val client: HttpClient) {
             emit(Resource.Successful(responseBody))
             Log.d("SignUpService", response.body())
         } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+            emit(Resource.Error("Client request error"))
             Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
         } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+            emit(Resource.Error("Server response error"))
             Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
-            Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
         } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+            emit(Resource.Error("Serialization error"))
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
@@ -93,16 +93,16 @@ class HomeService(private val client: HttpClient) {
             emit(Resource.Successful(responseBody))
             Log.d("SignUpService", response.body())
         } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+            emit(Resource.Error("Client request error"))
             Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
         } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+            emit(Resource.Error("Server response error"))
             Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
-            Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
         } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+            emit(Resource.Error("Serialization error"))
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
@@ -124,16 +124,16 @@ class HomeService(private val client: HttpClient) {
             emit(Resource.Successful(responseBody))
             Log.d("SearchService", response.body())
         } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+            emit(Resource.Error("Client request error"))
             Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
         } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+            emit(Resource.Error("Server response error"))
             Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
-            Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
         } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+            emit(Resource.Error("Serialization error"))
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
@@ -149,16 +149,16 @@ class HomeService(private val client: HttpClient) {
             emit(Resource.Successful(responseBody))
             Log.d("SearchService", response.body())
         } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+            emit(Resource.Error("Client request error"))
             Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
         } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+            emit(Resource.Error("Server response error"))
             Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
         } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
-            Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
         } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+            emit(Resource.Error("Serialization error"))
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
@@ -196,16 +196,16 @@ class HomeService(private val client: HttpClient) {
                 emit(Resource.Successful(responseBody))
                 Log.d("SearchService", response.body())
             } catch (e: ClientRequestException) {
-                emit(Resource.Error("Client request error: ${e.localizedMessage}"))
+                emit(Resource.Error("Client request error"))
                 Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
             } catch (e: ServerResponseException) {
-                emit(Resource.Error("Server response error: ${e.localizedMessage}"))
+                emit(Resource.Error("Server response error"))
                 Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
             } catch (e: IOException) {
-                emit(Resource.Error("Couldn't reach server: ${e.localizedMessage}"))
-                Log.d("SignUpService", "Couldn't reach server: ${e.localizedMessage}")
+                emit(Resource.Error("Couldn't reach server"))
+                Log.d("SignUpService", "Couldn't reach server: ${e.message}")
             } catch (e: SerializationException) {
-                emit(Resource.Error("Serialization error: ${e.localizedMessage}"))
+                emit(Resource.Error("Serialization error"))
                 Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
             }
         }

@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +31,7 @@ import com.youppix.ecommercecourse.R
 
 @Stable
 @Composable
-fun EmptyScreen(error: String? = null , onClick: () -> Unit) {
+fun EmptyScreen( error: String? = null ,emptyMessage: String="" , onClick: () -> Unit) {
 
     var message by remember {
         mutableStateOf(error)
@@ -41,7 +42,7 @@ fun EmptyScreen(error: String? = null , onClick: () -> Unit) {
     }
 
     if (error == null) {
-        message = "You have not saved news so far !"
+        message = emptyMessage
         icon = R.drawable.ic_search_document
     }
 

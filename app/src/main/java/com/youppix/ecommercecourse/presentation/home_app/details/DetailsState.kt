@@ -6,6 +6,7 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 
 @Immutable
 data class DetailsState(
+    val userId : Int ? = null,
     val isLoading : Boolean = false,
     val item : Item = Item(),
     val details : DetailsData = DetailsData(),

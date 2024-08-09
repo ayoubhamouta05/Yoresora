@@ -13,12 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
@@ -28,7 +30,7 @@ import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.components.HomeScreenContent
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchScreen
 
-class HomeScreen : Screen {
+class HomeScreen() : Screen {
     override val key: ScreenKey = uniqueScreenKey
 
     @Stable
@@ -37,6 +39,9 @@ class HomeScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = navigator.getNavigatorScreenModel<HomeViewModel>()
         val state = viewModel.homeState.value
+        val context = LocalContext.current
+        val userId = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId" , "")
+
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -55,6 +60,7 @@ class HomeScreen : Screen {
                         onBoxCLicked = {
                             navigator.push(
                                 SearchScreen(
+                                    userId ,
                                     fromSearching = true,
                                     FilteringItems(
                                         itemsCat = if (state.categorySelected == 1) null else state.categorySelected
@@ -90,6 +96,7 @@ class HomeScreen : Screen {
                     )
                     navigator.push(
                         SearchScreen(
+                            userId ,
                             fromSearching = false,
                             FilteringItems(
                                 itemsCat = if (state.categorySelected == 1) null else state.categorySelected,
@@ -100,8 +107,9 @@ class HomeScreen : Screen {
 
                 },
                 goToDetails = { item ->
-                    navigator.push(DetailsScreen(item, true))
-
+                    userId?.let {
+                        navigator.push(DetailsScreen(userId ,item, true))
+                    }
                 },
                 event = viewModel::onEvent
             )

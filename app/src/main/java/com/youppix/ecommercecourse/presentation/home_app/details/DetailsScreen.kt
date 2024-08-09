@@ -16,7 +16,7 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
 
-data class DetailsScreen(private val item: Item ,private var newItem: Boolean? = null) : Screen {
+data class DetailsScreen(private val userId : String ? , private val item: Item ,private var newItem: Boolean? = null) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -24,10 +24,15 @@ data class DetailsScreen(private val item: Item ,private var newItem: Boolean? =
         val state by viewModel.state
 
         LaunchedEffect(Unit) {
-            newItem?.let {
-                viewModel.onEvent(DetailsEvent.GetItemDetails(item.itemId, item.itemCat))
-                newItem = null
+            userId?.let {id ->
+                viewModel.setUserId(id.toInt())
+                newItem?.let {
+                    viewModel.onEvent(DetailsEvent.GetItemDetails(item.itemId, item.itemCat ,id.toInt() ))
+                    newItem = null
+                }
             }
+
+
         }
 
 
@@ -40,6 +45,7 @@ data class DetailsScreen(private val item: Item ,private var newItem: Boolean? =
 
         ) { innerPadding ->
 
+
             DetailsScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
@@ -48,6 +54,7 @@ data class DetailsScreen(private val item: Item ,private var newItem: Boolean? =
                 event = viewModel::onEvent,
                 state = state ,
                 item = item,
+                userId = state.userId ?: 0,
                 onBackClicked = {navigator.pop()}
             )
         }

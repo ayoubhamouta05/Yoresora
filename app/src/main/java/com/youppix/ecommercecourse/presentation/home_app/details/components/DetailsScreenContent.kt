@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.presentation.home_app.details.components
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +21,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -59,7 +63,7 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.home_app.MainActivity
-import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconBack
+import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsState
 import kotlinx.coroutines.Dispatchers
@@ -73,6 +77,7 @@ fun DetailsScreenContent(
     state: DetailsState,
     event: (DetailsEvent) -> Unit,
     item: Item,
+    userId: Int,
     onBackClicked: () -> Unit
 ) {
 
@@ -82,6 +87,14 @@ fun DetailsScreenContent(
         rememberPagerState(pageCount = { state.details.images.size }, initialPage = 0)
     val lazyColumnState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+
+    var message by remember {
+        mutableStateOf("")
+    }
+    message =
+        if (!state.details.is_favorite) stringResource(id = R.string.addedToWishlist) else stringResource(
+            id = R.string.removedFromWishlist
+        )
 
     val brush = Brush.linearGradient(
         listOf(
@@ -111,12 +124,12 @@ fun DetailsScreenContent(
     val transformState = rememberTransformableState { zoomChange, offsetChange, _ ->
         if (imageScale < 0.6)
             imageScale = 0.6f
-        else if(imageScale > 3)
+        else if (imageScale > 3)
             imageScale = 3f
         else {
             imageScale *= zoomChange
             imageOffset += offsetChange
-            Log.d("Offset" , "x : ${imageOffset.x} , y : ${imageOffset.y}")
+            Log.d("Offset", "x : ${imageOffset.x} , y : ${imageOffset.y}")
         }
     }
 
@@ -309,7 +322,7 @@ fun DetailsScreenContent(
             }
         }
 
-        CustomIconBack(
+        CustomIcon(
             modifier = Modifier
                 .rotate(if (isArabic) 180f else 0f)
                 .align(
@@ -317,7 +330,8 @@ fun DetailsScreenContent(
                 )
                 .padding(horizontal = SmallPadding, vertical = SmallPadding),
             backgroundColor = MaterialTheme.colorScheme.background,
-            iconColor = MaterialTheme.colorScheme.onBackground
+            iconColor = MaterialTheme.colorScheme.onBackground,
+            imageVector = Icons.Default.ArrowBack
         ) {
             if (showImage) {
                 showImage = false
@@ -327,9 +341,21 @@ fun DetailsScreenContent(
                 onBackClicked()
             }
         }
+
+        CustomIcon(
+            modifier = Modifier
+                .align(
+                    Alignment.TopEnd
+                )
+                .padding(horizontal = SmallPadding, vertical = SmallPadding),
+            backgroundColor = MaterialTheme.colorScheme.background,
+            iconColor = MaterialTheme.colorScheme.onBackground,
+            imageVector = if (state.details.is_favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+        ) {
+            event(DetailsEvent.UpdateFavoriteState(userId = userId, itemId = item.itemId))
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
     }
-
-
 }
 
 private fun onBackButtonPressed(context: Context, onBackPressed: () -> Unit) {

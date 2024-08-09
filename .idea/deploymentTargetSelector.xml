@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DIALOG" />
-        <DropdownSelection timestamp="2024-08-01T15:36:18.114932800Z">
+        <DropdownSelection timestamp="2024-08-09T08:33:38.676755400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=dc248460" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\DELL\.android\avd\Pixel_6a_API_30.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=dc248460" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\DELL\.android\avd\Pixel_6a_API_30.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\DELL\.android\avd\Pixel_6a_API_30.avd" />
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=dc248460" />
               </handle>
             </Target>
           </targets>
