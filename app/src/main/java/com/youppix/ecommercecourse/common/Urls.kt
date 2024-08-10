@@ -21,9 +21,10 @@ object Urls {
     const val ITEMS_BY_CATEGORY_URL = "$BASE_URL/items/itemsByCategory.php"
     const val ITEMS_BY_FILTERING_URL = "$BASE_URL/items/itemsByFiltering.php"
     const val ITEM_DETAILS_URL = "$BASE_URL/details/details.php"
+    const val UPSERT_CUSTOM_SIZE_URL = "$BASE_URL/details/upsertCustomSize.php"
 
     /** favorites urls */
     const val ALL_FAVORITES_URL = "$BASE_URL/favorites/getFavorites.php"
-    const val ADD_FAVORITE_URL = "$BASE_URL/favorites/addfavorite.php"
+    const val ADD_FAVORITE_URL = "$BASE_URL/favorites/addFavorite.php"
 
 }

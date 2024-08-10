@@ -98,6 +98,9 @@ fun NewArrivalsItem(
                 ),
                 elevation = CardDefaults.elevatedCardElevation(
                     defaultElevation = 4.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
 

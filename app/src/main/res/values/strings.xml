@@ -81,6 +81,29 @@ or continue with social media</string>
     <string name="addedToWishlist">Added To Wishlist</string>
     <string name="removedFromWishlist">Removed From Wishlist</string>
     <string name="emptyFavoritesMessage">!You have not saved into wishlist so far</string>
+    <string name="makeYourOwnSize">Make your own size</string>
+    <string name="or">Or</string>
+    <string name="cm">Cm</string>
+    <string name="topSection">Top Section</string>
+    <string name="bottomSection">Bottom Section</string>
+    <string name="shoulderWidth">Shoulder Width</string>
+    <string name="chestCircumference">Chest Circumference</string>
+    <string name="chestHeight">Chest Height</string>
+    <string name="waistLine">Waistline</string>
+    <string name="buttocksCircumference">Buttocks Circumference</string>
+    <string name="buttocksHeight">Buttocks Height</string>
+    <string name="generalInformation">General Information</string>
+    <string name="armCircumference">Arm Circumference</string>
+    <string name="wristCircumference">Wrist Circumference</string>
+    <string name="desiredArmLength">Desired Arm Length</string>
+    <string name="totalLength">Total Length</string>
+    <string name="alert">Alert</string>
+    <string name="customSize">Custom Size</string>
+    <string name="youHaveNotSetTheNameOfYourSize">you have not set the name of your size</string>
+    <string name="errorOccurred">Error occurred</string>
+    <string name="pleaseCheckYourValuesOrYourInternetConnection">please check your values or your internet Connection</string>
+
+
 
 
 </resources>

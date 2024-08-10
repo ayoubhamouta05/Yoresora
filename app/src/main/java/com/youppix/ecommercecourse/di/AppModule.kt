@@ -45,6 +45,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
 import com.youppix.ecommercecourse.domain.useCases.details.GetItemDetailsUseCase
+import com.youppix.ecommercecourse.domain.useCases.details.UpsertCustomSizeUseCase
 import com.youppix.ecommercecourse.domain.useCases.favorites.AddOrDeleteFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.favorites.FavoritesUseCases
 import com.youppix.ecommercecourse.domain.useCases.favorites.GetAllFavoritesUseCase
@@ -271,7 +272,8 @@ object AppModule {
     fun provideDetailsUseCases(detailsRepository: DetailsRepository) :DetailsUseCases =
         DetailsUseCases(
            getItemDetails =  GetItemDetailsUseCase(detailsRepository),
-            addOrDeleteFromFavorite = AddOrDeleteFromFavoriteUseCase(detailsRepository)
+            addOrDeleteFromFavorite = AddOrDeleteFromFavoriteUseCase(detailsRepository),
+            upsertCustomSize = UpsertCustomSizeUseCase(detailsRepository)
         )
 
 

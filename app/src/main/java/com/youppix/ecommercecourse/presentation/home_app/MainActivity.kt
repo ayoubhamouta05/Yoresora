@@ -37,6 +37,7 @@ import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.home_app.components.shadow
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
+import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeScreen
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
@@ -61,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
         setLocal(currentLang, this)
 
-        val userId = getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId" , "")
+        val userId = getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId", "")
 
         setContent {
             val viewModel: MainActivityViewModel = hiltViewModel()
@@ -149,7 +150,8 @@ class MainActivity : ComponentActivity() {
                             this@MainActivity.navigator = navigator
                             FadeTransition(navigator = navigator)
                             showBottomBar =
-                                navigator.lastItem.javaClass.name != DetailsScreen::class.java.name
+                                navigator.lastItem.javaClass.name != DetailsScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

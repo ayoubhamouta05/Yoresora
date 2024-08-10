@@ -4,6 +4,7 @@ import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.details.DetailsService
 import com.youppix.ecommercecourse.data.remote.details.dto.DetailsResponse
+import com.youppix.ecommercecourse.domain.model.details.CustomSize
 import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +14,7 @@ class DetailsRepositoryImpl(private val detailsService: DetailsService) : Detail
         categoryId: Int,
         userId: Int
     ): Flow<Resource<DetailsResponse>> {
-        return detailsService.getItemDetails(itemId, categoryId , userId)
+        return detailsService.getItemDetails(itemId, categoryId, userId)
     }
 
     override suspend fun addOrDeleteFromFavorite(
@@ -21,5 +22,9 @@ class DetailsRepositoryImpl(private val detailsService: DetailsService) : Detail
         itemId: Int
     ): Flow<Resource<AuthResponse>> {
         return detailsService.addOrDeleteFromFavorite(userId, itemId)
+    }
+
+    override suspend fun upsertCustomSize(customSize: CustomSize): Flow<Resource<AuthResponse>> {
+        return detailsService.upsertCustomSize(customSize)
     }
 }

@@ -10,16 +10,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -29,6 +33,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -45,6 +50,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -52,6 +58,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -59,6 +67,8 @@ import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
+import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.items.Item
@@ -78,6 +88,7 @@ fun DetailsScreenContent(
     event: (DetailsEvent) -> Unit,
     item: Item,
     userId: Int,
+    makeCustomSize: () -> Unit,
     onBackClicked: () -> Unit
 ) {
 
@@ -285,16 +296,50 @@ fun DetailsScreenContent(
             }
 
             item {
-                Text(
-                    text = stringResource(id = R.string.selectSize) + " :",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(horizontal = Dimens.MediumPadding)
-                        .padding(bottom = ExtraSmallPadding)
-                )
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(horizontal = MediumPadding)
+                        .padding(bottom = ExtraSmallPadding),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.selectSize) + " :",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        textAlign = TextAlign.Start,
+                    )
+                    Text(
+                        text = stringResource(id = R.string.or),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Gray
+                        ),
+                        textAlign = TextAlign.Center,
+
+                        )
+
+                    Text(
+                        text = stringResource(id = R.string.makeYourOwnSize),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            textDecoration = TextDecoration.Underline
+                        ),
+                        textAlign = TextAlign.End,
+                        maxLines = 1 ,
+                        modifier = Modifier.clip(RoundedCornerShape(SmallPadding)).clickable {
+                            makeCustomSize()
+                        }.background(
+                            Color.Transparent
+                        ).padding(horizontal = ExtraSmallPadding2)
+                    )
+
+
+                }
+
             }
             item {
                 Box(modifier = Modifier.animateContentSize()) {

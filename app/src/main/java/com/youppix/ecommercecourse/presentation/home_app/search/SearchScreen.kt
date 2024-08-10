@@ -182,7 +182,7 @@ data class SearchScreen(
                             state = state,
                             event = viewModel::onEvent,
                             goToDetails = { itemSelected ->
-                                navigator.push(DetailsScreen(userId ,itemSelected))
+                                navigator.push(DetailsScreen(userId ,itemSelected,true))
                             })
                     }
                 }

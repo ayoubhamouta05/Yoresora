@@ -15,6 +15,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
+import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeScreen
 
 data class DetailsScreen(private val userId : String ? , private val item: Item ,private var newItem: Boolean? = null) : Screen {
     @Composable
@@ -55,6 +56,7 @@ data class DetailsScreen(private val userId : String ? , private val item: Item 
                 state = state ,
                 item = item,
                 userId = state.userId ?: 0,
+                makeCustomSize = {navigator.push(CustomSizeScreen(state.userId))},
                 onBackClicked = {navigator.pop()}
             )
         }

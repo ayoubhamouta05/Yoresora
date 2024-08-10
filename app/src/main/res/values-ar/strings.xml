@@ -81,4 +81,25 @@
     <string name="addedToWishlist">تمت إضافته إلى قائمة المفضلات</string>
     <string name="removedFromWishlist">تمت إزالته من قائمة المفضلات</string>
     <string name="emptyFavoritesMessage">! أنت لم تحفظ في قائمة المفضلات حتى الآن</string>
+    <string name="makeYourOwnSize"><u>اصنع حجمك الخاص</u></string>
+    <string name="or">أو</string>
+    <string name="topSection">القسم العلوي</string>
+    <string name="bottomSection">القسم السفلي</string>
+    <string name="shoulderWidth">عرض الكتفين</string>
+    <string name="chestCircumference">محيط الصدر</string>
+    <string name="chestHeight">ارتفاع الصدر</string>
+    <string name="waistLine">محيط الخصر</string>
+    <string name="buttocksCircumference">محيط الأرداف</string>
+    <string name="buttocksHeight">ارتفاع الأرداف</string>
+    <string name="generalInformation">معلومات عامة</string>
+    <string name="armCircumference">محيط الذراع</string>
+    <string name="wristCircumference">محيط المعصم</string>
+    <string name="desiredArmLength">طول الذراع المطلوب</string>
+    <string name="totalLength">الطول الكلي</string>
+    <string name="cm">سم</string>
+    <string name="alert">تنبيه</string>
+    <string name="customSize">مقاسي المخصص</string>
+    <string name="youHaveNotSetTheNameOfYourSize">لم تحدد اسم مقاسك</string>
+    <string name="pleaseCheckYourValuesOrYourInternetConnection">يرجى التحقق من قيمك أو اتصال الإنترنت الخاص بك</string>
+    <string name="errorOccurred">حدث خطأ</string>
 </resources>
