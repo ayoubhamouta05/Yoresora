@@ -38,7 +38,7 @@ fun CategoriesListItem(
             .padding(end = MediumPadding)
             .clip(RoundedCornerShape(SmallPadding))
             .clickable {
-                onClick(id - 1) // id's starts from 1 but index starts from 0
+                onClick(id)
             }
             .background(
                 color = if (selected) MaterialTheme.colorScheme.primary
@@ -72,7 +72,7 @@ fun SizesListItem(
             .padding(end = MediumPadding)
             .clip(RoundedCornerShape(SmallPadding))
             .clickable {
-                onClick(id - 1) // id's starts from 1 but index starts from 0
+                onClick(id ) // id's starts from 1 but index starts from 0
             }
             .background(
                 color = if (selected) MaterialTheme.colorScheme.primary

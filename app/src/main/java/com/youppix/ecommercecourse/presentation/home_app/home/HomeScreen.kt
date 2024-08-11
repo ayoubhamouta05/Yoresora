@@ -86,14 +86,6 @@ class HomeScreen() : Screen {
                     .animateContentSize(),
                 state = state,
                 goToSearch = { initialDiscount ->
-                    println(
-                        "flash sale items : ${
-                            FilteringItems(
-                                itemsCat = state.categorySelected,
-                                initialDiscount = initialDiscount
-                            )
-                        }"
-                    )
                     navigator.push(
                         SearchScreen(
                             userId ,

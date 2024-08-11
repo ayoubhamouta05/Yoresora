@@ -52,30 +52,6 @@ class HomeService(private val client: HttpClient) {
         }
     }
 
-    suspend fun getAllItems(): Flow<Resource<ItemsResponse>> = flow {
-        try {
-
-            emit(Resource.Loading())
-            val response = client.get(ALL_ITEMS_URL)
-            val responseBody = response.body<ItemsResponse>()
-
-            emit(Resource.Successful(responseBody))
-            Log.d("SignUpService", response.body())
-        } catch (e: ClientRequestException) {
-            emit(Resource.Error("Client request error"))
-            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
-        } catch (e: ServerResponseException) {
-            emit(Resource.Error("Server response error"))
-            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
-        } catch (e: IOException) {
-            emit(Resource.Error("Couldn't reach server"))
-            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
-        } catch (e: SerializationException) {
-            emit(Resource.Error("Serialization error"))
-            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
-        }
-    }
-
     suspend fun getItemsByCategory(category: Int): Flow<Resource<ItemsResponse>> = flow {
         try {
 

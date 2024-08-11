@@ -13,9 +13,6 @@ class HomeRepositoryImpl(private val homeService: HomeService) : HomeRepository 
         return homeService.getHomeData()
     }
 
-    override suspend fun getAllItems(): Flow<Resource<ItemsResponse>> {
-        return homeService.getAllItems()
-    }
 
     override suspend fun getItemOfCategory(category: Int): Flow<Resource<ItemsResponse>> {
         return homeService.getItemsByCategory(category)

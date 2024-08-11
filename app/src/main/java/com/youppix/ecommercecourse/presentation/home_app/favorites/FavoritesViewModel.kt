@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.favorites
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -29,24 +30,16 @@ class FavoritesViewModel @Inject constructor(
         when (event) {
             is FavoriteEvent.UpdateCategorySelected -> {
                 _state.value = _state.value.copy(
-                    categorySelected = if (event.category > 1) event.category else 0
+                    categorySelected = event.category
                 )
                 screenModelScope.launch {
                     getAllFavorites(
-                        categoryId = state.value.categorySelected,
+                        categoryId = if(state.value.categories.isEmpty()) 0 else  state.value.categories[event.category].id,
                         userId = event.userId
                     )
                 }
             }
 
-            is FavoriteEvent.GetAllFavorites -> {
-                screenModelScope.launch {
-                    getAllFavorites(
-                        categoryId = event.categoryId,
-                        userId = event.userId
-                    )
-                }
-            }
 
             is FavoriteEvent.GetAllCategories -> {
                 screenModelScope.launch { getAllCategories() }

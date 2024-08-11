@@ -104,12 +104,12 @@ class SearchViewModel @Inject constructor(
 
     private fun updateCategorySelected(id: Int) {
         _state.value = state.value.copy(
-            filteringItems = state.value.filteringItems.copy(itemsCat = if (id > 1) id else null)
+            filteringItems = state.value.filteringItems.copy(itemsCat =id)
         )
 
         screenModelScope.launch {
             getItemsByFiltering(
-                filteringItems = state.value.filteringItems
+                filteringItems = state.value.filteringItems.copy(itemsCat = state.value.categories[id].id)
             )
         }
     }

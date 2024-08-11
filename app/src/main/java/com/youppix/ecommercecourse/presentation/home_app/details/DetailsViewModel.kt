@@ -7,6 +7,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
+import io.ktor.util.Identity.decode
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -54,7 +55,7 @@ class DetailsViewModel @Inject constructor(
 
     private fun updateSizeSelected(size: Int) {
         _state.value = state.value.copy(
-            selectedSize = size.plus(1)
+            selectedSize = size
         )
     }
 
@@ -95,10 +96,12 @@ class DetailsViewModel @Inject constructor(
                         )
                     }
                     _state.value = state.value.copy(
-                        selectedSize = if (state.value.details.sizes_id.isEmpty()) 0 else state.value.details.sizes_id[0],
+                        selectedSize = 0,
                         selectedColors = if (state.value.details.colors_id.isEmpty()) 0 else
                             state.value.details.colors_id[0],
                     )
+
+                    Log.d("DetailsViewModel", "getItemDetails: ${state.value.details.sizes_id}")
                 }
             }
 

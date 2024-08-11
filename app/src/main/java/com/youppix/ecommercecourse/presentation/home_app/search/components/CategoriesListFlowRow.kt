@@ -32,14 +32,14 @@ fun CategoriesListFlowRow(
                 bottom = Dimens.SmallPadding
             )
     ) {
-        items(list.size){index->
+        items(list.size , key = {it}){index->
             val category = list[index]
             CategoriesListItem(
                 name = if (isArabic) category.nameAr else category.name,
-                id = category.id,
-                selected = category.id == (currentCategory ?: 1)
+                id = index,
+                selected = index == (currentCategory ?: 0)
             ) {
-                searchEvent(SearchEvent.UpdateCategorySelected((category.id)))
+                searchEvent(SearchEvent.UpdateCategorySelected((it)))
             }
         }
     }

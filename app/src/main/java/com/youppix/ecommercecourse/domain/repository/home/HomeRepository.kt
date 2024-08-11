@@ -9,7 +9,5 @@ interface HomeRepository {
 
     suspend fun getHomeData() : Flow<Resource<HomeResponse>>
 
-    suspend fun getAllItems() : Flow<Resource<ItemsResponse>>
-
     suspend fun getItemOfCategory(category : Int) : Flow<Resource<ItemsResponse>>
 }

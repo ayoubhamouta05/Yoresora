@@ -12,8 +12,6 @@ sealed class HomeEvent {
     @Immutable
     data object GetHomeData : HomeEvent()
 
-    @Immutable
-    data object GetAllItems : HomeEvent()
 
     @Immutable
     data class GetItemsByCategory(val category: Int) : HomeEvent()

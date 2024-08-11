@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.home.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -161,16 +162,17 @@ fun HomeScreenContent(
                             }
                         } else {
                             items(state.categories.size,
-                                key = { state.categories[it].name }
+                                key = { it }
                             ) { index ->
                                 val currentCategory = state.categories[index]
 
                                 CategoriesListItem(
                                     name = if (isArabic) currentCategory.nameAr else currentCategory.name,
-                                    selected = state.categorySelected == currentCategory.id,
-                                    id = currentCategory.id
+                                    selected = state.categorySelected == index,
+                                    id = index
                                 ) {
-                                    event(HomeEvent.UpdateCategorySelected(state.categories[it].id))
+                                    event(HomeEvent.UpdateCategorySelected(it))
+                                    Log.d("HomeScreenContent", "HomeScreenContent: ${state.categories[it]}")
                                 }
                             }
                         }

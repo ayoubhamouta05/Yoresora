@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
     init {
         screenModelScope.launch {
             getHomeData()
-            getAllItems()
+            getItemsByCategory(homeState.value.categorySelected)
         }
     }
 
@@ -41,11 +41,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
 
-            is HomeEvent.GetAllItems -> {
-                screenModelScope.launch {
-                    getAllItems()
-                }
-            }
 
             is HomeEvent.GetItemsByCategory -> {
                 screenModelScope.launch {
@@ -61,12 +56,8 @@ class HomeViewModel @Inject constructor(
         _homeState.value = homeState.value.copy(
             categorySelected = id
         )
-
         screenModelScope.launch {
-            if (id > 1)
-                getItemsByCategory(id)
-            else
-                getAllItems()
+            getItemsByCategory(homeState.value.categories[id].id)
         }
 
     }
@@ -104,34 +95,6 @@ class HomeViewModel @Inject constructor(
         }.launchIn(screenModelScope)
     }
 
-    private suspend fun getAllItems() {
-        homeUseCases.getAllItems().onEach { result ->
-            when (result) {
-                is Resource.Loading -> {
-                    _homeState.value = homeState.value.copy(
-                        isItemsCategoriesLoading = true
-                    )
-                }
-
-                is Resource.Error -> {
-                    _homeState.value = homeState.value.copy(
-                        isItemsCategoriesLoading = false,
-                        getItemsError = result.data?.message ?: result.message
-                        ?: "An Unexpected Error Occurred"
-                    )
-                }
-
-                is Resource.Successful -> {
-                    _homeState.value = homeState.value.copy(
-                        isItemsCategoriesLoading = false,
-                        items = result.data?.data?.toItems() ?: emptyList(),
-                        getItemsError = null
-                    )
-                }
-            }
-            Log.d("HomeViewModel", "getAllItems: ${result.data}")
-        }.launchIn(screenModelScope)
-    }
 
 
     private suspend fun getItemsByCategory(category: Int) {

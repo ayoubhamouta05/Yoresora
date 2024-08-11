@@ -48,10 +48,7 @@ fun ItemsList(
                 )
         ) {
             EmptyScreen(error = state.getItemsError) {
-                if (state.categorySelected > 1)
-                    event(HomeEvent.GetItemsByCategory(state.categorySelected))
-                else
-                    event(HomeEvent.GetAllItems)
+                event(HomeEvent.GetItemsByCategory(state.categorySelected))
             }
         }
 
@@ -187,7 +184,7 @@ fun ItemsList(
                 if (state.categoriesError != null){
                     event(FavoriteEvent.GetAllCategories)
                 }
-                event(FavoriteEvent.GetAllFavorites(state.userId!! ,state.categorySelected))
+                event(FavoriteEvent.UpdateCategorySelected(state.userId!! ,state.categorySelected))
             }
         }
     } else if (state.items.isEmpty() && !state.itemsLoading ) {

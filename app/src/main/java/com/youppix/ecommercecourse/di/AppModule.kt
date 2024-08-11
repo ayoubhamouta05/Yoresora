@@ -49,7 +49,6 @@ import com.youppix.ecommercecourse.domain.useCases.details.UpsertCustomSizeUseCa
 import com.youppix.ecommercecourse.domain.useCases.favorites.AddOrDeleteFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.favorites.FavoritesUseCases
 import com.youppix.ecommercecourse.domain.useCases.favorites.GetAllFavoritesUseCase
-import com.youppix.ecommercecourse.domain.useCases.home.GetAllItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
@@ -236,7 +235,6 @@ object AppModule {
     fun providesHomeUseCases(homeRepository: HomeRepository): HomeUseCases =
         HomeUseCases(
             getHomeData = GetHomeDataUseCase(homeRepository),
-            getAllItems = GetAllItemsUseCase(homeRepository),
             getItemsByCategory = GetItemsByCategoryUseCase(homeRepository)
         )
 

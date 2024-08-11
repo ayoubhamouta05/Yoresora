@@ -15,5 +15,6 @@ data class DetailsData(
     val colors_hex : List<String> = emptyList() ,
     val colors_id : List<Int> = emptyList() ,
     val images : ArrayList<String> = arrayListOf() ,
-    val is_favorite: Boolean = false
+    val is_favorite: Boolean = false ,
+    val custom_size : CustomSizeData ?= null,
 )

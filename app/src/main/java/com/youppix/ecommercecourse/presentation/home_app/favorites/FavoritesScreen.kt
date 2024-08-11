@@ -53,12 +53,8 @@ class FavoritesScreen(val userId: String?) : Screen {
         LaunchedEffect(Unit) {
             userId?.let {
                 viewModel.setUserId(userId.toInt())
-                viewModel.onEvent(FavoriteEvent.GetAllFavorites(userId.toInt(), 0))
+                viewModel.onEvent(FavoriteEvent.UpdateCategorySelected(userId.toInt(), state.categorySelected))
             }
-        }
-
-        LaunchedEffect(state.items , state.itemsLoading) {
-            Log.d("FavoritesScreen", "Loading = ${state.itemsLoading} , items = ${state.items.size}")
         }
 
         Scaffold(modifier = Modifier.fillMaxSize(),
@@ -117,19 +113,19 @@ class FavoritesScreen(val userId: String?) : Screen {
                             }
                         } else {
                             items(state.categories.size,
-                                key = { state.categories[it].name }
+                                key = { it }
                             ) { index ->
                                 val currentCategory = state.categories[index]
 
                                 CategoriesListItem(
                                     name = if (isArabic) currentCategory.nameAr else currentCategory.name,
-                                    selected = state.categorySelected == if (currentCategory.id > 1) currentCategory.id else 0,
-                                    id = currentCategory.id
+                                    selected = state.categorySelected == index,
+                                    id = index
                                 ) {
                                     viewModel.onEvent(
                                         FavoriteEvent.UpdateCategorySelected(
                                             userId = userId!!.toInt(),
-                                            state.categories[it].id
+                                            it
                                         )
                                     )
                                 }
