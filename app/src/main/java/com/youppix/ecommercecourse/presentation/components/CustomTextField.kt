@@ -39,7 +39,7 @@ fun ColumnScope.CustomTextField(
     isPassword: Boolean = false,
     showPassword: Boolean = false,
     onShowPassword: ((Boolean) -> Unit)? = null,
-    errorMessage : String =""
+    errorMessage: String = ""
 ) {
     OutlinedTextField(
         modifier = modifier
@@ -63,11 +63,13 @@ fun ColumnScope.CustomTextField(
                     Icon(
                         if (showPassword) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                         contentDescription = null,
-                        Modifier.clickable {
-                            onShowPassword?.let {
-                                it(!showPassword)
+                        Modifier
+                            .clickable {
+                                onShowPassword?.let {
+                                    it(!showPassword)
+                                }
                             }
-                        }.padding(horizontal = SmallPadding)
+                            .padding(horizontal = SmallPadding)
                     )
                 }
                 Icon(
@@ -89,16 +91,14 @@ fun ColumnScope.CustomTextField(
         if (isPassword && !showPassword)
             PasswordVisualTransformation()
         else
-            VisualTransformation.None ,
-        supportingText = {
-            if (isError){
+            VisualTransformation.None,
+        supportingText = if (isError) {{
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = errorMessage,
                     color = MaterialTheme.colorScheme.error
                 )
-            }
-        }
+            }} else null
     )
 }
 

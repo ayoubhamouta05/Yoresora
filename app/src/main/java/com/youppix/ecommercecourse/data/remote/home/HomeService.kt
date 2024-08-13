@@ -2,7 +2,6 @@ package com.youppix.ecommercecourse.data.remote.home
 
 import android.util.Log
 import com.youppix.ecommercecourse.common.Resource
-import com.youppix.ecommercecourse.common.Urls.ALL_ITEMS_URL
 import com.youppix.ecommercecourse.common.Urls.CATEGORIES_URL
 import com.youppix.ecommercecourse.common.Urls.COlORS_URL
 import com.youppix.ecommercecourse.common.Urls.HOME_URL

@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.presentation.home_app.details.customSize.com
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,6 +26,7 @@ fun CustomSizeTextField(
     value: String,
     label: String,
     isError: Boolean = false,
+    errorMessage: String = "",
     readOnly: Boolean = false,
     imeAction: ImeAction = ImeAction.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -56,6 +58,15 @@ fun CustomSizeTextField(
             )
         },
         isError = isError,
+        supportingText =
+        if (isError) {{
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }}
+        else null,
         keyboardOptions = keyboardOptions.copy(imeAction = imeAction),
         readOnly = readOnly
     )

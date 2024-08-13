@@ -99,9 +99,14 @@ or continue with social media</string>
     <string name="totalLength">Total Length</string>
     <string name="alert">Alert</string>
     <string name="customSize">Custom Size</string>
-    <string name="youHaveNotSetTheNameOfYourSize">you have not set the name of your size</string>
-    <string name="errorOccurred">Error occurred</string>
-    <string name="pleaseCheckYourValuesOrYourInternetConnection">please check your values or your internet Connection</string>
+    <string name="error">Error</string>
+    <string name="alreadyHaveCustomSize">You Already Have Custom Size</string>
+    <string name="alreadyHaveCustomSizeMessage">Do you want to modify it ?</string>
+    <string name="checkValueRangeErrorMessage">%3$s should be between %1$d and %2$d</string>
+    <string name="shouldBeNumber">Should be a number</string>
+    <string name="sizeNameCannotBeEmpty">Size name cannot be empty</string>
+    <string name="sizeCannotBeEmpty">Size cannot be empty</string>
+    <string name="youHaventMadeAnyModifications">You haven\'t made any modifications</string>
 
 
 

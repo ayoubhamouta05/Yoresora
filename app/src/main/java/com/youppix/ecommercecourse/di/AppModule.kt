@@ -43,6 +43,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseC
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
+import com.youppix.ecommercecourse.domain.useCases.details.CheckSizeExistenceUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
 import com.youppix.ecommercecourse.domain.useCases.details.GetItemDetailsUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.UpsertCustomSizeUseCase
@@ -271,6 +272,7 @@ object AppModule {
         DetailsUseCases(
            getItemDetails =  GetItemDetailsUseCase(detailsRepository),
             addOrDeleteFromFavorite = AddOrDeleteFromFavoriteUseCase(detailsRepository),
+            checkSizeExistence = CheckSizeExistenceUseCase(detailsRepository),
             upsertCustomSize = UpsertCustomSizeUseCase(detailsRepository)
         )
 

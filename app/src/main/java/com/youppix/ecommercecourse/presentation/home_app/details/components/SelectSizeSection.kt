@@ -11,14 +11,14 @@ import com.youppix.ecommercecourse.presentation.home_app.details.DetailsState
 
 @Composable
 fun SelectSizeSection(state : DetailsState, event: (DetailsEvent)-> Unit) {
-    if (state.details.sizes_name.isNotEmpty()) {
+    if (state.details.sizes.isNotEmpty()) {
         LazyRow(
             modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
         ) {
-            items(state.details.sizes_name.size, key = { it }) { index ->
+            items(state.details.sizes.size, key = { it }) { index ->
 
                 SizesListItem(
-                    name = state.details.sizes_name[index],
+                    name = state.details.sizes[index].sizes_name,
                     id = index,
                     selected = index == state.selectedSize
                 ) {

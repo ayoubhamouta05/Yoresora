@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.details.customSize
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -18,6 +19,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
+import com.youppix.ecommercecourse.domain.model.details.Size
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.components.CustomSizeContent
@@ -25,7 +27,7 @@ import com.youppix.ecommercecourse.presentation.home_app.details.customSize.comp
 import java.util.Locale
 
 
-class CustomSizeScreen(private val userId: Int?) : Screen {
+class CustomSizeScreen(private val userId: Int? ,private val size: Size) : Screen {
     @Composable
     override fun Content() {
 
@@ -39,12 +41,13 @@ class CustomSizeScreen(private val userId: Int?) : Screen {
 
         LaunchedEffect(Unit) {
             userId?.let {
-                viewModel.onEvent(CustomSizeEvent.UpdateUserId(it))
+                viewModel.onEvent(CustomSizeEvent.UpdateSizeInformation(size.copy(userId = it)))
             } ?: run {
                 val id = context.getSharedPreferences(APP_ENTRY, 0).getString("userId", "")
                 if (!id.isNullOrEmpty())
-                    viewModel.onEvent(CustomSizeEvent.UpdateUserId(id.toInt()))
+                    viewModel.onEvent(CustomSizeEvent.UpdateSizeInformation(size.copy(userId = id.toInt())))
             }
+            viewModel.onEvent(CustomSizeEvent.SetInitialSize(size.copy(userId = userId)))
             focusRequester.requestFocus()
             keyboardController?.show()
         }
@@ -60,11 +63,11 @@ class CustomSizeScreen(private val userId: Int?) : Screen {
         Scaffold(Modifier.fillMaxSize(),
             topBar = {
                 TopBarSection(
-                    customSizeName = state.customSizeName,
+                    customSizeName = state.size.sizeName,
                     focusRequester = focusRequester,
                     isArabic = isArabic,
                     onValueChange = {
-                        viewModel.onEvent(CustomSizeEvent.UpdateName(it))
+                        viewModel.onEvent(CustomSizeEvent.UpdateSizeInformation(state.size.copy(sizeName = it)))
                     },
                     navigateBack = {
                         navigator.pop()
@@ -84,8 +87,8 @@ class CustomSizeScreen(private val userId: Int?) : Screen {
             //Alert Dialog
             CustomDialog(
                 title = stringResource(id = R.string.alert),
-                message = stringResource(id = R.string.youHaveNotSetTheNameOfYourSize),
-                showDialog = state.showAlertDialog,
+                message = state.errors.sizeName ?: "",
+                showDialog = !state.errors.sizeName.isNullOrEmpty(),
                 onConfirmRequest = {
                     viewModel.onEvent(CustomSizeEvent.HideDialog)
                     focusRequester.requestFocus()
@@ -93,12 +96,12 @@ class CustomSizeScreen(private val userId: Int?) : Screen {
                 },
                 onDismissRequest = {
                     viewModel.onEvent(CustomSizeEvent.HideDialog)
-                })
+            })
 
             //Error Dialog
             CustomDialog(
-                title = stringResource(id = R.string.errorOccurred),
-                message = stringResource(id = R.string.pleaseCheckYourValuesOrYourInternetConnection),
+                title = stringResource(id = R.string.error),
+                message = state.errorMessage ?:"",
                 showDialog = state.showErrorDialog,
                 onConfirmRequest = {
                     viewModel.onEvent(CustomSizeEvent.HideDialog)

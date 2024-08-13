@@ -1,12 +1,12 @@
 package com.youppix.ecommercecourse.domain.useCases.details
 
-import com.youppix.ecommercecourse.domain.model.details.Size
 import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
 
-class UpsertCustomSizeUseCase(
+class CheckSizeExistenceUseCase(
     private val detailsRepository: DetailsRepository
 ) {
-    suspend operator fun invoke(size: Size) =
-        detailsRepository.upsertCustomSize(size)
+
+    suspend operator fun invoke(userId : Int) =
+        detailsRepository.checkSizeExistence(userId)
 
 }

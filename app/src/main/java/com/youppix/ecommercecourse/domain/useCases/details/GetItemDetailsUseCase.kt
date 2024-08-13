@@ -6,7 +6,7 @@ class GetItemDetailsUseCase(
     private val detailsRepository: DetailsRepository
 ) {
 
-    suspend operator fun invoke(itemId: Int, categoryId: Int , userId : Int) =
-        detailsRepository.getItemsDetails(itemId, categoryId , userId)
+    suspend operator fun invoke(itemId: Int, userId : Int) =
+        detailsRepository.getItemsDetails(itemId , userId)
 
 }

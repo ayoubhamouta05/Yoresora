@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
-import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
-import io.ktor.util.Identity.decode
+import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
+import io.ktor.util.reflect.instanceOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
-    private val detailsRepository: DetailsRepository
+    private val detailsUseCases: DetailsUseCases
 ) : ScreenModel {
 
     private val _state = mutableStateOf(DetailsState(isLoading = true))
@@ -25,7 +25,7 @@ class DetailsViewModel @Inject constructor(
         when (event) {
             is DetailsEvent.GetItemDetails -> {
                 screenModelScope.launch {
-                    getItemDetails(event.itemId , event.categoryId , event.userId)
+                    getItemDetails(event.itemId, event.userId)
                 }
             }
 
@@ -37,17 +37,30 @@ class DetailsViewModel @Inject constructor(
                 updateColorSelected(event.color)
             }
 
+            is DetailsEvent.CheckSizeExistence -> {
+                screenModelScope.launch {
+                    checkSizeExistence(event.userId)
+                }
+            }
+
             is DetailsEvent.UpdateFavoriteState -> {
                 updateFavoriteState()
                 screenModelScope.launch {
-                    addOrDeleteFromFavorite(event.userId , event.itemId)
+                    addOrDeleteFromFavorite(event.userId, event.itemId)
                 }
 
+            }
+
+            is DetailsEvent.HideDialog -> {
+                _state.value = state.value.copy(
+                    sizeAlreadyExistDialog = false,
+                    goToCustomSizeScreen = false
+                )
             }
         }
     }
 
-    fun setUserId(userId: Int){
+    fun setUserId(userId: Int) {
         _state.value = state.value.copy(
             userId = userId
         )
@@ -65,14 +78,14 @@ class DetailsViewModel @Inject constructor(
         )
     }
 
-    private fun updateFavoriteState(){
+    private fun updateFavoriteState() {
         _state.value = state.value.copy(
             details = state.value.details.copy(is_favorite = !state.value.details.is_favorite)
         )
     }
 
-    private suspend fun getItemDetails(itemId: Int, categoryId: Int , userId: Int) {
-        detailsRepository.getItemsDetails(itemId, categoryId , userId).onEach { result ->
+    private suspend fun getItemDetails(itemId: Int, userId: Int) {
+        detailsUseCases.getItemDetails(itemId, userId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _state.value = state.value.copy(
@@ -101,22 +114,49 @@ class DetailsViewModel @Inject constructor(
                             state.value.details.colors_id[0],
                     )
 
-                    Log.d("DetailsViewModel", "getItemDetails: ${state.value.details.sizes_id}")
                 }
             }
 
         }.launchIn(screenModelScope)
     }
 
+    private suspend fun checkSizeExistence(userId: Int) {
+        detailsUseCases.checkSizeExistence(userId).onEach {result->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        checkSizeLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        checkSizeLoading = false,
+                        sizeAlreadyExistDialog = false,
+                        goToCustomSizeScreen = true
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        checkSizeLoading = false ,
+                        sizeAlreadyExistDialog = true ,
+                        goToCustomSizeScreen = false
+                    )
+                }
+            }
+        }.launchIn(screenModelScope)
+    }
+
     private suspend fun addOrDeleteFromFavorite(userId: Int, itemId: Int) {
-        detailsRepository.addOrDeleteFromFavorite(userId, itemId).onEach { result ->
+        detailsUseCases.addOrDeleteFromFavorite(userId, itemId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                 }
 
                 is Resource.Error -> {
                     _state.value = state.value.copy(
-                        details = state.value.details.copy(is_favorite =!state.value.details.is_favorite ), // to return it to last value
+                        details = state.value.details.copy(is_favorite = !state.value.details.is_favorite), // to return it to last value
                         error = result.message ?: "An Unexpected Error Occurred"
                     )
                 }

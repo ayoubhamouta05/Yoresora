@@ -99,7 +99,12 @@
     <string name="cm">سم</string>
     <string name="alert">تنبيه</string>
     <string name="customSize">مقاسي المخصص</string>
-    <string name="youHaveNotSetTheNameOfYourSize">لم تحدد اسم مقاسك</string>
-    <string name="pleaseCheckYourValuesOrYourInternetConnection">يرجى التحقق من قيمك أو اتصال الإنترنت الخاص بك</string>
-    <string name="errorOccurred">حدث خطأ</string>
+    <string name="error">حدث خطأ</string>
+    <string name="alreadyHaveCustomSize">لديك بالفعل حجم مخصص لك</string>
+    <string name="alreadyHaveCustomSizeMessage">هل تريد التعديل عليه ؟</string>
+    <string name="checkValueRangeErrorMessage">يجب أن يكون %3$s بين %1$d و %2$d</string>
+    <string name="shouldBeNumber">يجب أن يكون رقماً</string>
+    <string name="sizeNameCannotBeEmpty">لا يمكن أن يكون اسم الحجم فارغًا</string>
+    <string name="youHaventMadeAnyModifications">لم تقم بأي تعديلات</string>
+    <string name="sizeCannotBeEmpty">لا يمكن أن يكون الحجم فارغًا</string>
 </resources>

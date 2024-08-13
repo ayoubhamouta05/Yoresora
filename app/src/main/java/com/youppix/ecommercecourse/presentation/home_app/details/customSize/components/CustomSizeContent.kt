@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeErrorsState
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeState
 
@@ -51,6 +53,7 @@ fun CustomSizeContent(
     state: CustomSizeState,
     event: (CustomSizeEvent) -> Unit
 ) {
+    val context = LocalContext.current
     var showTopBodyInfo by remember {
         mutableStateOf(true)
     }
@@ -115,35 +118,93 @@ fun CustomSizeContent(
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.shoulderWidth,
+
+                        value = state.size.shoulderWidth,
                         label = stringResource(id = R.string.shoulderWidth),
+                        errorMessage = state.errors.shoulderWidth ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.shoulderWidth)
+                        isError = !state.errors.shoulderWidth.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateShoulderWidth(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(shoulderWidth = it)))
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 35f,
+                            max = 49f,
+                            name = context.getString(R.string.shoulderWidth)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        shoulderWidth = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.chestCircumference,
+                        value = state.size.chestCircumference,
                         label = stringResource(id = R.string.chestCircumference),
+                        errorMessage = state.errors.chestCircumference ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.chestCircumference)
+                        isError = !state.errors.chestCircumference.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateChestCircumference(it))
+                        event(
+                            CustomSizeEvent.UpdateSizeInformation(
+                                state.size.copy(
+                                    chestCircumference = it
+                                )
+                            )
+                        )
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            max = 120f,
+                            min = 80f,
+                            name = context.getString(R.string.chestCircumference)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        chestCircumference = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.chestHeight,
+                        value = state.size.chestHeight,
                         label = stringResource(id = R.string.chestHeight),
+                        errorMessage = state.errors.chestHeight ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.chestHeight)
+                        isError = !state.errors.chestHeight.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateChestHeight(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(chestHeight = it)))
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 22f,
+                            max = 30f,
+                            name = context.getString(R.string.chestHeight)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        chestHeight = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
                 }
             }
@@ -187,35 +248,95 @@ fun CustomSizeContent(
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.waistLine,
+                        value = state.size.waistLine,
                         label = stringResource(id = R.string.waistLine),
+                        errorMessage = state.errors.waistLine ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.waistLine)
+                        isError = !state.errors.waistLine.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateWaistLine(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(waistLine = it)))
+
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 62f,
+                            max = 104f,
+                            name = context.getString(R.string.waistLine)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        waistLine = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.buttocksCircumference,
+                        value = state.size.buttocksCircumference,
+                        errorMessage = state.errors.buttocksCircumference ?: "",
                         label = stringResource(id = R.string.buttocksCircumference),
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.buttocksCircumference)
+                        isError = !state.errors.buttocksCircumference.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateButtocksCircumference(it))
+                        event(
+                            CustomSizeEvent.UpdateSizeInformation(
+                                state.size.copy(
+                                    buttocksCircumference = it
+                                )
+                            )
+                        )
+
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 86f,
+                            max = 126f,
+                            name = context.getString(R.string.buttocksCircumference)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        buttocksCircumference = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.buttocksHeight,
+                        value = state.size.buttocksHeight,
+                        errorMessage = state.errors.buttocksHeight ?: "",
                         label = stringResource(id = R.string.buttocksHeight),
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.buttocksHeight)
+                        isError = !state.errors.buttocksHeight.isNullOrEmpty()
 
                     ) {
-                        event(CustomSizeEvent.UpdateButtocksHeight(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(buttocksHeight = it)))
+
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 70f,
+                            max = 86f,
+                            name = context.getString(R.string.buttocksHeight)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        buttocksHeight = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                 }
@@ -262,48 +383,106 @@ fun CustomSizeContent(
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.armCircumference,
+                        value = state.size.armCircumference,
                         label = stringResource(id = R.string.armCircumference),
+                        errorMessage = state.errors.armCircumference ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.armCircumference)
+                        isError = !state.errors.armCircumference.isNullOrEmpty()
 
                     ) {
-                        event(CustomSizeEvent.UpdateArmCircumference(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(armCircumference = it)))
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 23f,
+                            max = 37f,
+                            name = context.getString(R.string.armCircumference)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        armCircumference = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.wristCircumference,
+                        value = state.size.wristCircumference,
                         label = stringResource(id = R.string.wristCircumference),
+                        errorMessage = state.errors.wristCircumference ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.wristCircumference)
+                        isError = !state.errors.wristCircumference.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateWristCircumference(it))
+                        event(
+                            CustomSizeEvent.UpdateSizeInformation(
+                                state.size.copy(
+                                    wristCircumference = it
+                                )
+                            )
+                        )
+
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 14f,
+                            max = 20f,
+                            name = context.getString(R.string.wristCircumference)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        wristCircumference = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.desiredArmLength,
+                        value = state.size.desiredArmLength,
                         label = stringResource(id = R.string.desiredArmLength),
+                        errorMessage = state.errors.desiredArmLength ?: "",
                         imeAction = ImeAction.Next,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = checkIfNumber(state.desiredArmLength)
+                        isError = !state.errors.desiredArmLength.isNullOrEmpty()
                     ) {
-                        event(CustomSizeEvent.UpdateDesiredArmLength(it))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(desiredArmLength = it)))
+                        event(CustomSizeEvent.CheckInput(
+                            context = context,
+                            value = it,
+                            min = 56f,
+                            max = 68f,
+                            name = context.getString(R.string.desiredArmLength)
+                        ) { error ->
+                            event(
+                                CustomSizeEvent.UpdateErrorsState(
+                                    state.errors.copy(
+                                        desiredArmLength = error
+                                    )
+                                )
+                            )
+                            event(CustomSizeEvent.UpdateErrorMessage(error))
+                        })
                     }
 
                     CustomSizeTextField(
                         modifier = Modifier,
-                        value = state.totalLength.toString(),
+                        value = state.size.totalLength.toString(),
                         label = stringResource(id = R.string.totalLength),
                         imeAction = ImeAction.Next,
                         readOnly = true,
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                     ) {
-                        event(CustomSizeEvent.UpdateTotalLength(it.toFloat()))
+                        event(CustomSizeEvent.UpdateSizeInformation(state.size.copy(totalLength = it.toFloat())))
                     }
 
                 }
@@ -312,15 +491,4 @@ fun CustomSizeContent(
         }
     }
 
-}
-
-private fun checkIfNumber(values: String): Boolean {
-    return try {
-        if (values.isNotEmpty()) {
-            values.toFloat()
-        }
-        false
-    } catch (e: Exception) {
-        true
-    }
 }

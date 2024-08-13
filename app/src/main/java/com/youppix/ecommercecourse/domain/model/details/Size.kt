@@ -1,12 +1,13 @@
 package com.youppix.ecommercecourse.domain.model.details
 
-import kotlinx.serialization.Serializable
+import java.io.Serializable
 
 
-@Serializable
-data class CustomSize(
+@kotlinx.serialization.Serializable
+data class Size(
     val userId: Int? = null,
-    val customSizeName: String = "Custom Size",
+    val sizeId : Int ?=null,
+    val sizeName: String = "",
     val shoulderWidth: String = "0.0",
     val chestCircumference: String = "0.0",
     val chestHeight: String = "0.0",
@@ -17,4 +18,4 @@ data class CustomSize(
     val wristCircumference: String = "0.0",
     val desiredArmLength: String = "0.0",
     val totalLength: Float = 150f
-)
+) : Serializable

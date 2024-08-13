@@ -12,15 +12,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeErrorsState
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeState
 
 @Composable
 fun BottomBarSection(state : CustomSizeState ,event : (CustomSizeEvent)-> Unit) {
+    val context = LocalContext.current
     Row(
         Modifier
             .fillMaxWidth()
@@ -48,7 +51,7 @@ fun BottomBarSection(state : CustomSizeState ,event : (CustomSizeEvent)-> Unit) 
         }
 
         Button(
-            onClick = { event(CustomSizeEvent.OnConfirm(state)) },
+            onClick = { event(CustomSizeEvent.OnConfirm(state , context)) },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
