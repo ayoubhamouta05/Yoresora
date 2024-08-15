@@ -179,7 +179,7 @@ class SignUpScreen : Screen {
                     )
                     //User Name
                     CustomTextField(
-                        modifier = Modifier.padding(top = MediumPadding),
+                        modifier = Modifier.padding(top = MediumPadding , bottom = SmallPadding),
                         value = state.userName,
                         label = stringResource(id = R.string.userName),
                         placeholder = stringResource(id = R.string.enterYourUserName),
@@ -192,6 +192,7 @@ class SignUpScreen : Screen {
                     )
                     //Email
                     CustomTextField(
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = state.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
@@ -205,7 +206,7 @@ class SignUpScreen : Screen {
                     //Phone
 
                     CustomTextField(
-                        modifier = Modifier,
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = state.phone,
                         label = stringResource(id = R.string.phone),
                         placeholder = stringResource(id = R.string.enterYourPhone),
@@ -222,6 +223,7 @@ class SignUpScreen : Screen {
                     //Password
 
                     CustomTextField(
+                        modifier = Modifier.padding(bottom = MediumPadding),
                         value = state.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)

@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.ui.theme
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -24,6 +25,15 @@ val Cairo = FontFamily(
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+
+    headlineMedium = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = Cairo,
+        fontWeight = FontWeight.Normal,
+        fontSize = 28.sp,
+        lineHeight = 36.0.sp // don't touch
+    ),
+
     titleSmall = TextStyle(
         textAlign = TextAlign.Center,
         fontFamily = Cairo,

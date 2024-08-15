@@ -31,6 +31,7 @@ import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
+import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsList
@@ -41,7 +42,7 @@ import java.util.Locale
 
 class FavoritesScreen(val userId: String?) : Screen {
 
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -53,42 +54,27 @@ class FavoritesScreen(val userId: String?) : Screen {
         LaunchedEffect(Unit) {
             userId?.let {
                 viewModel.setUserId(userId.toInt())
-                viewModel.onEvent(FavoriteEvent.UpdateCategorySelected(userId.toInt(), state.categorySelected))
+                viewModel.onEvent(
+                    FavoriteEvent.UpdateCategorySelected(
+                        userId.toInt(),
+                        state.categorySelected
+                    )
+                )
             }
         }
 
         Scaffold(modifier = Modifier.fillMaxSize(),
             topBar = {
-                CenterAlignedTopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.background
-                    ),
-                    title = {
-                        Text(
-                            text = stringResource(id = R.string.wishList),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    },
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(horizontal = SmallPadding)
-                        .padding(top = SmallPadding),
-                    navigationIcon = {
-                        CustomIcon(
-                            modifier = Modifier.rotate(
-                                if (isArabic) 180f else 0f
-                            ),
-                            imageVector = Icons.Default.ArrowBack
-                        ) {
-                            if (navigator.canPop) {
-                                navigator.pop()
-                            } else {
-                                navigator.replace(HomeScreen())
-                            }
-                        }
+                CustomTopAppBar(
+                    title = stringResource(id = R.string.wishList),
+                    isArabic = isArabic
+                ) {
+                    if (navigator.canPop) {
+                        navigator.pop()
+                    } else {
+                        navigator.replace(HomeScreen())
                     }
-                )
+                }
             }) { innerPadding ->
             LazyColumn(
                 modifier = Modifier
@@ -141,7 +127,7 @@ class FavoritesScreen(val userId: String?) : Screen {
                         state = state,
                         event = viewModel::onEvent,
                         goToDetails = { itemSelected ->
-                            navigator.push(DetailsScreen(userId ,itemSelected, true))
+                            navigator.push(DetailsScreen(userId, itemSelected, true))
                         })
                 }
 

@@ -6,6 +6,7 @@ import com.youppix.ecommercecourse.presentation.home_app.details.DetailsViewMode
 import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeViewModel
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesViewModel
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeViewModel
+import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreenViewModel
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchViewModel
 import dagger.Binds
 import dagger.Module
@@ -44,5 +45,11 @@ abstract class HiltScreenModels {
     @IntoMap
     @ScreenModelKey(CustomSizeViewModel::class)
     abstract fun bindHiltCustomSizeViewModel(customSizeViewModel: CustomSizeViewModel): ScreenModel
+
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(ProfileScreenViewModel::class)
+    abstract fun bindHiltProfileScreenViewModel(profileScreenViewModel: ProfileScreenViewModel): ScreenModel
 
 }

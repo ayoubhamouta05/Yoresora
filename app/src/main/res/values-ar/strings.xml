@@ -107,4 +107,13 @@
     <string name="sizeNameCannotBeEmpty">لا يمكن أن يكون اسم الحجم فارغًا</string>
     <string name="youHaventMadeAnyModifications">لم تقم بأي تعديلات</string>
     <string name="sizeCannotBeEmpty">لا يمكن أن يكون الحجم فارغًا</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="personalDetails">المعلومات الشخصية</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="myOrders">طلباتي</string>
+    <string name="settings">الإعدادات</string>
+    <string name="privacyPolicy">سياسة الخصوصية</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="logoutMessage">هل أنت متأكد من أنك تريد تسجيل الخروج ؟</string>
+    <string name="language">اللغة</string>
 </resources>

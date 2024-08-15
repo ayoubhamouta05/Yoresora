@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,10 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
+import com.youppix.ecommercecourse.presentation.ui.theme.Cairo
 import java.util.Locale
 
 
@@ -67,10 +68,14 @@ fun CustomDialog(
                 // Title
                 Text(
                     title,
-                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+//                        fontFamily = Cairo
+                    ),
                     textAlign = TextAlign.Center
                 )
                 // Message
@@ -78,7 +83,7 @@ fun CustomDialog(
                     message,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp , horizontal = 16.dp),
+                        .padding(vertical = 8.dp, horizontal = 16.dp),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Normal
@@ -96,12 +101,8 @@ fun CustomDialog(
                     Button(
                         onClick = { onDismissRequest() },
                         modifier = Modifier
-                            .background(
-                                MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(35.dp)
-                            )
-                            .height(55.dp)
-                            .weight(1f),
+                            .weight(1f)
+                            .clip(CircleShape),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent
                         ),
@@ -120,17 +121,14 @@ fun CustomDialog(
                             onConfirmRequest()
                         },
                         modifier = Modifier
-                            .background(
-                                MaterialTheme.colorScheme.primary,
-                                shape = RoundedCornerShape(35.dp)
-                            )
-                            .height(55.dp)
-                            .weight(1f),
+                            .weight(1f)
+                            .clip(CircleShape),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
+                            containerColor = MaterialTheme.colorScheme.primary,
                         ),
                     ) {
                         Text(
+                            modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             text = stringResource(id = R.string.ok),
                             fontWeight = FontWeight.SemiBold,
                             style = MaterialTheme.typography.titleMedium
@@ -147,8 +145,12 @@ fun CustomDialog(
 
 
 @Composable
-fun LeavingAppDialog( showDialog: Boolean , onConfirmRequest: () -> Unit , onDismissRequest: () -> Unit){
-   val currentLang = Locale.getDefault().language
+fun LeavingAppDialog(
+    showDialog: Boolean,
+    onConfirmRequest: () -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    val currentLang = Locale.getDefault().language
     CompositionLocalProvider(
         if (currentLang != "ar")
             LocalLayoutDirection provides LayoutDirection.Ltr

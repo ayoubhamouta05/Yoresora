@@ -30,6 +30,7 @@ import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
+import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
@@ -109,8 +110,8 @@ class MainActivity : ComponentActivity() {
                             CustomBottomBar(
                                 state.currentScreen,
                                 modifier = Modifier.padding(
-                                    start = MediumPadding,
-                                    end = MediumPadding,
+                                    start = HorizontalPaddingSignIn,
+                                    end = HorizontalPaddingSignIn,
                                     bottom = MediumPadding
                                 )
                             ) {

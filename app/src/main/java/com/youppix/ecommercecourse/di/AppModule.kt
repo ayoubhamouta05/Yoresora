@@ -54,6 +54,7 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllColorsUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetItemsByFilteringUseCase
@@ -296,6 +297,13 @@ object AppModule {
             getAllCategories = com.youppix.ecommercecourse.domain.useCases.favorites.GetAllCategoriesUseCase(favoritesRepository),
             addOrDeleteFavorite = AddOrDeleteFavoriteUseCase(favoritesRepository)
         )
+
+
+
+    @Provides
+    @Singleton
+    fun provideProfileUseCases(localeUserEntryManager: LocaleUserEntryManager) : ProfileUseCases =
+        ProfileUseCases(logout = SaveAppEntryUseCase(localeUserEntryManager))
 
 
 }

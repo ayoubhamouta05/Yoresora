@@ -164,7 +164,7 @@ class LoginScreen() : Screen {
                     )
                     //Email
                     CustomTextField(
-                        modifier = Modifier,
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = loginState.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
@@ -180,6 +180,7 @@ class LoginScreen() : Screen {
                     //Password
 
                     CustomTextField(
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = loginState.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)
