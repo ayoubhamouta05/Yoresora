@@ -38,7 +38,7 @@ import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.home_app.components.shadow
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeScreen
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen

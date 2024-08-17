@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.details.customSize.components
+package com.youppix.ecommercecourse.presentation.home_app.customSize.components
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize

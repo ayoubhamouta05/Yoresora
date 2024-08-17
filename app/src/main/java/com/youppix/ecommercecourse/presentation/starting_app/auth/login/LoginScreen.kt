@@ -52,6 +52,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
+import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
@@ -164,7 +165,10 @@ class LoginScreen() : Screen {
                     )
                     //Email
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = SmallPadding),
+                        modifier = Modifier.padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = loginState.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
@@ -180,7 +184,10 @@ class LoginScreen() : Screen {
                     //Password
 
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = SmallPadding),
+                        modifier = Modifier.padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = loginState.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingBag
+import androidx.compose.ui.res.stringResource
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.domain.model.bottomBar.BottomBar
 import com.youppix.ecommercecourse.domain.model.onBoarding.OnBoarding
@@ -82,6 +83,11 @@ object Constant {
 
 
         )
+
+    val lANG_LIST = listOf(
+        Pair(R.string.english,"en"),
+        Pair(R.string.arabic ,"ar")
+    )
 
     fun setLocal(lang: String, context: Context) {
         val locale = Locale(lang)

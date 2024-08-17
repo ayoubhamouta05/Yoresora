@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
+import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
 import kotlinx.coroutines.flow.launchIn
@@ -67,6 +68,12 @@ class ProfileScreenViewModel @Inject constructor(
 
             is ProfileEvent.GetUserData -> {
                 getUserData()
+            }
+
+            is ProfileEvent.SaveAppLanguage -> {
+                screenModelScope.launch {
+                    profileUseCases.saveAppLanguage(APP_LANG, event.lang)
+                }
             }
 
         }

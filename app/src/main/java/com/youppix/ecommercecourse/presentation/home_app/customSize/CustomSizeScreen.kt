@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.details.customSize
+package com.youppix.ecommercecourse.presentation.home_app.customSize
 
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,9 +21,9 @@ import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.domain.model.details.Size
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.components.BottomBarSection
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.components.CustomSizeContent
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.components.TopBarSection
+import com.youppix.ecommercecourse.presentation.home_app.customSize.components.BottomBarSection
+import com.youppix.ecommercecourse.presentation.home_app.customSize.components.CustomSizeContent
+import com.youppix.ecommercecourse.presentation.home_app.customSize.components.TopBarSection
 import java.util.Locale
 
 

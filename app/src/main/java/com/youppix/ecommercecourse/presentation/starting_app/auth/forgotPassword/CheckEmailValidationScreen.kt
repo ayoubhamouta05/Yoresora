@@ -128,6 +128,9 @@ class CheckEmailValidationScreen : Screen {
                 Column(
                     modifier = Modifier
                         .padding(
+                            horizontal = Dimens.HorizontalPaddingSignIn
+                        )
+                        .padding(
                             bottom = innerPadding.calculateBottomPadding()
                         )
                         .fillMaxSize()

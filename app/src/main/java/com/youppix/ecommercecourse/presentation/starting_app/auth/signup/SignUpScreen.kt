@@ -54,6 +54,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
+import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
@@ -179,7 +180,10 @@ class SignUpScreen : Screen {
                     )
                     //User Name
                     CustomTextField(
-                        modifier = Modifier.padding(top = MediumPadding , bottom = SmallPadding),
+                        modifier = Modifier.padding(top = MediumPadding , bottom = SmallPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = state.userName,
                         label = stringResource(id = R.string.userName),
                         placeholder = stringResource(id = R.string.enterYourUserName),
@@ -192,7 +196,10 @@ class SignUpScreen : Screen {
                     )
                     //Email
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = SmallPadding),
+                        modifier = Modifier.padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = state.email,
                         label = stringResource(id = R.string.email),
                         placeholder = stringResource(id = R.string.enterYourEmail),
@@ -206,7 +213,10 @@ class SignUpScreen : Screen {
                     //Phone
 
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = SmallPadding),
+                        modifier = Modifier.padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = state.phone,
                         label = stringResource(id = R.string.phone),
                         placeholder = stringResource(id = R.string.enterYourPhone),
@@ -223,7 +233,10 @@ class SignUpScreen : Screen {
                     //Password
 
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = MediumPadding),
+                        modifier = Modifier.padding(bottom = MediumPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = state.password,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)

@@ -22,8 +22,8 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeEvent
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeScreen
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeEvent
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 
 data class DetailsScreen(
     private val userId: String?,

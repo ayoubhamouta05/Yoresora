@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.details.customSize.components
+package com.youppix.ecommercecourse.presentation.home_app.customSize.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -43,9 +43,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeErrorsState
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeEvent
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeState
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeErrorsState
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeEvent
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeState
 
 @Composable
 fun CustomSizeContent(

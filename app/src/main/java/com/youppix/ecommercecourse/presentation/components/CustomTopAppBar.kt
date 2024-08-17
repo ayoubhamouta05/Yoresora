@@ -1,27 +1,40 @@
 package com.youppix.ecommercecourse.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
+import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(title : String , isArabic : Boolean , onBackClicked : ()-> Unit) {
+fun CustomTopAppBar(title: String, isArabic: Boolean, onBackClicked: () -> Unit) {
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -47,6 +60,66 @@ fun CustomTopAppBar(title : String , isArabic : Boolean , onBackClicked : ()-> U
             ) {
                 onBackClicked()
             }
+        }
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTopAppBar(
+    title: String,
+    isArabic: Boolean,
+    onSaveClick: () -> Unit,
+    onBackClicked: () -> Unit
+) {
+
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
+            Text(
+                text = title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall
+            )
+        },
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = Dimens.SmallPadding)
+            .padding(top = Dimens.SmallPadding),
+        navigationIcon = {
+            CustomIcon(
+                modifier = Modifier.rotate(
+                    if (isArabic) 180f else 0f
+                ),
+                imageVector = Icons.Default.ArrowBack
+            ) {
+                onBackClicked()
+            }
+        },
+        actions = {
+            Box(modifier = Modifier
+                .size(SocialMediaItemSize)
+                .background(
+                    MaterialTheme.colorScheme.primary,
+                    shape = CircleShape
+                )
+                .clip(CircleShape)
+                .clickable {
+                    onSaveClick()
+                }) {
+                Text(
+                    modifier = Modifier.align(Alignment.Center),
+                    text = stringResource(id = R.string.save),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.background
+                    )
+                )
+            }
+
         }
     )
 }

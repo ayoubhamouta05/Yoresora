@@ -167,7 +167,10 @@ class ResetPasswordScreen(
                     )
 
                     CustomTextField(
-                        modifier = Modifier.padding(top = Dimens.MediumPadding),
+                        modifier = Modifier.padding(top = Dimens.MediumPadding)
+                            .padding(
+                                horizontal = Dimens.HorizontalPaddingSignIn
+                            ),
                         value = state.newPassword,
                         onValueChange = { value ->
                             viewModel.updatePassword(value)

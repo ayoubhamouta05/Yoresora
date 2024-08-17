@@ -3,10 +3,11 @@ package com.youppix.ecommercecourse.di
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.hilt.ScreenModelKey
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsViewModel
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeViewModel
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeViewModel
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesViewModel
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeViewModel
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreenViewModel
+import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsViewModel
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchViewModel
 import dagger.Binds
 import dagger.Module
@@ -51,5 +52,10 @@ abstract class HiltScreenModels {
     @IntoMap
     @ScreenModelKey(ProfileScreenViewModel::class)
     abstract fun bindHiltProfileScreenViewModel(profileScreenViewModel: ProfileScreenViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(PersonalDetailsViewModel::class)
+    abstract fun bindHiltPersonalDetailsViewModel(personalDetailsViewModel: PersonalDetailsViewModel): ScreenModel
 
 }

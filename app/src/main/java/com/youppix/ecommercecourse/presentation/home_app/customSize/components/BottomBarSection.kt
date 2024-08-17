@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.details.customSize.components
+package com.youppix.ecommercecourse.presentation.home_app.customSize.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,12 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeErrorsState
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeEvent
-import com.youppix.ecommercecourse.presentation.home_app.details.customSize.CustomSizeState
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeErrorsState
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeEvent
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeState
 
 @Composable
-fun BottomBarSection(state : CustomSizeState ,event : (CustomSizeEvent)-> Unit) {
+fun BottomBarSection(state : CustomSizeState, event : (CustomSizeEvent)-> Unit) {
     val context = LocalContext.current
     Row(
         Modifier

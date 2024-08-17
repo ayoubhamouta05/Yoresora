@@ -11,5 +11,6 @@ sealed class ProfileEvent {
     data object ToggleNotification : ProfileEvent()
     data class UploadImage(val userId: Int, val file: File) : ProfileEvent()
     data object GetUserData : ProfileEvent()
+    data class SaveAppLanguage(val lang : String ) : ProfileEvent()
 
 }

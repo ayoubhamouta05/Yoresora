@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,8 +40,10 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
+import com.youppix.ecommercecourse.presentation.home_app.profile.components.ChangeLangSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ImageSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ProfileItem
+import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsScreen
 import com.youppix.ecommercecourse.presentation.starting_app.StartActivity
 import java.util.Locale
 
@@ -53,6 +58,9 @@ class ProfileScreen : Screen {
         val context = LocalContext.current
         val isArabic = remember {
             Locale.getDefault().language == "ar"
+        }
+        var dropLanguageMenu by remember {
+            mutableStateOf(false)
         }
 
         LaunchedEffect(Unit) {
@@ -86,6 +94,7 @@ class ProfileScreen : Screen {
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(horizontal = MediumPadding)
+                    .animateContentSize()
             ) {
                 item() {
                     ImageSection(
@@ -107,7 +116,9 @@ class ProfileScreen : Screen {
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_person),
                             title = stringResource(id = R.string.personalDetails)
-                        ) {}
+                        ) {
+                            navigator.push(PersonalDetailsScreen(state.user))
+                        }
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -178,23 +189,13 @@ class ProfileScreen : Screen {
                     }
                 }
                 item {
-                    Column(
-                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
-                    ) {
-                        ProfileItem(
-                            modifier = Modifier.padding(vertical = ExtraSmallPadding2),
-                            isArabic = isArabic,
-                            painter = painterResource(id = R.drawable.ic_language),
-                            title = stringResource(id = R.string.language)
-                        ) {}
-                        Spacer(
-                            modifier = Modifier
-                                .height(0.5.dp)
-                                .fillMaxWidth()
-                                .padding(horizontal = SmallPadding)
-                                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
-                        )
-                    }
+                    ChangeLangSection(
+                        isArabic = isArabic,
+                        dropLanguageMenu = dropLanguageMenu,
+                        onDismissRequest = { dropLanguageMenu = false },
+                        onCLick = { dropLanguageMenu = !dropLanguageMenu },
+                        event = viewModel::onEvent
+                    )
                 }
                 item {
                     Column(

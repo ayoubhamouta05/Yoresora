@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.details.customSize
+package com.youppix.ecommercecourse.presentation.home_app.customSize
 
 import android.content.Context
 import android.util.Log

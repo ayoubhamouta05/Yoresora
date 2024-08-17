@@ -9,4 +9,4 @@ data class User(
     val userEmail : String ="",
     val userPhone : String ="",
     val userImage : String ? = null
-)
+) : java.io.Serializable

@@ -323,9 +323,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProfileUseCases(profileRepository: ProfileRepository): ProfileUseCases =
+    fun provideProfileUseCases(profileRepository: ProfileRepository , languageManager: LanguageManager): ProfileUseCases =
         ProfileUseCases(
             saveUserData = SaveUserData(profileRepository),
+            saveAppLanguage = SaveAppLanguageUseCase(languageManager),
             uploadImage = UploadImageUseCase(profileRepository),
             getUserData = GetUserDataUseCase(profileRepository)
         )

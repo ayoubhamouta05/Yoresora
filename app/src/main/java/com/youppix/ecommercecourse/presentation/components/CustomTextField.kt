@@ -45,9 +45,7 @@ fun ColumnScope.CustomTextField(
         modifier = modifier
             .align(Alignment.CenterHorizontally)
             .fillMaxWidth()
-            .padding(
-                horizontal = Dimens.HorizontalPaddingSignIn
-            ),
+            ,
         value = value,
         label = {
             Text(text = label)

@@ -116,4 +116,7 @@
     <string name="logout">تسجيل الخروج</string>
     <string name="logoutMessage">هل أنت متأكد من أنك تريد تسجيل الخروج ؟</string>
     <string name="language">اللغة</string>
+    <string name="save">حفظ</string>
+    <string name="newPassword">كلمة السر الجديدة</string>
+    <string name="enterYourNewPassword">أدخل كلمة السر الجديدة</string>
 </resources>

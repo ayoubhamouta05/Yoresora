@@ -116,6 +116,9 @@ or continue with social media</string>
     <string name="logout">Log out</string>
     <string name="language">Language</string>
     <string name="logoutMessage">Are you sure you want to log out?</string>
+    <string name="save">Save</string>
+    <string name="newPassword">New Password</string>
+    <string name="enterYourNewPassword">Enter Your New Password</string>
 
 
 </resources>
