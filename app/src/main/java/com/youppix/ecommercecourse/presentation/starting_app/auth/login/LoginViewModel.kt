@@ -168,6 +168,7 @@ class LoginViewModel @Inject constructor(
                 it("userId", user.userId.toString())
                 it("userEmail", user.userEmail)
                 it("userPhone", user.userPhone)
+                it("userImage" , user.userImage ?: "")
             }
         }
 

@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.profile.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,21 +22,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
+import com.youppix.ecommercecourse.common.Urls.PROFILE_IMAGES_URL
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun ImageSection(
     modifier: Modifier = Modifier,
+    selectedImageUri : String?,
     userName: String,
     onEditClick: () -> Unit
 ) {
 
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(PROFILE_IMAGES_URL + selectedImageUri)
+            .memoryCacheKey(PROFILE_IMAGES_URL + selectedImageUri)
+            .diskCacheKey(PROFILE_IMAGES_URL + selectedImageUri)
+            .dispatcher(Dispatchers.IO)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
+    )
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -45,7 +62,7 @@ fun ImageSection(
     ) {
         Box(modifier = Modifier.size(110.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.ic_person),
+                painter = painter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

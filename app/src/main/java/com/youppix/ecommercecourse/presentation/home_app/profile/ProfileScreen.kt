@@ -1,6 +1,9 @@
 package com.youppix.ecommercecourse.presentation.home_app.profile
 
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +18,9 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -26,7 +31,6 @@ import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
@@ -39,7 +43,7 @@ import com.youppix.ecommercecourse.presentation.starting_app.StartActivity
 import java.util.Locale
 
 
-class ProfileScreen() : Screen {
+class ProfileScreen : Screen {
     @Composable
     override fun Content() {
 
@@ -47,10 +51,21 @@ class ProfileScreen() : Screen {
         val viewModel: ProfileScreenViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
         val context = LocalContext.current
-        val isArabic = Locale.getDefault().language == "ar"
+        val isArabic = remember {
+            Locale.getDefault().language == "ar"
+        }
 
-        val name =
-            context.getSharedPreferences(APP_ENTRY, 0).getString("userName", "") ?: ""
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(ProfileEvent.GetUserData)
+        }
+
+        val singlePhotoPickerLauncher =
+            rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
+                uri?.let {
+                    val file = viewModel.uriToFile(uri, context.contentResolver, context)
+                    viewModel.onEvent(ProfileEvent.UploadImage(state.user.userId, file))
+                }
+            }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -72,22 +87,27 @@ class ProfileScreen() : Screen {
                     .padding(innerPadding)
                     .padding(horizontal = MediumPadding)
             ) {
-                item {
-                    ImageSection(userName = name) {}
+                item() {
+                    ImageSection(
+                        selectedImageUri = state.user.userImage,
+                        userName = state.user.userName
+                    ) {
+                        singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
                 }
 
                 item {
                     Column(
-                        Modifier
-                            .fillMaxWidth(), verticalArrangement = Arrangement.Center
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
                     ) {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_person),
                             title = stringResource(id = R.string.personalDetails)
-                        ) {
-                        }
+                        ) {}
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -121,16 +141,14 @@ class ProfileScreen() : Screen {
                 }
                 item {
                     Column(
-                        Modifier
-                            .fillMaxWidth(), verticalArrangement = Arrangement.Center
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
                     ) {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_orders),
                             title = stringResource(id = R.string.myOrders)
-                        ) {
-                        }
+                        ) {}
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -142,16 +160,14 @@ class ProfileScreen() : Screen {
                 }
                 item {
                     Column(
-                        Modifier
-                            .fillMaxWidth(), verticalArrangement = Arrangement.Center
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
                     ) {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_settings),
                             title = stringResource(id = R.string.settings)
-                        ) {
-                        }
+                        ) {}
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -163,16 +179,14 @@ class ProfileScreen() : Screen {
                 }
                 item {
                     Column(
-                        Modifier
-                            .fillMaxWidth(), verticalArrangement = Arrangement.Center
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
                     ) {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_language),
                             title = stringResource(id = R.string.language)
-                        ) {
-                        }
+                        ) {}
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -184,16 +198,14 @@ class ProfileScreen() : Screen {
                 }
                 item {
                     Column(
-                        Modifier
-                            .fillMaxWidth(), verticalArrangement = Arrangement.Center
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
                     ) {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_security),
                             title = stringResource(id = R.string.privacyPolicy)
-                        ) {
-                        }
+                        ) {}
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)

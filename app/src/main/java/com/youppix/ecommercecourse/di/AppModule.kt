@@ -8,11 +8,13 @@ import com.youppix.ecommercecourse.data.remote.auth.AuthService
 import com.youppix.ecommercecourse.data.remote.details.DetailsService
 import com.youppix.ecommercecourse.data.remote.favorites.FavoritesService
 import com.youppix.ecommercecourse.data.remote.home.HomeService
+import com.youppix.ecommercecourse.data.remote.profile.ProfileService
 import com.youppix.ecommercecourse.data.repository.details.DetailsRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.favorites.FavoritesRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.home.HomeRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
+import com.youppix.ecommercecourse.data.repository.profile.ProfileRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.search.SearchRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
 import com.youppix.ecommercecourse.domain.manager.LanguageManager
@@ -23,6 +25,7 @@ import com.youppix.ecommercecourse.domain.repository.favorites.FavoritesReposito
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.home.HomeRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
+import com.youppix.ecommercecourse.domain.repository.profile.ProfileRepository
 import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
 import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
@@ -54,7 +57,10 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.profile.GetUserDataUseCase
+import com.youppix.ecommercecourse.domain.useCases.profile.SaveUserData
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
+import com.youppix.ecommercecourse.domain.useCases.profile.UploadImageUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllColorsUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetItemsByFilteringUseCase
@@ -259,19 +265,19 @@ object AppModule {
     //Details
     @Provides
     @Singleton
-    fun provideDetailsService(client: HttpClient) : DetailsService =
+    fun provideDetailsService(client: HttpClient): DetailsService =
         DetailsService(client)
 
     @Provides
     @Singleton
-    fun provideDetailsRepository (detailsService: DetailsService) : DetailsRepository =
+    fun provideDetailsRepository(detailsService: DetailsService): DetailsRepository =
         DetailsRepositoryImpl(detailsService)
 
     @Provides
     @Singleton
-    fun provideDetailsUseCases(detailsRepository: DetailsRepository) :DetailsUseCases =
+    fun provideDetailsUseCases(detailsRepository: DetailsRepository): DetailsUseCases =
         DetailsUseCases(
-           getItemDetails =  GetItemDetailsUseCase(detailsRepository),
+            getItemDetails = GetItemDetailsUseCase(detailsRepository),
             addOrDeleteFromFavorite = AddOrDeleteFromFavoriteUseCase(detailsRepository),
             checkSizeExistence = CheckSizeExistenceUseCase(detailsRepository),
             upsertCustomSize = UpsertCustomSizeUseCase(detailsRepository)
@@ -281,29 +287,48 @@ object AppModule {
     // Favorites
     @Provides
     @Singleton
-    fun provideFavoritesService(client: HttpClient) : FavoritesService =
+    fun provideFavoritesService(client: HttpClient): FavoritesService =
         FavoritesService(client)
 
     @Provides
     @Singleton
-    fun provideFavoritesRepository (favoritesService: FavoritesService) : FavoritesRepository =
+    fun provideFavoritesRepository(favoritesService: FavoritesService): FavoritesRepository =
         FavoritesRepositoryImpl(favoritesService)
 
     @Provides
     @Singleton
-    fun provideFavoritesUseCases(favoritesRepository: FavoritesRepository) : FavoritesUseCases =
+    fun provideFavoritesUseCases(favoritesRepository: FavoritesRepository): FavoritesUseCases =
         FavoritesUseCases(
-            getAllFavorites = GetAllFavoritesUseCase(favoritesRepository) ,
-            getAllCategories = com.youppix.ecommercecourse.domain.useCases.favorites.GetAllCategoriesUseCase(favoritesRepository),
+            getAllFavorites = GetAllFavoritesUseCase(favoritesRepository),
+            getAllCategories = com.youppix.ecommercecourse.domain.useCases.favorites.GetAllCategoriesUseCase(
+                favoritesRepository
+            ),
             addOrDeleteFavorite = AddOrDeleteFavoriteUseCase(favoritesRepository)
         )
 
 
+    // Profile
+    @Provides
+    @Singleton
+    fun provideProfileService(client: HttpClient): ProfileService =
+        ProfileService(client)
 
     @Provides
     @Singleton
-    fun provideProfileUseCases(localeUserEntryManager: LocaleUserEntryManager) : ProfileUseCases =
-        ProfileUseCases(logout = SaveAppEntryUseCase(localeUserEntryManager))
+    fun provideProfileRepository(
+        profileService: ProfileService,
+        localeUserEntryManager: LocaleUserEntryManager
+    ): ProfileRepository =
+        ProfileRepositoryImpl(profileService = profileService, localeUserEntryManager)
+
+    @Provides
+    @Singleton
+    fun provideProfileUseCases(profileRepository: ProfileRepository): ProfileUseCases =
+        ProfileUseCases(
+            saveUserData = SaveUserData(profileRepository),
+            uploadImage = UploadImageUseCase(profileRepository),
+            getUserData = GetUserDataUseCase(profileRepository)
+        )
 
 
 }

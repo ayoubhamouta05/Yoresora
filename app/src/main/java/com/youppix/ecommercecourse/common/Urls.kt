@@ -29,4 +29,8 @@ object Urls {
     const val ALL_FAVORITES_URL = "$BASE_URL/favorites/getFavorites.php"
     const val ADD_FAVORITE_URL = "$BASE_URL/favorites/addFavorite.php"
 
+    /** Profile urls */
+    const val UPDATE_PROFILE_IMG_URL = "$BASE_URL/profile/updateProfileImage.php"
+    const val PROFILE_IMAGES_URL = "$BASE_URL/profileImages/"
+
 }
