@@ -119,6 +119,12 @@ or continue with social media</string>
     <string name="save">Save</string>
     <string name="newPassword">New Password</string>
     <string name="enterYourNewPassword">Enter Your New Password</string>
+    <string name="updateSuccess">Updated Successfully</string>
+    <string name="ifYouChangeEmailYouMustVerifyIt">If You Change Email You Must Verify It</string>
+    <string name="wrongPassword">Wrong Password</string>
+    <string name="changePassword">Change Password</string>
+    <string name="bothPasswordsAreTheSame">Both passwords are the same</string>
+    <string name="thisEmailIsNotAvailable">This email is not available</string>
 
 
 </resources>

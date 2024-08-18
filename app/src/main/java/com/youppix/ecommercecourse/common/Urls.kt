@@ -32,5 +32,7 @@ object Urls {
     /** Profile urls */
     const val UPDATE_PROFILE_IMG_URL = "$BASE_URL/profile/updateProfileImage.php"
     const val PROFILE_IMAGES_URL = "$BASE_URL/profileImages/"
+    const val UPDATE_PERSONAL_DETAILS_URL = "$BASE_URL/profile/updatePersonalDetails.php"
+    const val CHECK_EMAIL_AVAILABILITY_URL = "$BASE_URL/profile/checkEmailAvailability.php"
 
 }

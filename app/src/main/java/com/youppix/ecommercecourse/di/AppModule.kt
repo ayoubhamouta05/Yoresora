@@ -57,9 +57,11 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.profile.CheckEmailAvailabilityUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.GetUserDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.SaveUserData
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
+import com.youppix.ecommercecourse.domain.useCases.profile.UpdatePersonalDetailsUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.UploadImageUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllColorsUseCase
@@ -323,12 +325,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProfileUseCases(profileRepository: ProfileRepository , languageManager: LanguageManager): ProfileUseCases =
+    fun provideProfileUseCases(
+        profileRepository: ProfileRepository,
+        languageManager: LanguageManager
+    ): ProfileUseCases =
         ProfileUseCases(
             saveUserData = SaveUserData(profileRepository),
             saveAppLanguage = SaveAppLanguageUseCase(languageManager),
             uploadImage = UploadImageUseCase(profileRepository),
-            getUserData = GetUserDataUseCase(profileRepository)
+            getUserData = GetUserDataUseCase(profileRepository),
+            updatePersonalDetails = UpdatePersonalDetailsUseCase(profileRepository),
+            checkEmail = CheckEmailUseCase(profileRepository = profileRepository),
+            checkPassword = CheckPasswordUseCase(profileRepository = profileRepository),
+            checkUserName = CheckUserNameUseCase(profileRepository = profileRepository),
+            checkPhone = CheckPhoneUseCase(profileRepository = profileRepository),
+            checkEmailAvailability = CheckEmailAvailabilityUseCase(profileRepository)
+
         )
 
 

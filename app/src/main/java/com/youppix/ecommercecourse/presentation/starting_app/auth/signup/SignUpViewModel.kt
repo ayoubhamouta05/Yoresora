@@ -62,7 +62,7 @@ class SignUpViewModel @Inject constructor(
     }
 
 
-    fun validateEmail(email: String, context: Context): Boolean {
+    private fun validateEmail(email: String, context: Context): Boolean {
         when (val result = signUpUseCases.checkEmail(email, context)) {
             is Resource.Loading -> {}
             is Resource.Error -> {

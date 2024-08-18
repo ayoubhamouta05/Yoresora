@@ -34,16 +34,18 @@ import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
+import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ChangeLangSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ImageSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ProfileItem
-import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsScreen
+import com.youppix.ecommercecourse.presentation.home_app.settings.SettingScreen
 import com.youppix.ecommercecourse.presentation.starting_app.StartActivity
 import java.util.Locale
 
@@ -178,7 +180,9 @@ class ProfileScreen : Screen {
                             isArabic = isArabic,
                             painter = painterResource(id = R.drawable.ic_settings),
                             title = stringResource(id = R.string.settings)
-                        ) {}
+                        ) {
+                            navigator.push(SettingScreen())
+                        }
                         Spacer(
                             modifier = Modifier
                                 .height(0.5.dp)
@@ -218,7 +222,8 @@ class ProfileScreen : Screen {
                 }
                 item {
                     ProfileItem(
-                        modifier = Modifier.padding(vertical = ExtraSmallPadding2),
+                        modifier = Modifier.padding(vertical = ExtraSmallPadding2)
+                            .padding(bottom = BottomBarHeight.plus(MediumPadding *2)),
                         isArabic = isArabic,
                         painter = painterResource(id = R.drawable.ic_logout),
                         title = stringResource(id = R.string.logout)

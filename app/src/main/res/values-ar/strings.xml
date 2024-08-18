@@ -119,4 +119,10 @@
     <string name="save">حفظ</string>
     <string name="newPassword">كلمة السر الجديدة</string>
     <string name="enterYourNewPassword">أدخل كلمة السر الجديدة</string>
+    <string name="updateSuccess">تم التحديث بنجاح</string>
+    <string name="ifYouChangeEmailYouMustVerifyIt">إذا قمت بتغيير بريدك الإلكتروني، فيجب عليك التحقق منه.</string>
+    <string name="wrongPassword">كلمة المرور خاطئة</string>
+    <string name="changePassword">تغيير كلمة السر</string>
+    <string name="bothPasswordsAreTheSame">كلمتا المرور متماثلتان</string>
+    <string name="thisEmailIsNotAvailable">هذا البريد الإلكتروني غير متوفر</string>
 </resources>
