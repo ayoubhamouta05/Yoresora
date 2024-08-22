@@ -55,7 +55,7 @@ import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.home_app.MainActivity
@@ -145,7 +145,7 @@ class LoginScreen() : Screen {
                                 top = innerPadding
                                     .calculateTopPadding()
                                     .plus(
-                                        HorizontalPaddingSignIn
+                                        LargePadding
                                     )
                             ),
                         textAlign = TextAlign.Center
@@ -157,9 +157,9 @@ class LoginScreen() : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                bottom = HorizontalPaddingSignIn,
-                                start = HorizontalPaddingSignIn,
-                                end = HorizontalPaddingSignIn
+                                bottom = LargePadding,
+                                start = LargePadding,
+                                end = LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -167,7 +167,7 @@ class LoginScreen() : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(bottom = SmallPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = loginState.email,
                         label = stringResource(id = R.string.email),
@@ -186,7 +186,7 @@ class LoginScreen() : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(bottom = SmallPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = loginState.password,
                         onValueChange = { value ->
@@ -209,7 +209,7 @@ class LoginScreen() : Screen {
                         Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = HorizontalPaddingSignIn
+                                horizontal = LargePadding
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -256,7 +256,7 @@ class LoginScreen() : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = HorizontalPaddingSignIn,
+                                horizontal = LargePadding,
                                 vertical = MediumPadding
                             ),
                         shape = RoundedCornerShape(30)
@@ -274,7 +274,7 @@ class LoginScreen() : Screen {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = HorizontalPaddingSignIn),
+                            .padding(horizontal = LargePadding),
                         horizontalArrangement = Arrangement.Center
                     ) {
 
@@ -298,7 +298,7 @@ class LoginScreen() : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                bottom = HorizontalPaddingSignIn,
+                                bottom = LargePadding,
                                 top = SmallPadding
                             ),
                         verticalAlignment = Alignment.CenterVertically,

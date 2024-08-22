@@ -130,7 +130,7 @@ class VerifyNewEmail(
                                     colorFilter = ColorFilter.tint(color = Color.Gray),
                                     modifier = Modifier
                                         .rotate(if (isArabic) 90f else -90f)
-                                        .size(Dimens.HorizontalPaddingSignIn),
+                                        .size(Dimens.LargePadding),
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit
                                 )
@@ -158,9 +158,9 @@ class VerifyNewEmail(
                             .padding(
                                 top = innerPadding
                                     .calculateTopPadding()
-                                    .plus(Dimens.HorizontalPaddingSignIn),
-                                end = Dimens.HorizontalPaddingSignIn,
-                                start = Dimens.HorizontalPaddingSignIn
+                                    .plus(Dimens.LargePadding),
+                                end = Dimens.LargePadding,
+                                start = Dimens.LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -171,8 +171,8 @@ class VerifyNewEmail(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = Dimens.HorizontalPaddingSignIn,
-                                end = Dimens.HorizontalPaddingSignIn
+                                start = Dimens.LargePadding,
+                                end = Dimens.LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -213,7 +213,7 @@ class VerifyNewEmail(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn,
+                                horizontal = Dimens.LargePadding,
                                 vertical = Dimens.MediumPadding
                             ),
                         shape = RoundedCornerShape(30),

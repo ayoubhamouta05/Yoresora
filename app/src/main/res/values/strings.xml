@@ -125,6 +125,17 @@ or continue with social media</string>
     <string name="changePassword">Change Password</string>
     <string name="bothPasswordsAreTheSame">Both passwords are the same</string>
     <string name="thisEmailIsNotAvailable">This email is not available</string>
+    <string name="myCart">My Cart</string>
+    <string name="promoCode">Promo Code</string>
+    <string name="apply">Apply</string>
+    <string name="prixValue">%1$s DA</string>
+    <string name="subTotal">Sub-Total</string>
+    <string name="deliveryFee">Delivery Fee</string>
+    <string name="discount">Discount</string>
+    <string name="totalCost">Total Cost</string>
+    <string name="proceedToCheckout">Proceed To Checkout</string>
+    <string name="size">Size : %1$s</string>
+    <string name="color">Color : %1$s</string>
 
 
 </resources>

@@ -1,10 +1,8 @@
 package com.youppix.ecommercecourse.presentation.starting_app.onBoarding
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,13 +24,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,16 +39,13 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.pages
-import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.PageIndicatorWidth
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.LoginScreen
@@ -106,7 +99,7 @@ class OnBoardingScreen() : Screen {
                             Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    vertical = HorizontalPaddingSignIn,
+                                    vertical = LargePadding,
                                     horizontal = SmallPadding
                                 ),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -114,7 +107,7 @@ class OnBoardingScreen() : Screen {
                             Text(
                                 text = stringResource(id = pages[index].title),
                                 style = MaterialTheme.typography.titleSmall,
-                                modifier = Modifier.padding(bottom = HorizontalPaddingSignIn)
+                                modifier = Modifier.padding(bottom = LargePadding)
                             )
                             Image(
                                 painter = painterResource(id = pages[index].image),
@@ -130,7 +123,7 @@ class OnBoardingScreen() : Screen {
                                 color = Color.DarkGray,
                                 style = MaterialTheme.typography.displaySmall,
                                 textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(horizontal = HorizontalPaddingSignIn),
+                                modifier = Modifier.padding(horizontal = LargePadding),
                                 lineHeight = TextUnit(35f, TextUnitType.Sp)
                             )
                         }

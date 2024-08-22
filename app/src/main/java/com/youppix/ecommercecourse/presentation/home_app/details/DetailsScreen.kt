@@ -46,8 +46,13 @@ data class DetailsScreen(
                 }
             } ?: run {
                 val id = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId", "")
-                if (!id.isNullOrEmpty())
+                if (!id.isNullOrEmpty()){
                     viewModel.setUserId(id.toInt())
+                    newItem?.let {
+                        viewModel.onEvent(DetailsEvent.GetItemDetails(item.itemId, id.toInt()))
+                        newItem = null
+                    }
+                }
             }
         }
 

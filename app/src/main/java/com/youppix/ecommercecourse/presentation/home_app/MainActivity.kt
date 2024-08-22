@@ -2,7 +2,6 @@ package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +28,7 @@ import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
@@ -42,7 +40,7 @@ import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeSc
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
-import com.youppix.ecommercecourse.presentation.home_app.shop.ShopScreen
+import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -96,7 +94,7 @@ class MainActivity : ComponentActivity() {
                         viewModel.apply {
                             when (navigator!!.lastItem::class.java.simpleName) {
                                 HomeScreen::class.java.simpleName -> setCurrentScreen(0)
-                                ShopScreen::class.java.simpleName -> setCurrentScreen(1)
+                                CartScreen::class.java.simpleName -> setCurrentScreen(1)
                                 FavoritesScreen::class.java.simpleName -> setCurrentScreen(2)
                                 ChatScreen::class.java.simpleName -> setCurrentScreen(3)
                                 ProfileScreen::class.java.simpleName -> setCurrentScreen(4)
@@ -110,8 +108,8 @@ class MainActivity : ComponentActivity() {
                             CustomBottomBar(
                                 state.currentScreen,
                                 modifier = Modifier.padding(
-                                    start = HorizontalPaddingSignIn,
-                                    end = HorizontalPaddingSignIn,
+                                    start = LargePadding,
+                                    end = LargePadding,
                                     bottom = MediumPadding
                                 )
                             ) {
@@ -122,8 +120,8 @@ class MainActivity : ComponentActivity() {
                                     }
 
                                     1 -> {
-                                        if (navigator?.lastItem?.javaClass?.name != ShopScreen::class.java.name)
-                                            navigator?.replace(ShopScreen())
+                                        if (navigator?.lastItem?.javaClass?.name != CartScreen::class.java.name)
+                                            navigator?.replace(CartScreen())
                                     }
 
                                     2 -> {
@@ -152,7 +150,8 @@ class MainActivity : ComponentActivity() {
                             FadeTransition(navigator = navigator)
                             showBottomBar =
                                 navigator.lastItem.javaClass.name != DetailsScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != CartScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

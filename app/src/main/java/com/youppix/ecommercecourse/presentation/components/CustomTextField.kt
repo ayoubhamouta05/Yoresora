@@ -101,4 +101,48 @@ fun ColumnScope.CustomTextField(
 }
 
 
+@Composable
+fun ColumnScope.CustomTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    placeholder: String,
+    trailingIcon: @Composable ()-> Unit,
+    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    isError: Boolean,
+    errorMessage: String = ""
+) {
+    OutlinedTextField(
+        modifier = modifier
+            .align(Alignment.CenterHorizontally)
+            .fillMaxWidth()
+        ,
+        value = value,
+        label = {
+            Text(text = label)
+        },
+        placeholder = {
+            Text(text = placeholder)
+        },
+        shape = RoundedCornerShape(40),
+        singleLine = true,
+        trailingIcon = trailingIcon,
+        onValueChange = { newValue ->
+            onValueChange(newValue)
+        },
+        keyboardActions = keyboardActions,
+        keyboardOptions = keyboardOptions,
+        isError = isError ,
+        supportingText = if (isError) {{
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error
+            )
+        }} else null
+    )
+}
+
 

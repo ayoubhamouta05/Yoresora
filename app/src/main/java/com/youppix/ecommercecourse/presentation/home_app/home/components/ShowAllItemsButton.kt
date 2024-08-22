@@ -29,7 +29,7 @@ fun BoxScope.ShowAllItemsButton(
         exit = fadeOut() + slideOutVertically(),
         modifier = Modifier
             .align(Alignment.BottomCenter)
-            .padding(bottom = Dimens.BottomBarHeight.plus(Dimens.HorizontalPaddingSignIn))
+            .padding(bottom = Dimens.BottomBarHeight.plus(Dimens.LargePadding))
 
     ) {
         Button(

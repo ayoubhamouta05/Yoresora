@@ -43,7 +43,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.starting_app.auth.verification.VerificationEmailForgotPasswordScreen
@@ -115,7 +115,7 @@ class CheckEmailValidationScreen : Screen {
                                     colorFilter = ColorFilter.tint(color = Color.Gray),
                                     modifier = Modifier
                                         .rotate(if (isArabic) 90f else -90f)
-                                        .size(Dimens.HorizontalPaddingSignIn),
+                                        .size(Dimens.LargePadding),
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit
                                 )
@@ -128,7 +128,7 @@ class CheckEmailValidationScreen : Screen {
                 Column(
                     modifier = Modifier
                         .padding(
-                            horizontal = Dimens.HorizontalPaddingSignIn
+                            horizontal = Dimens.LargePadding
                         )
                         .padding(
                             bottom = innerPadding.calculateBottomPadding()
@@ -146,9 +146,9 @@ class CheckEmailValidationScreen : Screen {
                             .padding(
                                 top = innerPadding
                                     .calculateTopPadding()
-                                    .plus(HorizontalPaddingSignIn),
-                                end = Dimens.HorizontalPaddingSignIn,
-                                start = Dimens.HorizontalPaddingSignIn
+                                    .plus(LargePadding),
+                                end = Dimens.LargePadding,
+                                start = Dimens.LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -159,8 +159,8 @@ class CheckEmailValidationScreen : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = Dimens.HorizontalPaddingSignIn,
-                                end = Dimens.HorizontalPaddingSignIn
+                                start = Dimens.LargePadding,
+                                end = Dimens.LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -197,7 +197,7 @@ class CheckEmailValidationScreen : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn,
+                                horizontal = Dimens.LargePadding,
                                 vertical = Dimens.MediumPadding
                             ),
                         shape = RoundedCornerShape(30)

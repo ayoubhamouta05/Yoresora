@@ -24,7 +24,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.LoginScreen
 
 class SuccessfulSignUpScreen(private val verificationSuccessfulMsg : Int? = null ) : Screen {
@@ -36,7 +36,7 @@ class SuccessfulSignUpScreen(private val verificationSuccessfulMsg : Int? = null
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(HorizontalPaddingSignIn),
+                .padding(LargePadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

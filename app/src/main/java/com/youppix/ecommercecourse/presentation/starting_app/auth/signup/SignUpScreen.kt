@@ -56,7 +56,7 @@ import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
-import com.youppix.ecommercecourse.common.Dimens.HorizontalPaddingSignIn
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.starting_app.auth.components.CustomProgressIndicator
@@ -131,7 +131,7 @@ class SignUpScreen : Screen {
                                     colorFilter = ColorFilter.tint(color = Color.Gray),
                                     modifier = Modifier
                                         .rotate(if (isArabic) 90f else -90f)
-                                        .size(HorizontalPaddingSignIn),
+                                        .size(LargePadding),
                                     contentDescription = null,
                                     contentScale = ContentScale.Fit
                                 )
@@ -161,8 +161,8 @@ class SignUpScreen : Screen {
                             .padding(
                                 top = innerPadding
                                     .calculateTopPadding(),
-                                end = HorizontalPaddingSignIn,
-                                start = HorizontalPaddingSignIn
+                                end = LargePadding,
+                                start = LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -173,8 +173,8 @@ class SignUpScreen : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = HorizontalPaddingSignIn,
-                                end = HorizontalPaddingSignIn
+                                start = LargePadding,
+                                end = LargePadding
                             ),
                         textAlign = TextAlign.Center
                     )
@@ -182,7 +182,7 @@ class SignUpScreen : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(top = MediumPadding , bottom = SmallPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = state.userName,
                         label = stringResource(id = R.string.userName),
@@ -198,7 +198,7 @@ class SignUpScreen : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(bottom = SmallPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = state.email,
                         label = stringResource(id = R.string.email),
@@ -215,7 +215,7 @@ class SignUpScreen : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(bottom = SmallPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = state.phone,
                         label = stringResource(id = R.string.phone),
@@ -235,7 +235,7 @@ class SignUpScreen : Screen {
                     CustomTextField(
                         modifier = Modifier.padding(bottom = MediumPadding)
                             .padding(
-                                horizontal = Dimens.HorizontalPaddingSignIn
+                                horizontal = Dimens.LargePadding
                             ),
                         value = state.password,
                         onValueChange = { value ->
@@ -279,7 +279,7 @@ class SignUpScreen : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                horizontal = HorizontalPaddingSignIn,
+                                horizontal = LargePadding,
                                 vertical = MediumPadding
                             ),
                         shape = RoundedCornerShape(30)
@@ -297,7 +297,7 @@ class SignUpScreen : Screen {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = HorizontalPaddingSignIn),
+                            .padding(horizontal = LargePadding),
                         horizontalArrangement = Arrangement.Center
                     ) {
 
@@ -321,7 +321,7 @@ class SignUpScreen : Screen {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                bottom = HorizontalPaddingSignIn,
+                                bottom = LargePadding,
                                 top = SmallPadding
                             ),
                         verticalAlignment = Alignment.CenterVertically,

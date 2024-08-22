@@ -125,4 +125,15 @@
     <string name="changePassword">تغيير كلمة السر</string>
     <string name="bothPasswordsAreTheSame">كلمتا المرور متماثلتان</string>
     <string name="thisEmailIsNotAvailable">هذا البريد الإلكتروني غير متوفر</string>
+    <string name="myCart">سلتي</string>
+    <string name="promoCode">الرمز الترويجي</string>
+    <string name="apply">استخدم</string>
+    <string name="prixValue">%1$s دج</string>
+    <string name="totalCost">التكلفة الإجمالية</string>
+    <string name="proceedToCheckout">انتقل إلى الدفع</string>
+    <string name="discount">خصم</string>
+    <string name="deliveryFee">رسوم التوصيل</string>
+    <string name="subTotal">المجموع الفرعي</string>
+    <string name="size">الحجم : %1$s</string>
+    <string name="color">اللون : %1$s</string>
 </resources>
