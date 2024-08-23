@@ -3,194 +3,34 @@ package com.youppix.ecommercecourse.presentation.home_app.cart
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
-import com.youppix.ecommercecourse.domain.model.CartItemData
+import cafe.adriel.voyager.core.model.screenModelScope
+import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.cart.CartItemData
 import com.youppix.ecommercecourse.domain.model.items.ColorData
+import com.youppix.ecommercecourse.domain.model.items.Item
+import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CartViewModel @Inject constructor(
+    private val cartUseCases: CartUseCases,
 ) : ScreenModel {
 
     private var _state = mutableStateOf(CartState())
-    val state : State<CartState> = _state
+    val state: State<CartState> = _state
 
-    init {
-        _state.value = state.value.copy(
-            cartItems = listOf(
-                CartItemData(
-                itemId = 13,
-                itemName = "Nike Air Max",
-                itemColor = ColorData(
-                    colors_name = "Black",
-                    colors_hex = "#000000",
-                    colors_id = 1,
-                    colors_name_ar = "اسود"
-                ),
-                itemPrice = 5500,
-                itemSize = "42",
-                itemImage = "product_example2.jpg",
-                quantity = 1,
-            ),
-                CartItemData(
-                    itemId = 12,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 11,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 10,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 9,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 8,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 7,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 6,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 5,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 4,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 2,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
-                CartItemData(
-                    itemId = 2,
-                    itemName = "Nike Air Max",
-                    itemColor = ColorData(
-                        colors_name = "Black",
-                        colors_hex = "#000000",
-                        colors_id = 1,
-                        colors_name_ar = "اسود"
-                    ),
-                    itemPrice = 5500,
-                    itemSize = "42",
-                    itemImage = "product_example2.jpg",
-                    quantity = 1,
-                ),
 
-            )
-        )
-    }
+    fun onEvent(event: CartEvent) {
+        when (event) {
 
-    fun onEvent (event: CartEvent){
-        when (event){
+            is CartEvent.GetCartItems -> {
+                screenModelScope.launch {
+                    getCartItems(event.userId)
+                }
+            }
+
             is CartEvent.OnPromoCodeChange -> {
                 _state.value = state.value.copy(
                     promoCode = event.promoCode
@@ -198,5 +38,64 @@ class CartViewModel @Inject constructor(
             }
         }
     }
+
+
+    private suspend fun getCartItems(userId: Int) {
+        cartUseCases.getCarts(userId).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        getCartError = result.message
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        cartItems = result.data?.data ?: arrayListOf()
+                    )
+                }
+            }
+        }.launchIn(screenModelScope)
+    }
+
+    fun setUserId(userId: Int) {
+        _state.value = state.value.copy(
+            userId = userId
+        )
+    }
+
+//    private suspend fun addOrDeleteCartItem(
+//        itemId: Int,
+//        userId: Int,
+//        itemSize: Int,
+//        itemColor: Int,
+//    ) {
+//        cartUseCases.addOrDeleteCart(itemId, userId, itemSize, itemColor).onEach {result->
+//            when(result){
+//                is Resource.Loading -> {
+//                }
+//
+//                is Resource.Error -> {
+//                    _state.value = state.value.copy(
+//                        isLoading = false,
+//                    )
+//                }
+//                is Resource.Successful -> {
+//                    _state.value = state.value.copy(
+//                        isLoading = false,
+//                    )
+//                }
+//            }
+//        }.launchIn(screenModelScope)
+//    }
+
 
 }

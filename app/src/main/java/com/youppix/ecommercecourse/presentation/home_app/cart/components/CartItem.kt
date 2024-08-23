@@ -40,91 +40,99 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding2
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
-import com.youppix.ecommercecourse.domain.model.CartItemData
+import com.youppix.ecommercecourse.domain.model.cart.CartData
+import com.youppix.ecommercecourse.domain.model.cart.CartItemData
 import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun CartItem(
     modifier: Modifier = Modifier,
-    cartItem: CartItemData,
+    cartItem: CartData,
     isArabic: Boolean,
-    onCLick: (CartItemData) -> Unit,
+    onCLick: (CartData) -> Unit,
 ) {
     val context = LocalContext.current
     val image = rememberAsyncImagePainter(
-        model = ImageRequest.Builder(context).data(Urls.IMAGES_URL + cartItem.itemImage)
-            .memoryCacheKey(Urls.IMAGES_URL + cartItem.itemImage)
-            .diskCacheKey(Urls.IMAGES_URL + cartItem.itemImage).dispatcher(Dispatchers.IO)
+        model = ImageRequest.Builder(context).data(Urls.IMAGES_URL + cartItem.items_image)
+            .memoryCacheKey(Urls.IMAGES_URL + cartItem.items_image)
+            .diskCacheKey(Urls.IMAGES_URL + cartItem.items_image).dispatcher(Dispatchers.IO)
             .diskCachePolicy(CachePolicy.ENABLED).memoryCachePolicy(CachePolicy.ENABLED).build()
     )
     var quantity = remember {
         mutableIntStateOf(1)
     }
-    Row(
-        modifier
-            .fillMaxWidth()
-            .padding(horizontal = MediumPadding)
-            .clip(RoundedCornerShape(SmallPadding))
-            .clickable {
-                onCLick(cartItem)
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .padding(end = MediumPadding)
-                .size(100.dp)
+    Box(modifier = modifier){
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MediumPadding)
                 .clip(RoundedCornerShape(SmallPadding))
-        )
-
-        Column(
-            modifier = Modifier.weight(2f)
+                .clickable {
+                    onCLick(cartItem)
+                },
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = cartItem.itemName,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold
-                )
+            Image(
+                painter = image,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(end = MediumPadding)
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(SmallPadding))
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(SmallPadding)) {
+
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = if(isArabic) cartItem.items_name_ar else cartItem.items_name,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(SmallPadding) ,
+                    modifier = Modifier.fillMaxWidth()) {
+
+                    Text(
+                        text = stringResource(id = R.string.size, cartItem.sizes_name),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = colorResource(id = R.color.body)
+                        )
+                    )
+
+
+                    Text(
+                        text = stringResource(
+                            id = R.string.color,
+                            if (isArabic) cartItem.colors_name_ar else cartItem.colors_name_ar
+                        ),
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = colorResource(id = R.color.body)
+                        ),
+                        maxLines = 1 ,
+                    )
+                }
 
                 Text(
-                    text = stringResource(id = R.string.size, cartItem.itemSize),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = colorResource(id = R.color.body)
+                    modifier = Modifier.padding(bottom = SmallPadding),
+                    text = stringResource(id = R.string.prixValue, cartItem.items_price.toString()),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold
                     )
                 )
 
-
-                Text(
-                    text = stringResource(
-                        id = R.string.color,
-                        if (isArabic) cartItem.itemColor.colors_name_ar else cartItem.itemColor.colors_name
-                    ),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = colorResource(id = R.color.body)
-                    )
-                )
             }
 
-            Text(
-                modifier = Modifier.padding(bottom = SmallPadding),
-                text = stringResource(id = R.string.prixValue, cartItem.itemPrice.toString()),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold
-                )
-            )
+
 
         }
 
-
         Row(
             modifier = Modifier
-                .align(Alignment.Bottom)
-                .padding(horizontal = SmallPadding, vertical = SmallPadding),
+                .align(Alignment.BottomEnd)
+                .padding(horizontal = MediumPadding )
+                .padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier
@@ -170,9 +178,8 @@ fun CartItem(
             }
 
         }
-
-
     }
+
 
 
 }

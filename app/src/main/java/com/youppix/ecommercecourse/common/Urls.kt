@@ -35,4 +35,9 @@ object Urls {
     const val UPDATE_PERSONAL_DETAILS_URL = "$BASE_URL/profile/updatePersonalDetails.php"
     const val CHECK_EMAIL_AVAILABILITY_URL = "$BASE_URL/profile/checkEmailAvailability.php"
 
+    /** Cart urls */
+    const val ADD_CART_URL = "$BASE_URL/cart/addCart.php"
+    const val ALL_CARTS_URL = "$BASE_URL/cart/getCarts.php"
+
+
 }

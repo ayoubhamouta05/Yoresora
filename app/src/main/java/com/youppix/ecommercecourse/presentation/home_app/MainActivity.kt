@@ -121,7 +121,7 @@ class MainActivity : ComponentActivity() {
 
                                     1 -> {
                                         if (navigator?.lastItem?.javaClass?.name != CartScreen::class.java.name)
-                                            navigator?.replace(CartScreen())
+                                            navigator?.replace(CartScreen(userId = userId))
                                     }
 
                                     2 -> {
