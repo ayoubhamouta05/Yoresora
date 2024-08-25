@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CartResponse(
-    val data: ArrayList<CartData>,
+    val data: ArrayList<CartData>? = null,
     val message: String,
     val status: String
 )

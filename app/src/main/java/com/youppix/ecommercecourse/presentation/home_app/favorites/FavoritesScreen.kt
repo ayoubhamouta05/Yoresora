@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.home_app.favorites
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,32 +7,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CategoriesItemShimmerEffect
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.components.CategoriesListItem
-import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.components.ItemsList
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
@@ -48,10 +40,14 @@ class FavoritesScreen(val userId: String?) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel: FavoritesViewModel = navigator.getNavigatorScreenModel()
         val isArabic = Locale.getDefault().language == "ar"
+        val context = LocalContext.current
 
         val state by viewModel.state
 
         LaunchedEffect(Unit) {
+            if (state.categories.isEmpty()){
+                viewModel.onEvent(FavoriteEvent.GetAllCategories)
+            }
             userId?.let {
                 viewModel.setUserId(userId.toInt())
                 viewModel.onEvent(
@@ -60,6 +56,17 @@ class FavoritesScreen(val userId: String?) : Screen {
                         state.categorySelected
                     )
                 )
+            }?: run {
+                val id = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId", "")
+                if (!id.isNullOrEmpty()) {
+                    viewModel.setUserId(id.toInt())
+                    viewModel.onEvent(
+                        FavoriteEvent.UpdateCategorySelected(
+                            id.toInt(),
+                            state.categorySelected
+                        )
+                    )
+                }
             }
         }
 

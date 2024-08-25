@@ -16,8 +16,9 @@ import com.youppix.ecommercecourse.presentation.home_app.details.DetailsState
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SelectColorSection(state : DetailsState ,
-                       event : (DetailsEvent)-> Unit
+fun SelectColorSection(
+    state: DetailsState,
+    event: (DetailsEvent) -> Unit,
 ) {
     FlowRow(
         Modifier
@@ -27,20 +28,20 @@ fun SelectColorSection(state : DetailsState ,
             .animateContentSize(),
         horizontalArrangement = Arrangement.Start,
     ) {
-        if (state.details.colors_name.isNotEmpty()) {
-            repeat(state.details.colors_name.size) { index ->
+        if (state.details.colors.isNotEmpty()) {
+            repeat(state.details.colors.size) { index ->
                 val color = ColorData(
-                    colors_name = state.details.colors_name[index],
-                    colors_hex = state.details.colors_hex[index],
-                    colors_id = state.details.colors_id[index],
-                    colors_name_ar = state.details.colors_name_ar[index]
+                    colors_name = state.details.colors[index].colors_name,
+                    colors_hex = state.details.colors[index].colors_hex,
+                    colors_id = state.details.colors[index].colors_id,
+                    colors_name_ar = state.details.colors[index].colors_name_ar
                 )
                 ColorItemWithId(
                     modifier = Modifier.padding(end = Dimens.ExtraSmallPadding),
                     color = color,
-                    selected = state.selectedColors == color.colors_id
+                    selected = state.selectedColor == index
                 ) {
-                    event(DetailsEvent.UpdateColorSelected(color.colors_id))
+                    event(DetailsEvent.UpdateColorSelected(index))
                 }
             }
         }

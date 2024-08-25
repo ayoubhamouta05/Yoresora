@@ -5,9 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
-import com.youppix.ecommercecourse.domain.model.cart.CartItemData
-import com.youppix.ecommercecourse.domain.model.items.ColorData
-import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,7 +38,7 @@ class CartViewModel @Inject constructor(
 
 
     private suspend fun getCartItems(userId: Int) {
-        cartUseCases.getCarts(userId).onEach { result ->
+        cartUseCases.getCartItems(userId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _state.value = state.value.copy(
@@ -71,31 +68,6 @@ class CartViewModel @Inject constructor(
             userId = userId
         )
     }
-
-//    private suspend fun addOrDeleteCartItem(
-//        itemId: Int,
-//        userId: Int,
-//        itemSize: Int,
-//        itemColor: Int,
-//    ) {
-//        cartUseCases.addOrDeleteCart(itemId, userId, itemSize, itemColor).onEach {result->
-//            when(result){
-//                is Resource.Loading -> {
-//                }
-//
-//                is Resource.Error -> {
-//                    _state.value = state.value.copy(
-//                        isLoading = false,
-//                    )
-//                }
-//                is Resource.Successful -> {
-//                    _state.value = state.value.copy(
-//                        isLoading = false,
-//                    )
-//                }
-//            }
-//        }.launchIn(screenModelScope)
-//    }
 
 
 }

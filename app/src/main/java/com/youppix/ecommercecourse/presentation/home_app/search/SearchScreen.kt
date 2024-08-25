@@ -92,6 +92,9 @@ data class SearchScreen(
                 viewModel.onEvent(SearchEvent.UpdateFilteringItems(it))
                 filteringItems = null
             }
+            if (state.categories.isEmpty()){
+                viewModel.onEvent(SearchEvent.GetAllCategories)
+            }
 
 
         }

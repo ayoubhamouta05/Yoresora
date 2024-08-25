@@ -120,7 +120,8 @@ class SearchViewModel @Inject constructor(
             when (result) {
                 is Resource.Loading -> {
                     _state.value = state.value.copy(
-                        categoriesLoading = true
+                        categoriesLoading = true,
+                        getCategoriesError = null
                     )
                 }
 
@@ -149,7 +150,8 @@ class SearchViewModel @Inject constructor(
             when (result) {
                 is Resource.Loading -> {
                     _state.value = state.value.copy(
-                        itemsLoading = true
+                        itemsLoading = true ,
+                        getItemsError = null
                     )
                 }
 

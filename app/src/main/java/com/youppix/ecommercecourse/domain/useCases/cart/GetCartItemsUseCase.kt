@@ -2,12 +2,12 @@ package com.youppix.ecommercecourse.domain.useCases.cart
 
 import com.youppix.ecommercecourse.domain.repository.cart.CartRepository
 
-class GetCartsUseCase(
+class GetCartItemsUseCase(
     private val cartRepository: CartRepository
 )  {
 
     suspend operator fun invoke(userId: Int) =
-        cartRepository.getCarts(userId)
+        cartRepository.getCartItems(userId)
 
 
 }

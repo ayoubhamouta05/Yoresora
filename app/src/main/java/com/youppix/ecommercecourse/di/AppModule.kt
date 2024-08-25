@@ -48,9 +48,9 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
-import com.youppix.ecommercecourse.domain.useCases.cart.AddOrDeleteCartUseCase
+import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteCartItemUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
-import com.youppix.ecommercecourse.domain.useCases.cart.GetCartsUseCase
+import com.youppix.ecommercecourse.domain.useCases.cart.GetCartItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.CheckSizeExistenceUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
@@ -288,7 +288,8 @@ object AppModule {
             getItemDetails = GetItemDetailsUseCase(detailsRepository),
             addOrDeleteFromFavorite = AddOrDeleteFromFavoriteUseCase(detailsRepository),
             checkSizeExistence = CheckSizeExistenceUseCase(detailsRepository),
-            upsertCustomSize = UpsertCustomSizeUseCase(detailsRepository)
+            upsertCustomSize = UpsertCustomSizeUseCase(detailsRepository),
+            addOrDeleteCartItem = AddOrDeleteCartItemUseCase(detailsRepository)
         )
 
 
@@ -364,8 +365,7 @@ object AppModule {
     @Singleton
     fun provideCartUseCases(cartRepository: CartRepository) : CartUseCases =
         CartUseCases(
-            getCarts = GetCartsUseCase(cartRepository) ,
-            addOrDeleteCart = AddOrDeleteCartUseCase(cartRepository)
+            getCartItems = GetCartItemsUseCase(cartRepository)
         )
 
 

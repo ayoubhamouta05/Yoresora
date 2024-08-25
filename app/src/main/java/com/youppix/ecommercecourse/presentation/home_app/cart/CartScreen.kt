@@ -96,7 +96,9 @@ data class CartScreen(private val userId: String?) : Screen {
                                 DetailsScreen(
                                     newItem = true,
                                     item = it.toItem(),
-                                    userId = null
+                                    userId = null ,
+                                    initialColor = it.item_color,
+                                    initialSize = it.item_size
                                 )
                             )
                         }

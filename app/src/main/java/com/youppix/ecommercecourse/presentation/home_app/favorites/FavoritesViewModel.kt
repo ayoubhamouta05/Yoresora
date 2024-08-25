@@ -33,6 +33,9 @@ class FavoritesViewModel @Inject constructor(
                     categorySelected = event.category
                 )
                 screenModelScope.launch {
+                    _state.value = state.value.copy(
+                        itemsError = null
+                    )
                     getAllFavorites(
                         categoryId = if(state.value.categories.isEmpty()) 0 else  state.value.categories[event.category].id,
                         userId = event.userId

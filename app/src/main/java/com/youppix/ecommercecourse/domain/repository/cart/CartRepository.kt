@@ -7,12 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
 
-    suspend fun getCarts(userId: Int): Flow<Resource<CartResponse>>
-    suspend fun addOrDeleteCart(
-        itemId: Int,
-        userId: Int,
-        itemSize: Int,
-        itemColor: Int,
-    ): Flow<Resource<AuthResponse>>
+    suspend fun getCartItems(userId: Int): Flow<Resource<CartResponse>>
 
 }

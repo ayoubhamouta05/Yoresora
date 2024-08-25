@@ -76,8 +76,9 @@ fun HomeScreenContent(
 
                 event(HomeEvent.GetHomeData)
                 event(
-                    HomeEvent.UpdateCategorySelected(state.categorySelected) // to refresh the items either
+                    HomeEvent.GetItemsByCategory(state.categorySelected) // to refresh the items either
                 )
+
 
             }
         }

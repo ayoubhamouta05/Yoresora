@@ -1,6 +1,8 @@
 package com.youppix.ecommercecourse.domain.model.details
 
 import androidx.compose.runtime.Immutable
+import com.youppix.ecommercecourse.domain.model.items.ColorData
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Immutable
@@ -8,11 +10,18 @@ import kotlinx.serialization.Serializable
 data class DetailsData(
     val categories_name: String = "",
     val categories_name_ar: String = "",
-    val colors_name_ar: List<String> = emptyList(),
-    val colors_name: List<String> = emptyList(),
-    val colors_hex : List<String> = emptyList(),
-    val colors_id : List<Int> = emptyList(),
-    val images : ArrayList<String> = arrayListOf(),
+    val colors : List<ColorData> = emptyList(),
+    val images: ArrayList<String> = arrayListOf(),
     val is_favorite: Boolean = false,
-    val sizes : List<SizeData> = emptyList(),
+    val sizes: List<SizeData> = emptyList(),
+    val initialData: ArrayList<InitialColorAndSizeData>? = null,
+)
+
+@Immutable
+@Serializable
+data class InitialColorAndSizeData(
+    @SerialName("item_size")
+    val itemSize: Int,
+    @SerialName("item_color")
+    val itemColor: Int,
 )

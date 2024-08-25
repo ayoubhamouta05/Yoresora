@@ -136,6 +136,7 @@ or continue with social media</string>
     <string name="proceedToCheckout">Proceed To Checkout</string>
     <string name="size">Size : %1$s</string>
     <string name="color">Color : %1$s</string>
+    <string name="removeFromCart">Remove From Cart</string>
 
 
 </resources>

@@ -136,4 +136,5 @@
     <string name="subTotal">المجموع الفرعي</string>
     <string name="size">الحجم : %1$s</string>
     <string name="color">اللون : %1$s</string>
+    <string name="removeFromCart">إزالة من السلة</string>
 </resources>

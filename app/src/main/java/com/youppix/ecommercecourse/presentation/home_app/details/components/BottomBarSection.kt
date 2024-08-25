@@ -1,9 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.details.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,7 +24,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
@@ -34,7 +31,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
-fun BottomBarSection(price: String) {
+fun BottomBarSection(price: String , addToCart : Boolean , addOrDeleteCartItem : () -> Unit) {
 
     Card(
         Modifier.wrapContentSize(),
@@ -81,13 +78,16 @@ fun BottomBarSection(price: String) {
 
             Button(modifier = Modifier
                 .weight(2f)
-                .wrapContentHeight(), onClick = { }) {
+                .wrapContentHeight(), onClick = {
+                addOrDeleteCartItem()
+            }) {
                 Icon(
                     imageVector = Icons.Filled.ShoppingBag, contentDescription = null,
                     tint = MaterialTheme.colorScheme.background
                 )
                 Text(
-                    text = stringResource(id = R.string.addToCart),
+                    text = if (addToCart) stringResource(id = R.string.addToCart) else
+                        stringResource(id = R.string.removeFromCart),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.background
                     ),

@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.data.remote.details
 
 import android.util.Log
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.common.Urls.ADD_FAVORITE_URL
 import com.youppix.ecommercecourse.common.Urls.CHECK_SIZE_EXISTENCE_URL
 import com.youppix.ecommercecourse.common.Urls.ITEM_DETAILS_URL
@@ -162,6 +163,45 @@ class DetailsService(private val client: HttpClient) {
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
 
+    }
+
+    suspend fun addOrDeleteCartItem(
+        itemId: Int,
+        userId: Int,
+        itemSize: Int,
+        itemColor: Int,
+    ): Flow<Resource<AuthResponse>> = flow {
+        try {
+
+            emit(Resource.Loading())
+            @Serializable
+            data class Body(
+                val userId: Int,
+                val itemId: Int,
+                val itemSize: Int,
+                val itemColor: Int,
+            )
+
+            val response = client.post(Urls.ADD_CART_URL) {
+                setBody(Body(userId, itemId, itemSize, itemColor))
+            }
+            val responseBody = response.body<AuthResponse>()
+
+            emit(Resource.Successful(responseBody))
+            Log.d("SignUpService", response.body())
+        } catch (e: ClientRequestException) {
+            emit(Resource.Error("Client request error"))
+            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+        } catch (e: ServerResponseException) {
+            emit(Resource.Error("Server response error"))
+            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+        } catch (e: IOException) {
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+        } catch (e: SerializationException) {
+            emit(Resource.Error("Serialization error"))
+            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+        }
     }
 
 }

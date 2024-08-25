@@ -11,9 +11,10 @@ data class DetailsState(
     val item: Item = Item(),
     val details: DetailsData = DetailsData(),
     val selectedSize: Int = 0,
-    val selectedColors: Int = 0,
+    val selectedColor: Int = 0,
     val sizeAlreadyExistDialog: Boolean = false,
     val goToCustomSizeScreen : Boolean =false,
-    val checkSizeLoading : Boolean= false ,
+    val checkSizeLoading : Boolean= false,
+    val addToCartState : Boolean = true,
     val error: String? = null
 )

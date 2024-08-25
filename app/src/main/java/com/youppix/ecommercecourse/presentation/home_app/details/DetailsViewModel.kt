@@ -1,21 +1,18 @@
 package com.youppix.ecommercecourse.presentation.home_app.details
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
-import io.ktor.util.reflect.instanceOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
-    private val detailsUseCases: DetailsUseCases
+    private val detailsUseCases: DetailsUseCases,
 ) : ScreenModel {
 
     private val _state = mutableStateOf(DetailsState(isLoading = true))
@@ -57,6 +54,38 @@ class DetailsViewModel @Inject constructor(
                     goToCustomSizeScreen = false
                 )
             }
+
+            is DetailsEvent.AddOrDeleteCartItem -> {
+                screenModelScope.launch {
+//                    state.value.details.initialData?.let {
+//                        for (initialData in it){
+//                            if (initialData.itemSize == event.itemSize &&
+//                                initialData.itemColor == event.itemColor){
+//                                it.remove(initialData)
+//                                break
+//                            }
+//                        }
+//                    }
+
+
+                    addOrDeleteCartItem(
+                        itemId = event.itemId,
+                        userId = event.userId,
+                        itemSize = event.itemSize,
+                        itemColor = event.itemColor
+                    )
+                }
+            }
+
+            is DetailsEvent.ToggleAddToCart -> {
+                _state.value = state.value.copy(
+                    addToCartState = event.addToCart
+                )
+            }
+
+            is DetailsEvent.SetInitialColorAndSize -> {
+                setInitialColorAndSize(event.initialColor, event.initialSize, state.value)
+            }
         }
     }
 
@@ -74,7 +103,7 @@ class DetailsViewModel @Inject constructor(
 
     private fun updateColorSelected(color: Int) {
         _state.value = state.value.copy(
-            selectedColors = color
+            selectedColor = color
         )
     }
 
@@ -101,19 +130,11 @@ class DetailsViewModel @Inject constructor(
                 }
 
                 is Resource.Successful -> {
-                    runBlocking {
-                        _state.value = state.value.copy(
-                            isLoading = false,
-                            details = result.data?.data ?: state.value.details,
-                            error = null
-                        )
-                    }
                     _state.value = state.value.copy(
-                        selectedSize = 0,
-                        selectedColors = if (state.value.details.colors_id.isEmpty()) 0 else
-                            state.value.details.colors_id[0],
+                        isLoading = false,
+                        details = result.data?.data ?: state.value.details,
+                        error = null
                     )
-
                 }
             }
 
@@ -121,7 +142,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     private suspend fun checkSizeExistence(userId: Int) {
-        detailsUseCases.checkSizeExistence(userId).onEach {result->
+        detailsUseCases.checkSizeExistence(userId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _state.value = state.value.copy(
@@ -139,8 +160,8 @@ class DetailsViewModel @Inject constructor(
 
                 is Resource.Successful -> {
                     _state.value = state.value.copy(
-                        checkSizeLoading = false ,
-                        sizeAlreadyExistDialog = true ,
+                        checkSizeLoading = false,
+                        sizeAlreadyExistDialog = true,
                         goToCustomSizeScreen = false
                     )
                 }
@@ -170,4 +191,66 @@ class DetailsViewModel @Inject constructor(
         }.launchIn(screenModelScope)
     }
 
+    private suspend fun addOrDeleteCartItem(
+        itemId: Int,
+        userId: Int,
+        itemSize: Int,
+        itemColor: Int,
+    ) {
+        detailsUseCases.addOrDeleteCartItem(itemId, userId, itemSize, itemColor).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        addToCartState = state.value.addToCartState
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        addToCartState = !state.value.addToCartState
+                    )
+                }
+            }
+        }.launchIn(screenModelScope)
+    }
+
+    private fun setInitialColorAndSize(
+        initialColor: Int?,
+        initialSize: Int?,
+        state: DetailsState,
+    ) {
+        var size = 0
+        for (i in 0 until state.details.sizes.size) {
+            if (state.details.sizes[i].sizes_id == initialSize
+            ) {
+                size = i
+                break
+            }
+        }
+
+        var color = 0
+        for (i in 0 until state.details.colors.size) {
+            if (state.details.colors[i].colors_id == initialColor
+            ) {
+                color = i
+                break
+            }
+        }
+
+        if (initialColor != null && initialSize != null) {
+            onEvent(DetailsEvent.UpdateColorSelected(color))
+            onEvent(DetailsEvent.UpdateSizeSelected(size))
+        }else{
+            onEvent(DetailsEvent.UpdateColorSelected(0))
+            onEvent(DetailsEvent.UpdateSizeSelected(0))
+        }
+    }
 }

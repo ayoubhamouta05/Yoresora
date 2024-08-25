@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 class HomeViewModel @Inject constructor(
-    private val homeUseCases: HomeUseCases
+    private val homeUseCases: HomeUseCases,
 ) : ScreenModel {
 
     private var _homeState = mutableStateOf(HomeState(isHomeLoading = true))
@@ -57,7 +57,8 @@ class HomeViewModel @Inject constructor(
             categorySelected = id
         )
         screenModelScope.launch {
-            getItemsByCategory(homeState.value.categories[id].id)
+            if (homeState.value.categories.isNotEmpty())
+                getItemsByCategory(homeState.value.categories[id].id)
         }
 
     }
@@ -68,7 +69,8 @@ class HomeViewModel @Inject constructor(
             when (result) {
                 is Resource.Loading -> {
                     _homeState.value = homeState.value.copy(
-                        isHomeLoading = true
+                        isHomeLoading = true ,
+                        getHomeDataError = null
                     )
                 }
 
@@ -96,13 +98,13 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
     private suspend fun getItemsByCategory(category: Int) {
         homeUseCases.getItemsByCategory(category).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _homeState.value = homeState.value.copy(
-                        isItemsCategoriesLoading = true
+                        isItemsCategoriesLoading = true,
+                        getItemsError = null,
                     )
                 }
 

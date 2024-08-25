@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
@@ -61,7 +63,7 @@ fun CartItem(
     var quantity = remember {
         mutableIntStateOf(1)
     }
-    Box(modifier = modifier){
+    Box(modifier = modifier) {
         Row(
             Modifier
                 .fillMaxWidth()
@@ -86,64 +88,53 @@ fun CartItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = if(isArabic) cartItem.items_name_ar else cartItem.items_name,
+                    text = if (isArabic) cartItem.items_name_ar else cartItem.items_name,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold
                     )
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(SmallPadding) ,
-                    modifier = Modifier.fillMaxWidth()) {
 
-                    Text(
-                        text = stringResource(id = R.string.size, cartItem.sizes_name),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = colorResource(id = R.color.body)
-                        )
-                    )
-
-
-                    Text(
-                        text = stringResource(
-                            id = R.string.color,
-                            if (isArabic) cartItem.colors_name_ar else cartItem.colors_name_ar
-                        ),
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = colorResource(id = R.color.body)
-                        ),
-                        maxLines = 1 ,
-                    )
-                }
+                Text(
+                    text = stringResource(id = R.string.size, cartItem.sizes_name) + "    " +
+                            stringResource(
+                                id = R.string.color,
+                                if (isArabic) cartItem.colors_name_ar else cartItem.colors_name_ar
+                            ),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = colorResource(id = R.color.body)
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
 
                 Text(
                     modifier = Modifier.padding(bottom = SmallPadding),
                     text = stringResource(id = R.string.prixValue, cartItem.items_price.toString()),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold
+                    ),
+
                     )
-                )
 
             }
-
-
-
         }
 
         Row(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(horizontal = MediumPadding )
+                .padding(horizontal = MediumPadding)
                 .padding(bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier
                 .size(30.dp)
-                .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
+                .background(
+                    MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(ExtraSmallPadding)
                 )
-                .clip( shape = RoundedCornerShape(ExtraSmallPadding))
+                .clip(shape = RoundedCornerShape(ExtraSmallPadding))
                 .clickable {
                     --quantity.intValue
-                }){
+                }) {
                 Icon(
                     imageVector = Icons.Default.Minimize, contentDescription = null,
                     modifier = Modifier
@@ -163,7 +154,7 @@ fun CartItem(
                     MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(ExtraSmallPadding)
                 )
-                .clip( shape = RoundedCornerShape(ExtraSmallPadding))
+                .clip(shape = RoundedCornerShape(ExtraSmallPadding))
                 .clickable {
                     ++quantity.intValue
                 }) {
@@ -179,7 +170,6 @@ fun CartItem(
 
         }
     }
-
 
 
 }

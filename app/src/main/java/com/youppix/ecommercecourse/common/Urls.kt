@@ -24,6 +24,7 @@ object Urls {
     const val ITEM_DETAILS_URL = "$BASE_URL/details/details.php"
     const val UPSERT_CUSTOM_SIZE_URL = "$BASE_URL/details/upsertCustomSize.php"
     const val CHECK_SIZE_EXISTENCE_URL = "$BASE_URL/details/checkSizeExistence.php"
+    const val ADD_CART_URL = "$BASE_URL/details/addCartItem.php"
 
     /** favorites urls */
     const val ALL_FAVORITES_URL = "$BASE_URL/favorites/getFavorites.php"
@@ -36,8 +37,7 @@ object Urls {
     const val CHECK_EMAIL_AVAILABILITY_URL = "$BASE_URL/profile/checkEmailAvailability.php"
 
     /** Cart urls */
-    const val ADD_CART_URL = "$BASE_URL/cart/addCart.php"
-    const val ALL_CARTS_URL = "$BASE_URL/cart/getCarts.php"
+    const val ALL_CART_ITEMS_URL = "$BASE_URL/cart/getCartItems.php"
 
 
 }

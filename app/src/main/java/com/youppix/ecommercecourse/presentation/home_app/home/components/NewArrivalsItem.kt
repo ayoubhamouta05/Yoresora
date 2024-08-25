@@ -117,7 +117,7 @@ fun NewArrivalsItem(
                     .padding(horizontal = Dimens.SmallPadding)
                     .fillMaxSize()
                     .defaultMinSize(minHeight = 200.dp),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
                     text = if (isArabic) item.itemNameAr else item.itemName,
@@ -177,7 +177,6 @@ fun NewArrivalsItem(
 
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
 
                 // Show details button
                 Card(

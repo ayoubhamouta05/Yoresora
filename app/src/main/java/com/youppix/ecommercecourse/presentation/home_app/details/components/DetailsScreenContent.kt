@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,7 +32,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,7 +57,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.CachePolicy
@@ -72,6 +69,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.items.Item
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.home_app.MainActivity
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsEvent
@@ -400,6 +398,11 @@ fun DetailsScreenContent(
             event(DetailsEvent.UpdateFavoriteState(userId = userId, itemId = item.itemId))
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
+
+
+        CustomCircularProgress(modifier = Modifier.align(Alignment.Center) , state.isLoading)
+
+
     }
 }
 

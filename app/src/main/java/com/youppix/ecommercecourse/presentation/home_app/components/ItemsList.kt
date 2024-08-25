@@ -114,6 +114,9 @@ fun ItemsList(
             contentAlignment = Alignment.Center
         ) {
             EmptyScreen(error = state.getItemsError) {
+                if (state.categories.isEmpty()) {
+                    event(SearchEvent.GetAllCategories)
+                }
                 event(SearchEvent.GetItemsByFiltering(state.filteringItems))
             }
         }

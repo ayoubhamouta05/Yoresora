@@ -30,4 +30,13 @@ class DetailsRepositoryImpl(private val detailsService: DetailsService) : Detail
     override suspend fun upsertCustomSize(size: Size): Flow<Resource<AuthResponse>> {
         return detailsService.upsertCustomSize(size)
     }
+
+    override suspend fun addOrDeleteCartItem(
+        itemId: Int,
+        userId: Int,
+        itemSize: Int,
+        itemColor: Int,
+    ): Flow<Resource<AuthResponse>> {
+        return detailsService.addOrDeleteCartItem(itemId, userId, itemSize, itemColor)
+    }
 }

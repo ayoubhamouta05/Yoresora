@@ -22,13 +22,14 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
-import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeEvent
 import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 
 data class DetailsScreen(
     private val userId: String?,
     private val item: Item,
-    private var newItem: Boolean? = null
+    private var newItem: Boolean? = null,
+    private var initialColor: Int? = null,
+    private val initialSize: Int? = null,
 ) : Screen {
     @Composable
     override fun Content() {
@@ -46,7 +47,7 @@ data class DetailsScreen(
                 }
             } ?: run {
                 val id = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId", "")
-                if (!id.isNullOrEmpty()){
+                if (!id.isNullOrEmpty()) {
                     viewModel.setUserId(id.toInt())
                     newItem?.let {
                         viewModel.onEvent(DetailsEvent.GetItemDetails(item.itemId, id.toInt()))
@@ -54,10 +55,10 @@ data class DetailsScreen(
                     }
                 }
             }
+            viewModel.onEvent(DetailsEvent.SetInitialColorAndSize(initialColor, initialSize, state))
         }
 
         LaunchedEffect(state.goToCustomSizeScreen) {
-            Log.d("DetailsScreen , goToCustomSizeScreen", "${state.goToCustomSizeScreen}")
             if (state.goToCustomSizeScreen) {
                 state.userId?.let {
                     navigator.push(
@@ -74,12 +75,51 @@ data class DetailsScreen(
         }
 
 
+        LaunchedEffect(state.selectedSize, state.selectedColor, state.details.initialData) {
+
+            if (state.details.initialData != null) {
+                Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
+                Log.d("DetailsScreen", "${state.selectedSize} : sizes : ${state.details.sizes}")
+                Log.d("DetailsScreen", "${state.selectedColor} :colors : ${state.details.colors}")
+                for (initialData in state.details.initialData!!) {
+                    if (initialData.itemSize == state.details.sizes[state.selectedSize].sizes_id &&
+                        initialData.itemColor == state.details.colors[state.selectedColor].colors_id
+                    ) {
+//                        Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
+                        // remove from cart
+                        viewModel.onEvent(DetailsEvent.ToggleAddToCart(false))
+                        break
+                    } else {
+                        // add to cart
+                        viewModel.onEvent(DetailsEvent.ToggleAddToCart(true))
+                    }
+                }
+//                Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
+//
+//                Log.d("DetailsScreen", "size : ${state.details.sizes[state.selectedSize].sizes_id} , color : ${state.details.colors[state.selectedColor].colors_id}")
+            } else {
+                // add to cart : item not exist
+                viewModel.onEvent(DetailsEvent.ToggleAddToCart(true))
+            }
+
+        }
+
+
 
         Scaffold(modifier = Modifier
             .fillMaxSize()
             .animateContentSize(),
             bottomBar = {
-                BottomBarSection(item.itemPrice.toString())
+                BottomBarSection(item.itemPrice.toString(), state.addToCartState) {
+                    viewModel.onEvent(
+                        DetailsEvent.AddOrDeleteCartItem(
+                            itemId = item.itemId,
+                            userId = state.userId!!,
+                            itemSize = state.details.sizes[state.selectedSize].sizes_id,
+                            itemColor = state.details.colors[state.selectedColor].colors_id
+                        )
+                    )
+                }
             }
 
         ) { innerPadding ->
@@ -114,7 +154,7 @@ data class DetailsScreen(
                                 state.details.sizes[state.details.sizes.size - 1].toSize().copy()
                             )
                         )
-                        newItem =true
+                        newItem = true
                     }
                     viewModel.onEvent(DetailsEvent.HideDialog)
                 },

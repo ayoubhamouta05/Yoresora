@@ -14,4 +14,11 @@ interface DetailsRepository {
     suspend fun checkSizeExistence(userId: Int) : Flow<Resource<AuthResponse>>
 
     suspend fun upsertCustomSize(size: Size) : Flow<Resource<AuthResponse>>
+
+    suspend fun addOrDeleteCartItem(
+        itemId: Int,
+        userId: Int,
+        itemSize: Int,
+        itemColor: Int,
+    ): Flow<Resource<AuthResponse>>
 }
