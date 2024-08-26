@@ -92,13 +92,13 @@ fun BottomSection(
 
                 AnimatedVisibility(visible = showAllDetails ){
                     BottomSectionItem(
-                        title = stringResource(id = R.string.deliveryFee),
+                        title = stringResource(id = R.string.subTotal),
                         value = state.subTotal.toString()
                     )
                 }
                 AnimatedVisibility(visible = showAllDetails ){
                     BottomSectionItem(
-                        title = stringResource(id = R.string.subTotal),
+                        title = stringResource(id = R.string.deliveryFee),
                         value = state.deliveryFee.toString()
                     )
                 }

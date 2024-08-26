@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.cart
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -83,7 +85,11 @@ data class CartScreen(private val userId: String?) : Screen {
             },
             bottomBar = {
                 BottomSection(state = state, event = viewModel::onEvent) {
-                    navigator.push(CheckoutScreen())
+                    if (state.cartItems.isNotEmpty()) {
+                        navigator.push(CheckoutScreen())
+                    }else{
+                        Toast.makeText(context, R.string.youMustHaveAtLeastOneItem, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         ) { innerPadding ->
@@ -151,8 +157,7 @@ data class CartScreen(private val userId: String?) : Screen {
                 }
             }
 
-
-            CustomCircularProgress(isLoading = state.isLoading)
+            CustomCircularProgress(isLoading = state.isLoading , modifier = Modifier.padding(bottom = LargePadding*4))
 
 
         }

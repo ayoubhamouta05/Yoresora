@@ -21,10 +21,10 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
-fun CustomCircularProgress( isLoading: Boolean) {
+fun CustomCircularProgress( isLoading: Boolean , modifier: Modifier = Modifier) {
 
     if (isLoading) {
-        Box(modifier = Modifier.fillMaxSize()){
+        Box(modifier = modifier.fillMaxSize()){
             Card(
                 modifier = Modifier.align(Alignment.Center) ,
                 elevation = CardDefaults.cardElevation(

@@ -138,6 +138,7 @@ or continue with social media</string>
     <string name="color">Color : %1$s</string>
     <string name="removeFromCart">Remove From Cart</string>
     <string name="emptyCartMessage">! You haven\'t added anything to your cart yet.</string>
+    <string name="youMustHaveAtLeastOneItem">You must have at least one item</string>
 
 
 </resources>
