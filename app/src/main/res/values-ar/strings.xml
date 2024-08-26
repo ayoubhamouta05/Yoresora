@@ -137,4 +137,5 @@
     <string name="size">الحجم : %1$s</string>
     <string name="color">اللون : %1$s</string>
     <string name="removeFromCart">إزالة من السلة</string>
+    <string name="emptyCartMessage">! لم تضف أي شيء إلى سلتك بعد.</string>
 </resources>

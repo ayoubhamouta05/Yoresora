@@ -1,7 +1,9 @@
 package com.youppix.ecommercecourse.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
@@ -19,24 +21,26 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
 @Composable
-fun CustomCircularProgress(modifier: Modifier = Modifier, isLoading: Boolean) {
+fun CustomCircularProgress( isLoading: Boolean) {
 
     if (isLoading) {
-        Card(
-            modifier = modifier ,
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 8.dp
-            ),
-            shape = RoundedCornerShape(SmallPadding)
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .background(
-                        color = MaterialTheme.colorScheme.background,
-                        shape = CircleShape.copy(CornerSize(15.dp))
-                    )
-                    .padding(10.dp), color = MaterialTheme.colorScheme.primary
-            )
+        Box(modifier = Modifier.fillMaxSize()){
+            Card(
+                modifier = Modifier.align(Alignment.Center) ,
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp
+                ),
+                shape = RoundedCornerShape(SmallPadding)
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.background,
+                            shape = CircleShape.copy(CornerSize(15.dp))
+                        )
+                        .padding(10.dp), color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
     }

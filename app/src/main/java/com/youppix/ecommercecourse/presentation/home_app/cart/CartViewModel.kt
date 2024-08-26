@@ -17,7 +17,7 @@ class CartViewModel @Inject constructor(
     private val cartUseCases: CartUseCases,
 ) : ScreenModel {
 
-    private var _state = mutableStateOf(CartState())
+    private var _state = mutableStateOf(CartState(isLoading = true))
     val state: State<CartState> = _state
 
 

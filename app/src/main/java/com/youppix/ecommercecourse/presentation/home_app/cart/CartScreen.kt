@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.presentation.home_app.cart
 import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -25,14 +27,18 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
+import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.LargePadding
+import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.toItem
 import com.youppix.ecommercecourse.domain.model.items.Item
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.cart.components.BottomSection
 import com.youppix.ecommercecourse.presentation.home_app.cart.components.CartItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
+import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
@@ -88,40 +94,66 @@ data class CartScreen(private val userId: String?) : Screen {
                     .padding(innerPadding)
                     .animateContentSize()
             ) {
-                items(state.cartItems.size, key = { it }) { index ->
 
-                    Column {
-                        CartItem(
-                            cartItem = state.cartItems[index],
-                            isArabic = isArabic,
-                            index = index,
-                            event = viewModel::onEvent
+                if (state.cartItems.isEmpty() && !state.isLoading) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    start = MediumPadding,
+                                    end = MediumPadding,
+                                    top = LargePadding * 2,
+                                    bottom = BottomBarHeight
+                                        .plus(SmallPadding)
+                                ),
+                            contentAlignment = Alignment.Center
                         ) {
-                            navigator.push(
-                                DetailsScreen(
-                                    newItem = true,
-                                    item = it.toItem(),
-                                    userId = null,
-                                    initialColor = it.item_color,
-                                    initialSize = it.item_size
+                            EmptyScreen(
+                                emptyMessage = stringResource(id = R.string.emptyCartMessage)
+                             )
+                        }
+                    }
+                } else {
+                    items(state.cartItems.size, key = { it }) { index ->
+
+                        Column {
+                            CartItem(
+                                cartItem = state.cartItems[index],
+                                isArabic = isArabic,
+                                index = index,
+                                event = viewModel::onEvent
+                            ) {
+                                navigator.push(
+                                    DetailsScreen(
+                                        newItem = true,
+                                        item = it.toItem(),
+                                        userId = null,
+                                        initialColor = it.item_color,
+                                        initialSize = it.item_size
+                                    )
                                 )
+                            }
+
+                            Spacer(
+                                modifier = Modifier
+                                    .padding(vertical = SmallPadding, horizontal = LargePadding)
+                                    .fillMaxWidth()
+                                    .height(if (index != state.cartItems.size - 1) 0.5.dp else 0.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                                    )
                             )
                         }
 
-                        Spacer(
-                            modifier = Modifier
-                                .padding(vertical = SmallPadding, horizontal = LargePadding)
-                                .fillMaxWidth()
-                                .height(if (index != state.cartItems.size - 1) 0.5.dp else 0.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                                )
-                        )
+
                     }
-
-
                 }
             }
+
+
+            CustomCircularProgress(isLoading = state.isLoading)
+
 
         }
 

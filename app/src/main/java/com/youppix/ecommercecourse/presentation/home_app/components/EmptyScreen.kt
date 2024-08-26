@@ -31,7 +31,7 @@ import com.youppix.ecommercecourse.R
 
 @Stable
 @Composable
-fun EmptyScreen( error: String? = null ,emptyMessage: String="" , onClick: () -> Unit) {
+fun EmptyScreen( error: String? = null ,emptyMessage: String="" , onClick: (() -> Unit)? = null) {
 
     var message by remember {
         mutableStateOf(error)
@@ -66,12 +66,14 @@ fun EmptyScreen( error: String? = null ,emptyMessage: String="" , onClick: () ->
 
 @Stable
 @Composable
-fun EmptyContent(alphaAnim: Float, message: String, iconId: Int, onClick: () -> Unit) {
+fun EmptyContent(alphaAnim: Float, message: String, iconId: Int, onClick: (() -> Unit)?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .clickable {
-                onClick()
+            .clickable(enabled = onClick != null) {
+                onClick?.let {
+                    it()
+                }
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

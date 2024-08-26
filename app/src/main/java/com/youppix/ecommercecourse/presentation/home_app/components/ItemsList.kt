@@ -197,7 +197,7 @@ fun ItemsList(
                 .padding(
                     start = Dimens.MediumPadding,
                     end = Dimens.MediumPadding,
-                    top = Dimens.SmallPadding,
+                    top = Dimens.LargePadding*2,
                     bottom = Dimens.BottomBarHeight
                         .plus(Dimens.SmallPadding)
                 ),
@@ -205,9 +205,7 @@ fun ItemsList(
         ) {
             EmptyScreen(
                 emptyMessage = stringResource(id = R.string.emptyFavoritesMessage)
-            ) {
-
-            }
+            )
         }
 
     } else {

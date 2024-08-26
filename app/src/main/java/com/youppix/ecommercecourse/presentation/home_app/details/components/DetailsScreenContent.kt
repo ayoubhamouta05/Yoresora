@@ -400,7 +400,7 @@ fun DetailsScreenContent(
         }
 
 
-        CustomCircularProgress(modifier = Modifier.align(Alignment.Center) , state.isLoading)
+        CustomCircularProgress( state.isLoading)
 
 
     }
