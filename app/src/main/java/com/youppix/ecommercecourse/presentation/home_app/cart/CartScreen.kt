@@ -1,6 +1,7 @@
 package com.youppix.ecommercecourse.presentation.home_app.cart
 
 import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -85,18 +86,22 @@ data class CartScreen(private val userId: String?) : Screen {
                 Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .animateContentSize()
             ) {
-                items(state.cartItems.size) { index ->
+                items(state.cartItems.size, key = { it }) { index ->
 
                     Column {
                         CartItem(
-                            cartItem = state.cartItems[index], isArabic = isArabic
+                            cartItem = state.cartItems[index],
+                            isArabic = isArabic,
+                            index = index,
+                            event = viewModel::onEvent
                         ) {
                             navigator.push(
                                 DetailsScreen(
                                     newItem = true,
                                     item = it.toItem(),
-                                    userId = null ,
+                                    userId = null,
                                     initialColor = it.item_color,
                                     initialSize = it.item_size
                                 )

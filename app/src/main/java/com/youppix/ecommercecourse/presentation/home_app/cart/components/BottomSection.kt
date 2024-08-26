@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,7 @@ import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartEvent
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartState
 
+@Stable
 @Composable
 fun BottomSection(
     modifier: Modifier = Modifier,

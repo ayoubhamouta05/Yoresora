@@ -51,6 +51,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteCartItemUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
 import com.youppix.ecommercecourse.domain.useCases.cart.GetCartItemsUseCase
+import com.youppix.ecommercecourse.domain.useCases.cart.UpdateQuantityUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.CheckSizeExistenceUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
@@ -365,7 +366,8 @@ object AppModule {
     @Singleton
     fun provideCartUseCases(cartRepository: CartRepository) : CartUseCases =
         CartUseCases(
-            getCartItems = GetCartItemsUseCase(cartRepository)
+            getCartItems = GetCartItemsUseCase(cartRepository),
+            updateQuantity = UpdateQuantityUseCase(cartRepository)
         )
 
 

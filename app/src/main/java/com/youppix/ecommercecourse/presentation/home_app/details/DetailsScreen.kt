@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.home_app.details
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,9 +19,9 @@ import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.domain.model.details.toSize
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
-import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 
 data class DetailsScreen(
     private val userId: String?,
@@ -55,6 +54,8 @@ data class DetailsScreen(
                     }
                 }
             }
+        }
+        LaunchedEffect(state.details) {
             viewModel.onEvent(DetailsEvent.SetInitialColorAndSize(initialColor, initialSize, state))
         }
 
@@ -78,14 +79,10 @@ data class DetailsScreen(
         LaunchedEffect(state.selectedSize, state.selectedColor, state.details.initialData) {
 
             if (state.details.initialData != null) {
-                Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
-                Log.d("DetailsScreen", "${state.selectedSize} : sizes : ${state.details.sizes}")
-                Log.d("DetailsScreen", "${state.selectedColor} :colors : ${state.details.colors}")
                 for (initialData in state.details.initialData!!) {
                     if (initialData.itemSize == state.details.sizes[state.selectedSize].sizes_id &&
                         initialData.itemColor == state.details.colors[state.selectedColor].colors_id
                     ) {
-//                        Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
                         // remove from cart
                         viewModel.onEvent(DetailsEvent.ToggleAddToCart(false))
                         break
@@ -94,9 +91,6 @@ data class DetailsScreen(
                         viewModel.onEvent(DetailsEvent.ToggleAddToCart(true))
                     }
                 }
-//                Log.d("DetailsScreen", "initial data : ${state.details.initialData!!}")
-//
-//                Log.d("DetailsScreen", "size : ${state.details.sizes[state.selectedSize].sizes_id} , color : ${state.details.colors[state.selectedColor].colors_id}")
             } else {
                 // add to cart : item not exist
                 viewModel.onEvent(DetailsEvent.ToggleAddToCart(true))

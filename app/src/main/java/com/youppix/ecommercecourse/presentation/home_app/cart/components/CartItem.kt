@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,13 +45,17 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.model.cart.CartItemData
+import com.youppix.ecommercecourse.presentation.home_app.cart.CartEvent
 import kotlinx.coroutines.Dispatchers
 
+@Stable
 @Composable
 fun CartItem(
     modifier: Modifier = Modifier,
     cartItem: CartData,
     isArabic: Boolean,
+    index: Int,
+    event: (CartEvent) -> Unit,
     onCLick: (CartData) -> Unit,
 ) {
     val context = LocalContext.current
@@ -60,9 +65,6 @@ fun CartItem(
             .diskCacheKey(Urls.IMAGES_URL + cartItem.items_image).dispatcher(Dispatchers.IO)
             .diskCachePolicy(CachePolicy.ENABLED).memoryCachePolicy(CachePolicy.ENABLED).build()
     )
-    var quantity = remember {
-        mutableIntStateOf(1)
-    }
     Box(modifier = modifier) {
         Row(
             Modifier
@@ -98,7 +100,7 @@ fun CartItem(
                     text = stringResource(id = R.string.size, cartItem.sizes_name) + "    " +
                             stringResource(
                                 id = R.string.color,
-                                if (isArabic) cartItem.colors_name_ar else cartItem.colors_name_ar
+                                if (isArabic) cartItem.colors_name_ar else cartItem.colors_name
                             ),
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = colorResource(id = R.color.body)
@@ -133,7 +135,16 @@ fun CartItem(
                 )
                 .clip(shape = RoundedCornerShape(ExtraSmallPadding))
                 .clickable {
-                    --quantity.intValue
+                    event(
+                        CartEvent.UpdateQuantity(
+                            userId = cartItem.user_id,
+                            itemId = cartItem.item_id,
+                            itemSize = cartItem.item_size,
+                            itemColor = cartItem.item_color,
+                            itemQuantity = cartItem.item_quantity - 1,
+                            index = index,
+                        )
+                    )
                 }) {
                 Icon(
                     imageVector = Icons.Default.Minimize, contentDescription = null,
@@ -145,7 +156,7 @@ fun CartItem(
             }
 
             Text(
-                text = quantity.intValue.toString(),
+                text = cartItem.item_quantity.toString(),
                 modifier = Modifier.padding(horizontal = SmallPadding)
             )
             Box(modifier = Modifier
@@ -156,7 +167,16 @@ fun CartItem(
                 )
                 .clip(shape = RoundedCornerShape(ExtraSmallPadding))
                 .clickable {
-                    ++quantity.intValue
+                    event(
+                        CartEvent.UpdateQuantity(
+                            userId = cartItem.user_id,
+                            itemId = cartItem.item_id,
+                            itemSize = cartItem.item_size,
+                            itemColor = cartItem.item_color,
+                            itemQuantity = cartItem.item_quantity + 1,
+                            index = index,
+                        )
+                    )
                 }) {
                 Icon(
                     imageVector = Icons.Default.Add, contentDescription = null,

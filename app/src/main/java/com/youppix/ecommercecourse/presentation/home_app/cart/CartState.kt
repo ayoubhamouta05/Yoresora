@@ -12,5 +12,6 @@ data class CartState (
     val totalCost : Float = 0f,
     val promoCode : String = "",
     val promoCodeError : String? = null,
-    val getCartError: String? = null
+    val getCartError: String? = null ,
+    val updateQuantityError : String? = null
 )

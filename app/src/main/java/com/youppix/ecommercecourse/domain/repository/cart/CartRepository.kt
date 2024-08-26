@@ -8,5 +8,10 @@ import kotlinx.coroutines.flow.Flow
 interface CartRepository {
 
     suspend fun getCartItems(userId: Int): Flow<Resource<CartResponse>>
-
+    suspend fun updateQuantity(
+        userId: Int, itemId: Int,
+        itemSize: Int,
+        itemColor: Int,
+        itemQuantity: Int,
+    ): Flow<Resource<AuthResponse>>
 }

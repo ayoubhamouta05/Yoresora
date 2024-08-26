@@ -38,6 +38,7 @@ object Urls {
 
     /** Cart urls */
     const val ALL_CART_ITEMS_URL = "$BASE_URL/cart/getCartItems.php"
+    const val UPDATE_QUANTITY_URL = "$BASE_URL/cart/updateQuantity.php"
 
 
 }

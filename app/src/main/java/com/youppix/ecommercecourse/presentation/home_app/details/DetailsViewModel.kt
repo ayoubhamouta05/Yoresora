@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.details.InitialColorAndSizeData
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -57,17 +58,6 @@ class DetailsViewModel @Inject constructor(
 
             is DetailsEvent.AddOrDeleteCartItem -> {
                 screenModelScope.launch {
-//                    state.value.details.initialData?.let {
-//                        for (initialData in it){
-//                            if (initialData.itemSize == event.itemSize &&
-//                                initialData.itemColor == event.itemColor){
-//                                it.remove(initialData)
-//                                break
-//                            }
-//                        }
-//                    }
-
-
                     addOrDeleteCartItem(
                         itemId = event.itemId,
                         userId = event.userId,
@@ -87,6 +77,30 @@ class DetailsViewModel @Inject constructor(
                 setInitialColorAndSize(event.initialColor, event.initialSize, state.value)
             }
         }
+    }
+
+    private fun updateInitialData(itemSize: Int, itemColor: Int) {
+        state.value.details.initialData?.let {
+            var itemFound = false
+            for (initialData in it) {
+                if (initialData.itemSize == itemSize &&
+                    initialData.itemColor == itemColor
+                ) {
+                    it.remove(initialData)
+                    itemFound = true
+                    break
+                }
+            }
+            if (!itemFound) {
+                it.add(
+                    InitialColorAndSizeData(
+                        itemSize = itemSize,
+                        itemColor = itemColor
+                    )
+                )
+            }
+        }
+
     }
 
     fun setUserId(userId: Int) {
@@ -215,8 +229,9 @@ class DetailsViewModel @Inject constructor(
                 is Resource.Successful -> {
                     _state.value = state.value.copy(
                         isLoading = false,
-                        addToCartState = !state.value.addToCartState
+                        addToCartState = !state.value.addToCartState,
                     )
+                    updateInitialData(itemSize = itemSize, itemColor = itemColor)
                 }
             }
         }.launchIn(screenModelScope)
@@ -229,8 +244,7 @@ class DetailsViewModel @Inject constructor(
     ) {
         var size = 0
         for (i in 0 until state.details.sizes.size) {
-            if (state.details.sizes[i].sizes_id == initialSize
-            ) {
+            if (state.details.sizes[i].sizes_id == initialSize) {
                 size = i
                 break
             }
@@ -238,8 +252,7 @@ class DetailsViewModel @Inject constructor(
 
         var color = 0
         for (i in 0 until state.details.colors.size) {
-            if (state.details.colors[i].colors_id == initialColor
-            ) {
+            if (state.details.colors[i].colors_id == initialColor) {
                 color = i
                 break
             }
@@ -248,7 +261,7 @@ class DetailsViewModel @Inject constructor(
         if (initialColor != null && initialSize != null) {
             onEvent(DetailsEvent.UpdateColorSelected(color))
             onEvent(DetailsEvent.UpdateSizeSelected(size))
-        }else{
+        } else {
             onEvent(DetailsEvent.UpdateColorSelected(0))
             onEvent(DetailsEvent.UpdateSizeSelected(0))
         }

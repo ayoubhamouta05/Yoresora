@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -32,6 +34,19 @@ class CartViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     promoCode = event.promoCode
                 )
+            }
+
+            is CartEvent.UpdateQuantity -> {
+                screenModelScope.launch {
+                    updateQuantity(
+                        userId = event.userId,
+                        itemId = event.itemId,
+                        itemSize = event.itemSize,
+                        itemColor = event.itemColor,
+                        itemQuantity = event.itemQuantity ,
+                        index = event.index
+                    )
+                }
             }
         }
     }
@@ -67,6 +82,46 @@ class CartViewModel @Inject constructor(
         _state.value = state.value.copy(
             userId = userId
         )
+    }
+
+    private suspend fun updateQuantity(
+        userId: Int,
+        itemId: Int,
+        itemSize: Int,
+        itemColor: Int,
+        itemQuantity: Int,
+        index : Int
+    ) {
+        cartUseCases.updateQuantity(
+            userId, itemId, itemSize, itemColor, itemQuantity
+        ).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        updateQuantityError = result.data?.message ?: result.message
+                        ?: "Unknown Error Occurred"
+                    )
+
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false
+                    )
+                    state.value.cartItems[index].item_quantity = itemQuantity
+                    if (itemQuantity <=0){
+                        state.value.cartItems.removeAt(index)
+                    }
+                }
+            }
+        }.launchIn(screenModelScope)
     }
 
 

@@ -11,7 +11,7 @@ data class DetailsData(
     val categories_name: String = "",
     val categories_name_ar: String = "",
     val colors : List<ColorData> = emptyList(),
-    val images: ArrayList<String> = arrayListOf(),
+    val images: List<String> = emptyList(),
     val is_favorite: Boolean = false,
     val sizes: List<SizeData> = emptyList(),
     val initialData: ArrayList<InitialColorAndSizeData>? = null,
