@@ -126,6 +126,9 @@ fun DetailsScreenContent(
     var showImage by remember {
         mutableStateOf(false)
     }
+ var enableBackPress by remember {
+        mutableStateOf(false)
+    }
 
     var imageScale by remember { mutableFloatStateOf(1f) }
     var imageOffset by remember { mutableStateOf(Offset.Zero) }
@@ -142,9 +145,10 @@ fun DetailsScreenContent(
         }
     }
 
-    onBackButtonPressed(context) {
+    onBackButtonPressed(context , enableBackPress) {
         if (showImage) {
             showImage = false
+            enableBackPress = false
             imageScale = 1f
             imageOffset = Offset.Zero
         } else {
@@ -195,6 +199,7 @@ fun DetailsScreenContent(
                                 .transformable(transformState, enabled = showImage)
                                 .clickable(enabled = !showImage) {
                                     showImage = true
+                                    enableBackPress = true
                                     scope.launch {
                                         lazyColumnState.animateScrollToItem(0)
                                     }
@@ -378,6 +383,7 @@ fun DetailsScreenContent(
         ) {
             if (showImage) {
                 showImage = false
+                enableBackPress = false
                 imageScale = 1f
                 imageOffset = Offset.Zero
             } else {
@@ -406,13 +412,14 @@ fun DetailsScreenContent(
     }
 }
 
-private fun onBackButtonPressed(context: Context, onBackPressed: () -> Unit) {
-    (context as MainActivity).onBackPressedDispatcher.addCallback(
-        context,
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressed()
+private fun onBackButtonPressed(context: Context, enable : Boolean, onBackPressed: () -> Unit ) {
+        (context as MainActivity).onBackPressedDispatcher.addCallback(
+            context,
+            object : OnBackPressedCallback(enable) {
+                override fun handleOnBackPressed() {
+                    onBackPressed()
+                    remove()
+                }
             }
-        }
-    )
+        )
 }

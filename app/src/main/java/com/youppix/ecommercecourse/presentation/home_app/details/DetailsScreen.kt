@@ -22,6 +22,7 @@ import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
 import com.youppix.ecommercecourse.presentation.home_app.details.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.details.components.DetailsScreenContent
+import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 
 data class DetailsScreen(
     private val userId: String?,

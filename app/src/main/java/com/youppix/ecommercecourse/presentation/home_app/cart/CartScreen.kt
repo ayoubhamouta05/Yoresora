@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -34,14 +33,12 @@ import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.toItem
-import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.cart.components.BottomSection
 import com.youppix.ecommercecourse.presentation.home_app.cart.components.CartItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
-import com.youppix.ecommercecourse.presentation.home_app.details.DetailsEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import java.util.Locale
@@ -87,8 +84,12 @@ data class CartScreen(private val userId: String?) : Screen {
                 BottomSection(state = state, event = viewModel::onEvent) {
                     if (state.cartItems.isNotEmpty()) {
                         navigator.push(CheckoutScreen())
-                    }else{
-                        Toast.makeText(context, R.string.youMustHaveAtLeastOneItem, Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.youMustHaveAtLeastOneItem,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -117,7 +118,7 @@ data class CartScreen(private val userId: String?) : Screen {
                         ) {
                             EmptyScreen(
                                 emptyMessage = stringResource(id = R.string.emptyCartMessage)
-                             )
+                            )
                         }
                     }
                 } else {
@@ -157,7 +158,10 @@ data class CartScreen(private val userId: String?) : Screen {
                 }
             }
 
-            CustomCircularProgress(isLoading = state.isLoading , modifier = Modifier.padding(bottom = LargePadding*4))
+            CustomCircularProgress(
+                isLoading = state.isLoading,
+                modifier = Modifier.padding(bottom = LargePadding * 4)
+            )
 
 
         }

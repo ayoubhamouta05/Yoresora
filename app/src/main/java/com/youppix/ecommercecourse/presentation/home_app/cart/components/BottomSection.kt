@@ -105,7 +105,7 @@ fun BottomSection(
                 AnimatedVisibility(visible = showAllDetails ){
                     BottomSectionItem(
                         title = stringResource(id = R.string.discount),
-                        value = state.discount.toString()
+                        value = state.discount.toString() + " -"
                     )
                 }
                 AnimatedVisibility(visible = showAllDetails ){

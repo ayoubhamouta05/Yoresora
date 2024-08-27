@@ -44,12 +44,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.hilt.getScreenModel
+import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
@@ -60,16 +61,26 @@ import com.youppix.ecommercecourse.domain.model.user.User
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
+import com.youppix.ecommercecourse.presentation.components.keyboardAsState
 import java.util.Locale
 
 data class PersonalDetailsScreen(var userData: User, val email: String? = null) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel: PersonalDetailsViewModel = getScreenModel()
+        val viewModel: PersonalDetailsViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
         val scrollState = rememberScrollState()
         val context = LocalContext.current
+
+        val focusManager = LocalFocusManager.current
+        val isKeyboardOpen by keyboardAsState()
+
+        LaunchedEffect(isKeyboardOpen ) {
+            if (!isKeyboardOpen) {
+                focusManager.clearFocus()
+            }
+        }
 
         val isArabic by remember {
             mutableStateOf(Locale.getDefault().language == "ar")
@@ -131,7 +142,7 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
 
         LaunchedEffect(state.emailAvailable) {
             if (state.emailAvailable) {
-                navigator.replace(VerifyNewEmail(state.user, userData.userEmail))
+                navigator.replace(VerifyNewEmailScreen(state.user, userData.userEmail))
             }
         }
 

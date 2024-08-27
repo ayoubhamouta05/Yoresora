@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -71,7 +72,7 @@ class CartViewModel @Inject constructor(
                         cartItems = result.data?.data ?: emptyList(),
                         subTotal = result.data?.subTotal ?: state.value.subTotal,
                         deliveryFee = result.data?.deliveryFee ?: state.value.deliveryFee,
-                        discount = result.data?.discount ?: 0f ,
+                        discount = result.data?.discount ?: 0f,
                         totalCost = result.data?.totalCost ?: state.value.totalCost
                     )
                 }
@@ -94,7 +95,7 @@ class CartViewModel @Inject constructor(
         index: Int,
     ) {
 
-        updateValues(index = index , itemQuantity = itemQuantity)
+        updateValues(index = index, itemQuantity = itemQuantity)
 
         cartUseCases.updateQuantity(
             userId, itemId, itemSize, itemColor, itemQuantity
@@ -109,7 +110,7 @@ class CartViewModel @Inject constructor(
                         updateQuantityError = result.data?.message ?: result.message
                         ?: "Unknown Error Occurred",
 
-                    )
+                        )
                 }
 
                 is Resource.Successful -> {
@@ -121,7 +122,7 @@ class CartViewModel @Inject constructor(
         }.launchIn(screenModelScope)
     }
 
-    private fun updateValues(index : Int , itemQuantity: Int) {
+    private fun updateValues(index: Int, itemQuantity: Int) {
         val initialQuantity = state.value.cartItems[index].item_quantity
         val initialItems = state.value.cartItems
 
@@ -131,21 +132,63 @@ class CartViewModel @Inject constructor(
 
         if (itemQuantity <= 0) {
             _state.value =
-                state.value.copy(cartItems = state.value.cartItems.filterIndexed { i, _ -> i != index } ,
-                    subTotal = state.value.subTotal - state.value.cartItems[index].items_price)
+                state.value.copy(
+                    cartItems = state.value.cartItems.filterIndexed { i, _ -> i != index },
+                    subTotal = calculateSubTotal(
+                        itemQuantity,
+                        index,
+                        initialItems,
+                        initialQuantity
+                    ),
+                    discount = calculateDiscount(itemQuantity, index, initialItems, initialQuantity)
+                )
         } else {
             _state.value = state.value.copy(
-                subTotal = state.value.subTotal -
-                        (initialItems[index].items_price * initialQuantity) +
-                        (state.value.cartItems[index].items_price * itemQuantity)
+                subTotal = calculateSubTotal(itemQuantity, index, initialItems, initialQuantity),
+                discount = calculateDiscount(itemQuantity, index, initialItems, initialQuantity)
             )
         }
 
         _state.value = state.value.copy(
-            totalCost = state.value.subTotal +
-                    state.value.deliveryFee -
-                    state.value.discount
+            totalCost = calculateTotalCost()
         )
+    }
+
+    private fun calculateDiscount(
+        itemQuantity: Int,
+        index: Int,
+        initialItems: List<CartData>,
+        initialQuantity: Int,
+    ): Float {
+        return if (itemQuantity <= 0) {
+            state.value.discount - ((state.value.cartItems[index].items_price * state.value.cartItems[index].items_discount) / 100)
+        } else {
+            state.value.discount -
+                    (((initialItems[index].items_price * initialItems[index].items_discount) / 100) * initialQuantity) +
+                    (((state.value.cartItems[index].items_price * state.value.cartItems[index].items_discount) / 100) * itemQuantity)
+
+        }
+    }
+
+    private fun calculateTotalCost(): Float {
+        return state.value.subTotal +
+                state.value.deliveryFee -
+                state.value.discount
+    }
+
+    private fun calculateSubTotal(
+        itemQuantity: Int,
+        index: Int,
+        initialItems: List<CartData>,
+        initialQuantity: Int,
+    ): Float {
+        return if (itemQuantity <= 0) {
+            state.value.subTotal - state.value.cartItems[index].items_price
+        } else {
+            state.value.subTotal -
+                    (initialItems[index].items_price * initialQuantity) +
+                    (state.value.cartItems[index].items_price * itemQuantity)
+        }
     }
 
 

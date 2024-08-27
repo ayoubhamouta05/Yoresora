@@ -14,6 +14,7 @@ data class CartData(
     val items_image : String,
     val items_desc : String,
     val items_desc_ar :String,
+    val items_discount : Int ,
     val item_id: Int,
     val item_quantity: Int,
     val item_size: Int,

@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.Screen
@@ -21,6 +22,7 @@ import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.domain.model.details.Size
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
+import com.youppix.ecommercecourse.presentation.components.keyboardAsState
 import com.youppix.ecommercecourse.presentation.home_app.customSize.components.BottomBarSection
 import com.youppix.ecommercecourse.presentation.home_app.customSize.components.CustomSizeContent
 import com.youppix.ecommercecourse.presentation.home_app.customSize.components.TopBarSection
@@ -38,6 +40,15 @@ class CustomSizeScreen(private val userId: Int? ,private val size: Size) : Scree
         val focusRequester = remember { FocusRequester() }
         val keyboardController = LocalSoftwareKeyboardController.current
         val context = LocalContext.current
+
+        val focusManager = LocalFocusManager.current
+        val isKeyboardOpen by keyboardAsState() // true or false
+
+        LaunchedEffect(isKeyboardOpen) {
+            if (!isKeyboardOpen) {
+                focusManager.clearFocus()
+            }
+        }
 
         LaunchedEffect(Unit) {
             userId?.let {

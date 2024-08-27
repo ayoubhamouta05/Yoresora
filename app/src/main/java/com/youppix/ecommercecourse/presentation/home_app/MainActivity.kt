@@ -2,6 +2,8 @@ package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -41,6 +43,7 @@ import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScre
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
+import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -79,11 +82,15 @@ class MainActivity : ComponentActivity() {
 
             onBackButtonPressed {
                 showDialog = !backPressedState
-                if (navigator!!.lastItem.javaClass.name != HomeScreen::class.java.name) {
-                    navigator!!.replace(HomeScreen())
-                    showDialog = false
-                } else {
-                    showDialog = true
+                if (navigator!!.canPop){
+                    navigator!!.pop()
+                }else {
+                    if (navigator!!.lastItem.javaClass.name != HomeScreen::class.java.name) {
+                        navigator!!.replace(HomeScreen())
+                        showDialog = false
+                    } else {
+                        showDialog = true
+                    }
                 }
             }
 
@@ -121,22 +128,27 @@ class MainActivity : ComponentActivity() {
 
                                     1 -> {
                                         if (navigator?.lastItem?.javaClass?.name != CartScreen::class.java.name)
-                                            navigator?.replace(CartScreen(userId = userId))
+                                            if(navigator?.popUntil { screen -> screen ==  CartScreen(userId) } == false)
+                                                navigator?.replace(CartScreen(userId))
                                     }
 
                                     2 -> {
                                         if (navigator?.lastItem?.javaClass?.name != FavoritesScreen::class.java.name)
-                                            navigator?.replace(FavoritesScreen(userId = userId))
+                                            if(navigator?.popUntil { screen -> screen ==  FavoritesScreen(userId) } == false)
+                                                navigator?.replace(FavoritesScreen(userId))
                                     }
 
                                     3 -> {
                                         if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
+                                        if(navigator?.popUntil { screen -> screen ==  ChatScreen() } == false)
                                             navigator?.replace(ChatScreen())
                                     }
 
                                     4 -> {
                                         if (navigator?.lastItem?.javaClass?.name != ProfileScreen::class.java.name)
-                                            navigator?.replace(ProfileScreen())
+                                            if(navigator?.popUntil { screen -> screen ==  ProfileScreen() } == false)
+                                                navigator?.replace(ProfileScreen())
+
                                     }
                                 }
                                 viewModel.setCurrentScreen(it)
@@ -151,7 +163,8 @@ class MainActivity : ComponentActivity() {
                             showBottomBar =
                                 navigator.lastItem.javaClass.name != DetailsScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != CartScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != CartScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

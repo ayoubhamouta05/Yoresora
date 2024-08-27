@@ -1,19 +1,22 @@
 package com.youppix.ecommercecourse.presentation.home_app.cart.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Minimize
@@ -21,18 +24,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
@@ -44,7 +49,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.cart.CartData
-import com.youppix.ecommercecourse.domain.model.cart.CartItemData
+import com.youppix.ecommercecourse.presentation.components.keyboardAsState
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartEvent
 import kotlinx.coroutines.Dispatchers
 
@@ -65,6 +70,16 @@ fun CartItem(
             .diskCacheKey(Urls.IMAGES_URL + cartItem.items_image).dispatcher(Dispatchers.IO)
             .diskCachePolicy(CachePolicy.ENABLED).memoryCachePolicy(CachePolicy.ENABLED).build()
     )
+
+    val focusManager = LocalFocusManager.current
+    val isKeyboardOpen by keyboardAsState()
+
+    LaunchedEffect(isKeyboardOpen) {
+        if (!isKeyboardOpen) {
+            focusManager.clearFocus()
+        }
+    }
+
     Box(modifier = modifier) {
         Row(
             Modifier
@@ -125,7 +140,8 @@ fun CartItem(
                 .align(Alignment.BottomEnd)
                 .padding(horizontal = MediumPadding)
                 .padding(bottom = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically ,
+            horizontalArrangement = Arrangement.Center
         ) {
             Box(modifier = Modifier
                 .size(30.dp)
@@ -155,9 +171,46 @@ fun CartItem(
                 )
             }
 
-            Text(
-                text = cartItem.item_quantity.toString(),
-                modifier = Modifier.padding(horizontal = SmallPadding)
+            BasicTextField(
+                value = cartItem.item_quantity.toString(),
+                onValueChange = {
+                    if(it.length<4){
+                        if (it.isNotEmpty()){
+                            if (it.toIntOrNull() != null) {
+                                event(CartEvent.UpdateQuantity(
+                                    userId = cartItem.user_id,
+                                    itemId = cartItem.item_id,
+                                    itemSize = cartItem.item_size,
+                                    itemColor = cartItem.item_color,
+                                    itemQuantity = it.toInt(),
+                                    index = index,
+                                ))
+                            }
+                        }else {
+                            event(CartEvent.UpdateQuantity(
+                                userId = cartItem.user_id,
+                                itemId = cartItem.item_id,
+                                itemSize = cartItem.item_size,
+                                itemColor = cartItem.item_color,
+                                itemQuantity = 1,
+                                index = index,
+                            ))
+                        }
+                    }
+
+
+                },
+                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                    color = colorResource(id = R.color.body) ,
+                    textAlign = TextAlign.Center
+                ),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                modifier = Modifier
+                    .padding(horizontal = ExtraSmallPadding2)
+                    .fillMaxWidth(0.102f)
+
+
             )
             Box(modifier = Modifier
                 .size(30.dp)
@@ -173,7 +226,7 @@ fun CartItem(
                             itemId = cartItem.item_id,
                             itemSize = cartItem.item_size,
                             itemColor = cartItem.item_color,
-                            itemQuantity = cartItem.item_quantity + 1,
+                            itemQuantity = if ((cartItem.item_quantity + 1).toString().length < 4) cartItem.item_quantity + 1 else cartItem.item_quantity,
                             index = index,
                         )
                     )

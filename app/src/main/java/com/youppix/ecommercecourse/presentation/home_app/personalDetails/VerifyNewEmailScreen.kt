@@ -56,7 +56,7 @@ import com.youppix.ecommercecourse.presentation.starting_app.auth.forgotPassword
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class VerifyNewEmail(
+class VerifyNewEmailScreen(
     private var user : User,
     private val oldEmail : String,
 ) : Screen {
