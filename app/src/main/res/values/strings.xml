@@ -139,6 +139,17 @@ or continue with social media</string>
     <string name="removeFromCart">Remove From Cart</string>
     <string name="emptyCartMessage">! You haven\'t added anything to your cart yet.</string>
     <string name="youMustHaveAtLeastOneItem">You must have at least one item</string>
+    <string name="checkout">Checkout</string>
+    <string name="ShippingAddress">Shipping Address</string>
+    <string name="change">Change</string>
+    <string name="deliveryMethod">Delivery Method</string>
+    <string name="homeDelivery">Home Delivery</string>
+    <string name="homeDeliveryDescription">Receive your order directly at your doorstep. A convenient option for those who prefer to have their items delivered to their home or office. Please ensure that someone is available to accept the package at the provided address</string>
+    <string name="pickupPointDelivery">Pickup Point Delivery</string>
+    <string name="pickupPointDeliveryDescription">Collect your order from a nearby pickup location at your convenience. Choose this option if you prefer to pick up your package from a designated relay point. You\'ll be notified when your order is ready for collection</string>
+    <string name="count">Count: %1$s</string>
+    <string name="orderList">Order List</string>
+    <string name="continueToPayment">Continue To Payment</string>
 
 
 </resources>

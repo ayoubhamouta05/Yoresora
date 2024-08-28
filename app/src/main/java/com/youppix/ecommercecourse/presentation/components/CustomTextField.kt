@@ -19,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 
@@ -48,11 +50,12 @@ fun ColumnScope.CustomTextField(
             ,
         value = value,
         label = {
-            Text(text = label)
+            Text(text = label , style = MaterialTheme.typography.bodyMedium)
         },
         placeholder = {
-            Text(text = placeholder)
+            Text(text = placeholder,style = MaterialTheme.typography.bodyMedium)
         },
+        textStyle = MaterialTheme.typography.bodyLarge,
         shape = RoundedCornerShape(40),
         singleLine = true,
         trailingIcon = {

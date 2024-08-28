@@ -23,7 +23,7 @@ data class CartData(
     val items_price: Int,
     val sizes_name: String,
     val user_id: Int
-)
+) : java.io.Serializable
 
 fun CartData.toItem() =
     Item(

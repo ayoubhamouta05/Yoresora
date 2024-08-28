@@ -139,4 +139,15 @@
     <string name="removeFromCart">إزالة من السلة</string>
     <string name="emptyCartMessage">! لم تضف أي شيء إلى سلتك بعد.</string>
     <string name="youMustHaveAtLeastOneItem">يجب أن يكون لديك عنصر واحد على الأقل</string>
+    <string name="checkout">الدفع</string>
+    <string name="ShippingAddress">عنوان الشحن</string>
+    <string name="change">تعديل</string>
+    <string name="deliveryMethod">طريقة التوصيل</string>
+    <string name="homeDelivery">توصيل الى المنزل</string>
+    <string name="pickupPointDelivery">استلام من نقطة تسليم</string>
+    <string name="homeDeliveryDescription">استلم طلبك مباشرة عند باب منزلك. خيار مريح لمن يفضلون استلام مشترياتهم في المنزل أو المكتب. يرجى التأكد من وجود شخص متاح لاستلام الطرد في العنوان المقدم.</string>
+    <string name="pickupPointDeliveryDescription">استلم طلبك من موقع استلام قريب في الوقت الذي يناسبك. اختر هذه الخيار إذا كنت تفضل استلام الطرد من نقطة تسليم مخصصة. سيتم إبلاغك عند جاهزية طلبك للاستلام.</string>
+    <string name="count">العدد : %1$s</string>
+    <string name="orderList">قائمة الطلبات</string>
+    <string name="continueToPayment">الشروع في عملية الدفع</string>
 </resources>
