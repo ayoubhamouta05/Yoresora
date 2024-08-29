@@ -190,7 +190,9 @@ fun NewArrivalsItem(
                     Text(
                         text = stringResource(id = R.string.details),
                         color = MaterialTheme.colorScheme.background,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(
                             horizontal = Dimens.SmallPadding,

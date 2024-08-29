@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SearchBarHeight
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
@@ -91,7 +92,7 @@ fun HomeScreenContent(
                 item {
                     Text(
                         text = stringResource(id = R.string.findYourStyle),
-                        style = MaterialTheme.typography.displayMedium.copy(
+                        style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
                         ),
@@ -204,7 +205,7 @@ fun SectionTitle(title: String, onSeeAllClick: () -> Unit) {
             .padding(
                 start = MediumPadding,
                 end = MediumPadding,
-                bottom = SmallPadding
+                bottom = ExtraSmallPadding
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically

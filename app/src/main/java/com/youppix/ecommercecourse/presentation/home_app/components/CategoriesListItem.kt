@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
@@ -51,7 +52,9 @@ fun CategoriesListItem(
             text = name,
             color = if (selected) MaterialTheme.colorScheme.background
             else MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.SemiBold
+            )
         )
     }
 

@@ -42,6 +42,14 @@ val Typography = Typography(
         lineHeight = 26.sp // don't touch
     ),
 
+    titleMedium = TextStyle(
+        textAlign = TextAlign.Center,
+        fontFamily = Cairo,
+        fontWeight = FontWeight.Bold,
+        fontSize = 26.sp,
+        lineHeight = 26.sp // don't touch
+    ),
+
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
