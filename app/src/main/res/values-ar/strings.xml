@@ -141,7 +141,8 @@
     <string name="youMustHaveAtLeastOneItem">يجب أن يكون لديك عنصر واحد على الأقل</string>
     <string name="checkout">الدفع</string>
     <string name="ShippingAddress">عنوان الشحن</string>
-    <string name="change">تعديل</string>
+    <string name="change">تغيير</string>
+    <string name="update">تحديث</string>
     <string name="deliveryMethod">طريقة التوصيل</string>
     <string name="homeDelivery">توصيل الى المنزل</string>
     <string name="pickupPointDelivery">استلام من نقطة تسليم</string>
@@ -150,4 +151,8 @@
     <string name="count">العدد : %1$s</string>
     <string name="orderList">قائمة الطلبات</string>
     <string name="continueToPayment">الشروع في عملية الدفع</string>
+    <string name="address">العنوان</string>
+    <string name="emptyAddressMessage">! ليس لديك أي عنوان حتى الآن، انقر لإنشاء واحد</string>
+    <string name="add">إضافة</string>
+    <string name="cannotDeleteYourMainAddress">لا يمكن حذف العنوان الرئيسي</string>
 </resources>

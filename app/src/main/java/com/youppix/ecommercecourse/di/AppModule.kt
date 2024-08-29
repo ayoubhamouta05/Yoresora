@@ -10,7 +10,9 @@ import com.youppix.ecommercecourse.data.remote.details.DetailsService
 import com.youppix.ecommercecourse.data.remote.favorites.FavoritesService
 import com.youppix.ecommercecourse.data.remote.home.HomeService
 import com.youppix.ecommercecourse.data.remote.profile.ProfileService
+import com.youppix.ecommercecourse.data.repository.address.AddressRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.cart.CartRepositoryImpl
+import com.youppix.ecommercecourse.data.repository.checkout.CheckoutRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.details.DetailsRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.favorites.FavoritesRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
@@ -22,7 +24,9 @@ import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
 import com.youppix.ecommercecourse.domain.manager.LanguageManager
 import com.youppix.ecommercecourse.domain.manager.LocaleUserEntryManager
 import com.youppix.ecommercecourse.domain.manager.NetworkConnectivityManager
+import com.youppix.ecommercecourse.domain.repository.address.AddressRepository
 import com.youppix.ecommercecourse.domain.repository.cart.CartRepository
+import com.youppix.ecommercecourse.domain.repository.checkout.CheckoutRepository
 import com.youppix.ecommercecourse.domain.repository.details.DetailsRepository
 import com.youppix.ecommercecourse.domain.repository.favorites.FavoritesRepository
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
@@ -31,6 +35,10 @@ import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
 import com.youppix.ecommercecourse.domain.repository.profile.ProfileRepository
 import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
+import com.youppix.ecommercecourse.domain.useCases.address.AddressUseCases
+import com.youppix.ecommercecourse.domain.useCases.address.DeleteAddressUseCase
+import com.youppix.ecommercecourse.domain.useCases.address.GetAllAddressUseCase
+import com.youppix.ecommercecourse.domain.useCases.address.UpsertAddressUseCase
 import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
 import com.youppix.ecommercecourse.domain.useCases.appEntry.GetAppEntryUseCase
 import com.youppix.ecommercecourse.domain.useCases.appEntry.SaveAppEntryUseCase
@@ -48,10 +56,12 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckPhoneUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseCase
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
-import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteCartItemUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
 import com.youppix.ecommercecourse.domain.useCases.cart.GetCartItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.UpdateQuantityUseCase
+import com.youppix.ecommercecourse.domain.useCases.checkout.CheckoutUseCases
+import com.youppix.ecommercecourse.domain.useCases.checkout.GetAddressUseCase
+import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteCartItemUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.CheckSizeExistenceUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.DetailsUseCases
@@ -66,8 +76,8 @@ import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.CheckEmailAvailabilityUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.GetUserDataUseCase
-import com.youppix.ecommercecourse.domain.useCases.profile.SaveUserData
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
+import com.youppix.ecommercecourse.domain.useCases.profile.SaveUserData
 import com.youppix.ecommercecourse.domain.useCases.profile.UpdatePersonalDetailsUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.UploadImageUseCase
 import com.youppix.ecommercecourse.domain.useCases.search.GetAllCategoriesUseCase
@@ -121,7 +131,7 @@ object AppModule {
     @Singleton
     fun provideLoginUseCases(
         loginRepository: LoginRepository,
-        localeUserEntryManager: LocaleUserEntryManager? = null
+        localeUserEntryManager: LocaleUserEntryManager? = null,
     ): LoginUseCases {
         return LoginUseCases(
             checkEmail = CheckEmailUseCase(loginRepository),
@@ -327,7 +337,7 @@ object AppModule {
     @Singleton
     fun provideProfileRepository(
         profileService: ProfileService,
-        localeUserEntryManager: LocaleUserEntryManager
+        localeUserEntryManager: LocaleUserEntryManager,
     ): ProfileRepository =
         ProfileRepositoryImpl(profileService = profileService, localeUserEntryManager)
 
@@ -335,7 +345,7 @@ object AppModule {
     @Singleton
     fun provideProfileUseCases(
         profileRepository: ProfileRepository,
-        languageManager: LanguageManager
+        languageManager: LanguageManager,
     ): ProfileUseCases =
         ProfileUseCases(
             saveUserData = SaveUserData(profileRepository),
@@ -354,21 +364,47 @@ object AppModule {
     // Cart
     @Provides
     @Singleton
-    fun provideCartService(client: HttpClient) : CartService =
+    fun provideCartService(client: HttpClient): CartService =
         CartService(client)
 
     @Provides
     @Singleton
-    fun provideCartRepository(cartService: CartService) : CartRepository =
+    fun provideCartRepository(cartService: CartService): CartRepository =
         CartRepositoryImpl(cartService)
 
     @Provides
     @Singleton
-    fun provideCartUseCases(cartRepository: CartRepository) : CartUseCases =
+    fun provideCartUseCases(cartRepository: CartRepository): CartUseCases =
         CartUseCases(
             getCartItems = GetCartItemsUseCase(cartRepository),
             updateQuantity = UpdateQuantityUseCase(cartRepository)
         )
 
+    // Checkout
+    @Provides
+    @Singleton
+    fun provideCheckoutRepository(cartService: CartService): CheckoutRepository =
+        CheckoutRepositoryImpl(cartService)
+
+
+    @Provides
+    @Singleton
+    fun provideCheckoutUseCases(checkoutRepository: CheckoutRepository): CheckoutUseCases =
+        CheckoutUseCases(getAddress = GetAddressUseCase(checkoutRepository))
+
+    // Address
+    @Provides
+    @Singleton
+    fun provideAddressRepository(profileService: ProfileService): AddressRepository =
+        AddressRepositoryImpl(profileService)
+
+    @Provides
+    @Singleton
+    fun provideAddressUseCases(addressRepository: AddressRepository): AddressUseCases =
+        AddressUseCases(
+            getAllAddress = GetAllAddressUseCase(addressRepository),
+            upsertAddress = UpsertAddressUseCase(addressRepository) ,
+            deleteAddress = DeleteAddressUseCase(addressRepository)
+        )
 
 }

@@ -1,7 +1,9 @@
 package com.youppix.ecommercecourse.presentation.home_app.checkout
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,21 +47,28 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
+import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.DeliveryMethodItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.OrderListItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.ShippingAddressItem
+import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import java.util.Locale
 
 data class CheckoutScreen(
+    val userId: Int,
     val orderList: List<CartData> = emptyList(),
 ) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel : CheckoutViewModel = navigator.getNavigatorScreenModel()
+        val viewModel: CheckoutViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
         val isArabic = Locale.getDefault().language == "ar"
+
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(CheckoutEvent.GetAddress(userId = userId))
+        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -93,7 +103,7 @@ data class CheckoutScreen(
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = Dimens.MediumPadding , horizontal = LargePadding),
+                            .padding(vertical = Dimens.MediumPadding, horizontal = LargePadding),
                         onClick = {
 //                            navigator.push(PaymentMethodsScreen())
                         }) {
@@ -113,7 +123,8 @@ data class CheckoutScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .padding(start = MediumPadding, end = MediumPadding, top = SmallPadding ,)
+                    .padding(start = MediumPadding, end = MediumPadding, top = SmallPadding)
+                    .animateContentSize()
             ) {
 
                 item {
@@ -125,12 +136,24 @@ data class CheckoutScreen(
                 }
 
                 item {
-                    ShippingAddressItem(
-                        addressTitle = "Home",
-                        addressInfo = "Batna, Batna, Parck A Fourage Batna, Batna, Parck A Fourage ",
-                        modifier = Modifier.padding(vertical = SmallPadding),
-                    ) {
-//                        navigator.push(AddAddressScreen())
+                    if (state.address == null) {
+                        Box(modifier = Modifier.padding(SmallPadding)){
+                            EmptyScreen(emptyMessage = stringResource(id = R.string.emptyAddressMessage)) {
+                                navigator.push(AddressScreen(userId))
+                            }
+                        }
+                    } else {
+                        ShippingAddressItem(
+                            address= state.address!!,
+                            modifier = Modifier.padding(vertical = SmallPadding),
+                        ) {
+                            navigator.push(
+                                AddressScreen(
+                                    userId,
+                                    fromCheckout = true
+                                )
+                            )
+                        }
                     }
                 }
 

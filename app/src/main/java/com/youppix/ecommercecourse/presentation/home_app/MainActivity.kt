@@ -2,8 +2,6 @@ package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
@@ -34,6 +32,7 @@ import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
+import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
 import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.home_app.components.shadow
@@ -164,7 +163,8 @@ class MainActivity : ComponentActivity() {
                                 navigator.lastItem.javaClass.name != DetailsScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CartScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != AddressScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

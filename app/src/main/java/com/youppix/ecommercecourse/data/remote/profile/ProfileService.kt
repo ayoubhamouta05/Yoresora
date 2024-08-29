@@ -3,9 +3,14 @@ package com.youppix.ecommercecourse.data.remote.profile
 import android.util.Log
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.common.Urls.CHECK_EMAIL_AVAILABILITY_URL
+import com.youppix.ecommercecourse.common.Urls.DELETE_ADDRESS_URL
+import com.youppix.ecommercecourse.common.Urls.GET_ALL_ADDRESS_URL
 import com.youppix.ecommercecourse.common.Urls.UPDATE_PERSONAL_DETAILS_URL
 import com.youppix.ecommercecourse.common.Urls.UPDATE_PROFILE_IMG_URL
+import com.youppix.ecommercecourse.common.Urls.UPSERT_ADDRESS_URL
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
+import com.youppix.ecommercecourse.data.remote.profile.dto.AddressResponse
+import com.youppix.ecommercecourse.domain.model.address.Address
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -110,7 +115,7 @@ class ProfileService(private val client: HttpClient) {
         }
     }
 
-    fun checkEmailAvailability(userId: Int, email: String): Flow<Resource<AuthResponse>> = flow {
+    suspend fun checkEmailAvailability(userId: Int, email: String): Flow<Resource<AuthResponse>> = flow {
 
         try {
             emit(Resource.Loading())
@@ -146,5 +151,107 @@ class ProfileService(private val client: HttpClient) {
         }
     }
 
+
+    suspend fun getAllAddress(userId: Int): Flow<Resource<AddressResponse>> = flow {
+
+        try {
+            emit(Resource.Loading())
+            @Serializable
+            data class Body(
+                val userId: Int
+            )
+
+            val response = client.post(GET_ALL_ADDRESS_URL) {
+                setBody(Body(userId))
+            }
+            val responseBody = response.body<AddressResponse>()
+            if (responseBody.status == "success") {
+                emit(Resource.Successful(responseBody))
+            } else {
+                emit(Resource.Error(responseBody.message))
+            }
+            Log.d("ProfileService", "response : $responseBody")
+
+        } catch (e: ClientRequestException) {
+            emit(Resource.Error("Client request error"))
+            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+        } catch (e: ServerResponseException) {
+            emit(Resource.Error("Server response error"))
+            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+        } catch (e: IOException) {
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+        } catch (e: SerializationException) {
+            emit(Resource.Error("Serialization error"))
+            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+        }
+    }
+
+    suspend fun upsertAddress(address: Address): Flow<Resource<AuthResponse>> = flow {
+
+        try {
+            emit(Resource.Loading())
+            val response = client.post(UPSERT_ADDRESS_URL) {
+                setBody(address)
+            }
+            val responseBody = response.body<AuthResponse>()
+            if (responseBody.status == "success") {
+                emit(Resource.Successful(responseBody))
+            } else {
+                emit(Resource.Error(responseBody.message))
+            }
+            Log.d("ProfileService", "response : $responseBody")
+
+        } catch (e: ClientRequestException) {
+            emit(Resource.Error("Client request error"))
+            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+        } catch (e: ServerResponseException) {
+            emit(Resource.Error("Server response error"))
+            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+        } catch (e: IOException) {
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+        } catch (e: SerializationException) {
+            emit(Resource.Error("Serialization error"))
+            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+        }
+    }
+
+    fun deleteAddress(addressId : Int , userId: Int) : Flow<Resource<AuthResponse>> = flow {
+
+        try {
+            emit(Resource.Loading())
+
+            @Serializable
+            data class Body(
+                val addressId: Int ,
+                val userId: Int
+            )
+
+            val response = client.post(DELETE_ADDRESS_URL) {
+                setBody(Body(addressId , userId))
+            }
+            val responseBody = response.body<AuthResponse>()
+            if (responseBody.status == "success") {
+                emit(Resource.Successful(responseBody))
+            } else {
+                emit(Resource.Error(responseBody.message))
+            }
+            Log.d("ProfileService", "response : $responseBody")
+
+        } catch (e: ClientRequestException) {
+            emit(Resource.Error("Client request error"))
+            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+        } catch (e: ServerResponseException) {
+            emit(Resource.Error("Server response error"))
+            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+        } catch (e: IOException) {
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+        } catch (e: SerializationException) {
+            emit(Resource.Error("Serialization error"))
+            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+        }
+    }
 
 }

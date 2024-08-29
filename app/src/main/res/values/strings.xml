@@ -142,6 +142,7 @@ or continue with social media</string>
     <string name="checkout">Checkout</string>
     <string name="ShippingAddress">Shipping Address</string>
     <string name="change">Change</string>
+    <string name="update">Update</string>
     <string name="deliveryMethod">Delivery Method</string>
     <string name="homeDelivery">Home Delivery</string>
     <string name="homeDeliveryDescription">Receive your order directly at your doorstep. A convenient option for those who prefer to have their items delivered to their home or office. Please ensure that someone is available to accept the package at the provided address</string>
@@ -150,6 +151,10 @@ or continue with social media</string>
     <string name="count">Count: %1$s</string>
     <string name="orderList">Order List</string>
     <string name="continueToPayment">Continue To Payment</string>
+    <string name="address">Address</string>
+    <string name="emptyAddressMessage">!You don\'t have any address yet, Click to create one</string>
+    <string name="add">Add</string>
+    <string name="cannotDeleteYourMainAddress">Cannot delete your main address</string>
 
 
 </resources>

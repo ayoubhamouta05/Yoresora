@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -40,6 +41,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
+import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ChangeLangSection
@@ -178,10 +180,10 @@ class ProfileScreen : Screen {
                         ProfileItem(
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             isArabic = isArabic,
-                            painter = painterResource(id = R.drawable.ic_settings),
-                            title = stringResource(id = R.string.settings)
+                            imageVector = Icons.Outlined.LocationOn,
+                            title = stringResource(id = R.string.address)
                         ) {
-                            navigator.push(SettingScreen())
+                            navigator.push(AddressScreen(userId = state.user.userId))
                         }
                         Spacer(
                             modifier = Modifier

@@ -83,7 +83,12 @@ data class CartScreen(private val userId: String?) : Screen {
             bottomBar = {
                 BottomSection(state = state, event = viewModel::onEvent) {
                     if (state.cartItems.isNotEmpty()) {
-                        navigator.push(CheckoutScreen(state.cartItems))
+                        navigator.push(
+                            CheckoutScreen(
+                                userId = userId!!.toInt(),
+                                orderList = state.cartItems
+                            )
+                        )
                     } else {
                         Toast.makeText(
                             context,

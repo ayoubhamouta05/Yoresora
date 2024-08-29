@@ -15,6 +15,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,7 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 
+@Stable
 @Composable
 fun ProfileItem(
     modifier: Modifier = Modifier,
@@ -72,6 +74,53 @@ fun ProfileItem(
 
 }
 
+@Stable
+@Composable
+fun ProfileItem(
+    modifier: Modifier = Modifier,
+    title: String ,
+    imageVector: ImageVector,
+    isArabic: Boolean ,
+    onCLick: () -> Unit
+) {
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(SmallPadding))
+            .clickable { onCLick() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = imageVector, contentDescription = null,
+            modifier = Modifier
+                .size(SocialMediaItemSize)
+                .padding(vertical = ExtraSmallPadding.plus(2.dp)),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Text(
+            text = title, style = MaterialTheme.typography.bodyMedium,
+            maxLines = 1,
+            modifier = Modifier.padding(SmallPadding)
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Icon(
+            imageVector = Icons.Default.ArrowForwardIos, contentDescription = null,
+            modifier = Modifier
+                .size(SocialMediaItemSize)
+                .padding(vertical = SmallPadding)
+                .rotate(if (isArabic) 180f else 0f),
+            tint = MaterialTheme.colorScheme.primary
+        )
+    }
+
+
+}
+
+@Stable
 @Composable
 fun ProfileItem(
     modifier: Modifier = Modifier,

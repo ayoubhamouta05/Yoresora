@@ -1,6 +1,5 @@
 package com.youppix.ecommercecourse.presentation.home_app.search.components
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +43,6 @@ import com.youppix.ecommercecourse.domain.model.items.ColorData
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
 import com.youppix.ecommercecourse.presentation.home_app.components.ColorItem
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchEvent
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Stable
