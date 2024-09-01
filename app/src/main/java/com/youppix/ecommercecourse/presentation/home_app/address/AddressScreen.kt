@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.address
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -32,6 +34,7 @@ import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
+import com.youppix.ecommercecourse.presentation.components.keyboardAsState
 import com.youppix.ecommercecourse.presentation.home_app.address.components.AddressBottomSheet
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
@@ -47,9 +50,6 @@ data class AddressScreen(
         val navigator = LocalNavigator.currentOrThrow
         val viewModel: AddressViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
-        var defaultAddressIndex by remember {
-            mutableIntStateOf(0)
-        }
 
         LaunchedEffect(Unit) {
             viewModel.onEvent(AddressEvent.GetAllAddress(userId))
@@ -102,18 +102,19 @@ data class AddressScreen(
                                 .padding(horizontal = SmallPadding)
                                 .background(
                                     if (state.items[index].addressDefault == 1) {
-                                        defaultAddressIndex = index // get the default address index
+                                        viewModel.onEvent(AddressEvent.UpdateDefaultAddressIndex(index)) // get the default address index
                                         MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                                     } else Color.Transparent,
                                     shape = RoundedCornerShape(SmallPadding)
                                 )
                                 ,
+                            isArabic = isArabic,
                             address = state.items[index],
                             onSelectClick = {
                                 if (state.items[index].addressDefault != 1) { // don't update values when he select the same address
                                     viewModel.onEvent(
                                         AddressEvent.UpsertAddress(
-                                            state.items[defaultAddressIndex].copy(
+                                            state.items[state.defaultAddressIndex].copy(
                                                 addressDefault = 0
                                             )
                                         )
@@ -144,6 +145,7 @@ data class AddressScreen(
                     isInserting = state.isInserting,
                     userId = userId,
                     state = state,
+                    isArabic = isArabic,
                     event = viewModel::onEvent
                 ) {
                     viewModel.onEvent(AddressEvent.ToggleShowBottomSheet(isInserting = null))

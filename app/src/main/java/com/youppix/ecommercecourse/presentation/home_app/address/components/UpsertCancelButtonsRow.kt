@@ -19,7 +19,7 @@ import com.youppix.ecommercecourse.common.Dimens
 
 @Stable
 @Composable
-fun UpsertDeleteButtonsRow(inserting : Boolean,
+fun UpsertCancelButtonsRow(inserting : Boolean,
                            onConfirmCLick: () -> Unit,
                            onCancelClick: () -> Unit) {
 

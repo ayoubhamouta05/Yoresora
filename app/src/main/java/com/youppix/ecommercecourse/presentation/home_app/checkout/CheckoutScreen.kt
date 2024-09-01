@@ -146,6 +146,7 @@ data class CheckoutScreen(
                         ShippingAddressItem(
                             address= state.address!!,
                             modifier = Modifier.padding(vertical = SmallPadding),
+                            isArabic = isArabic
                         ) {
                             navigator.push(
                                 AddressScreen(

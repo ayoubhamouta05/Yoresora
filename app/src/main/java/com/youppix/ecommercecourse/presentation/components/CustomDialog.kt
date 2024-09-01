@@ -111,7 +111,7 @@ fun CustomDialog(
                             text = stringResource(id = R.string.cancel),
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
@@ -128,10 +128,9 @@ fun CustomDialog(
                         ),
                     ) {
                         Text(
-                            modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             text = stringResource(id = R.string.ok),
-                            fontWeight = FontWeight.SemiBold,
-                            style = MaterialTheme.typography.titleMedium
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
 

@@ -155,6 +155,13 @@ or continue with social media</string>
     <string name="emptyAddressMessage">!You don\'t have any address yet, Click to create one</string>
     <string name="add">Add</string>
     <string name="cannotDeleteYourMainAddress">Cannot delete your main address</string>
+    <string name="postalCode">Postal code</string>
+    <string name="enterYourPostalCode">Enter your postal code</string>
+    <string name="addressName">Address name</string>
+    <string name="enterYourAddressName">Enter your address name</string>
+    <string name="setMainAddress">Select as main address</string>
+    <string name="selectWilaya">Select your wilaya</string>
+    <string name="selectCommune">Select your commune</string>
 
 
 </resources>

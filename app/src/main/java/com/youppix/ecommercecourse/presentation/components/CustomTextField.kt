@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -124,10 +125,12 @@ fun ColumnScope.CustomTextField(
         ,
         value = value,
         label = {
-            Text(text = label)
+            Text(text = label , style = MaterialTheme.typography.bodyMedium)
         },
         placeholder = {
-            Text(text = placeholder)
+            Text(text = placeholder , style = MaterialTheme.typography.bodyMedium.copy(
+                color = colorResource(id = R.color.body)
+            ))
         },
         shape = RoundedCornerShape(40),
         singleLine = true,

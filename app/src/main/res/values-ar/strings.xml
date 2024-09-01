@@ -155,4 +155,11 @@
     <string name="emptyAddressMessage">! ليس لديك أي عنوان حتى الآن، انقر لإنشاء واحد</string>
     <string name="add">إضافة</string>
     <string name="cannotDeleteYourMainAddress">لا يمكن حذف العنوان الرئيسي</string>
+    <string name="postalCode">الرمز البريدي</string>
+    <string name="enterYourPostalCode">أدخل الرمز البريدي الخاص بك</string>
+    <string name="addressName">اسم العنوان</string>
+    <string name="enterYourAddressName">أدخل اسم العنوان الخاص بك</string>
+    <string name="setMainAddress">اختر كعنوان رئيسي</string>
+    <string name="selectWilaya">حدد ولايتك</string>
+    <string name="selectCommune">حدد مدينتك</string>
 </resources>

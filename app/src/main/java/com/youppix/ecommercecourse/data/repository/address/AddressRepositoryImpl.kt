@@ -4,6 +4,7 @@ import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.profile.ProfileService
 import com.youppix.ecommercecourse.data.remote.profile.dto.AddressResponse
+import com.youppix.ecommercecourse.data.remote.profile.dto.CommuneResponse
 import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.repository.address.AddressRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,5 +20,9 @@ class AddressRepositoryImpl(private val profileService: ProfileService): Address
 
     override suspend fun deleteAddress(addressId: Int, userId: Int): Flow<Resource<AuthResponse>> {
         return profileService.deleteAddress(addressId , userId)
+    }
+
+    override suspend fun getCommune(wilayaId: Int): Flow<Resource<CommuneResponse>> {
+        return profileService.getCommune(wilayaId)
     }
 }

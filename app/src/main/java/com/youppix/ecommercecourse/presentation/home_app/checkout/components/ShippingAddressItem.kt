@@ -38,8 +38,12 @@ import com.youppix.ecommercecourse.domain.model.address.Address
 fun ShippingAddressItem(
     modifier: Modifier = Modifier,
     address: Address,
+    isArabic : Boolean ,
     onChangeCLick: () -> Unit,
 ) {
+
+    val wilayaName = if(isArabic) address.addressWilaya?.wilayaNameAr?:"" else address.addressWilaya?.wilayaName ?:""
+    val communeName =if(isArabic) address.addressCommune?.communeNameAr?:"" else address.addressCommune?.communeName ?:""
 
     Row(modifier = modifier.fillMaxWidth()) {
 
@@ -65,7 +69,8 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${address.addressWilaya}, ${address.addressCommune}, ${address.addressCodePostal}", style = MaterialTheme.typography.bodySmall.copy(
+                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}",
+                style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),
                 modifier = Modifier.offset(y = (-6).dp),
@@ -106,10 +111,12 @@ fun ShippingAddressItem(
 fun ShippingAddressItem(
     modifier: Modifier = Modifier,
     address: Address,
+    isArabic : Boolean ,
     onSelectClick: (() -> Unit)? = null,
     onUpdateClick: () -> Unit,
 ) {
-
+    val wilayaName = if(isArabic) address.addressWilaya?.wilayaNameAr?:"" else address.addressWilaya?.wilayaName ?:""
+    val communeName =if(isArabic) address.addressCommune?.communeNameAr?:"" else address.addressCommune?.communeName ?:""
     Row(modifier = modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(SmallPadding))
@@ -142,7 +149,7 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${address.addressWilaya}, ${address.addressCommune}, ${address.addressCodePostal}",
+                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),

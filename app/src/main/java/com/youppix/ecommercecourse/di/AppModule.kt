@@ -38,6 +38,7 @@ import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
 import com.youppix.ecommercecourse.domain.useCases.address.AddressUseCases
 import com.youppix.ecommercecourse.domain.useCases.address.DeleteAddressUseCase
 import com.youppix.ecommercecourse.domain.useCases.address.GetAllAddressUseCase
+import com.youppix.ecommercecourse.domain.useCases.address.GetCommuneUseCase
 import com.youppix.ecommercecourse.domain.useCases.address.UpsertAddressUseCase
 import com.youppix.ecommercecourse.domain.useCases.appEntry.AppEntryUseCases
 import com.youppix.ecommercecourse.domain.useCases.appEntry.GetAppEntryUseCase
@@ -404,7 +405,8 @@ object AppModule {
         AddressUseCases(
             getAllAddress = GetAllAddressUseCase(addressRepository),
             upsertAddress = UpsertAddressUseCase(addressRepository) ,
-            deleteAddress = DeleteAddressUseCase(addressRepository)
+            deleteAddress = DeleteAddressUseCase(addressRepository) ,
+            getCommune = GetCommuneUseCase(addressRepository)
         )
 
 }

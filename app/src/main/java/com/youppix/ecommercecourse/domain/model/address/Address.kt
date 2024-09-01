@@ -13,9 +13,9 @@ data class Address(
     @SerialName("address_name")
     val addressName: String = "",
     @SerialName("address_wilaya")
-    val addressWilaya: String = "",
+    val addressWilaya: Wilaya ?= null ,
     @SerialName("address_commune")
-    val addressCommune: String = "",
+    val addressCommune: Commune ?= null,
     @SerialName("address_code_postal")
     val addressCodePostal: String = "",
     @SerialName("address_default")

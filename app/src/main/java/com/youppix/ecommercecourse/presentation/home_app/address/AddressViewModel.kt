@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.address
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
@@ -51,12 +52,81 @@ class AddressViewModel @Inject constructor(
                 _state.value = state.value.copy(
                     selectedAddress = state.value.selectedAddress.copy(
                         addressId = event.address?.addressId ?: 0,
-                        addressWilaya = event.address?.addressWilaya ?: "",
-                        addressCommune = event.address?.addressCommune ?: "",
+                        addressWilaya = event.address?.addressWilaya,
+                        addressCommune = event.address?.addressCommune,
                         addressName = event.address?.addressName ?: "",
                         addressCodePostal = event.address?.addressCodePostal ?: "",
                         addressDefault = event.address?.addressDefault ?: 0
                     )
+                )
+            }
+
+            is AddressEvent.GetCommune -> {
+                screenModelScope.launch {
+                    getCommune(event.wilayaId)
+                }
+            }
+
+            is AddressEvent.UpdateAddressCodePostal -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressCodePostal = event.codePostal
+                    )
+                )
+            }
+
+            AddressEvent.ToggleCommuneDropMenu -> {
+                _state.value = state.value.copy(
+                    dropCommuneMenu = !state.value.dropCommuneMenu
+                )
+            }
+
+            AddressEvent.ToggleWilayaDropMenu -> {
+                _state.value = state.value.copy(
+                    dropWilayaMenu = !state.value.dropWilayaMenu
+                )
+            }
+
+            is AddressEvent.SetCommune -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressCommune = event.commune
+                    )
+                )
+                onEvent(AddressEvent.ToggleCommuneDropMenu)
+            }
+
+            is AddressEvent.SetWilaya -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressWilaya = event.wilaya,
+                        addressCommune = null
+                    ),
+                    communeList = emptyList()
+                )
+                onEvent(AddressEvent.ToggleWilayaDropMenu)
+                onEvent(AddressEvent.GetCommune(event.wilaya.wilayaId))
+            }
+
+            is AddressEvent.UpdateAddressName -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressName = event.name
+                    )
+                )
+            }
+
+            is AddressEvent.UpdateAddressDefault -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressDefault = if (event.value) 1 else 0
+                    )
+                )
+            }
+
+            is AddressEvent.UpdateDefaultAddressIndex -> {
+                _state.value = state.value.copy(
+                    defaultAddressIndex = event.index
                 )
             }
         }
@@ -143,12 +213,46 @@ class AddressViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         isLoading = false,
                         items = result.data?.data ?: emptyList(),
+                        wilayaList = result.data?.wilayas ?: emptyList(),
+                        error = null
+                    )
+                    if (state.value.wilayaList.isNotEmpty()) {
+                        onEvent(AddressEvent.SetWilaya(state.value.wilayaList[0]))
+                        onEvent(AddressEvent.ToggleWilayaDropMenu)
+                    }
+                }
+            }
+            Log.d("AddressViewModel", "getAllAddress: ${result.data}")
+        }.launchIn(screenModelScope)
+    }
+
+
+    private suspend fun getCommune(wilayaId: Int) {
+        addressUseCases.getCommune(wilayaId).onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = result.data?.message ?: result.message
+                        ?: "An Unexpected Error Occurred"
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        communeList = result.data?.data ?: emptyList(),
                         error = null
                     )
                 }
             }
         }.launchIn(screenModelScope)
     }
-
 
 }
