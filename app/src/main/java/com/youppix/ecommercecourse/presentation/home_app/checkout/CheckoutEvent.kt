@@ -6,4 +6,5 @@ sealed class CheckoutEvent {
 
     data class GetAddress (val userId : Int) : CheckoutEvent()
 
+    data class SetSubTotal (val value : Float) : CheckoutEvent()
 }

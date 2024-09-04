@@ -8,5 +8,9 @@ data class CheckoutState(
     val isLoading : Boolean = false,
     val error : String? = null,
     val address : Address? = null,
+    val subTotal : Float = 0f,
+    val totalPrice : Float = 0f ,
+    val homeDeliveryFee : Float = 0f ,
+    val pickupDeliveryFee : Float = 0f,
     val isHomeDelivery : Boolean = true
 )

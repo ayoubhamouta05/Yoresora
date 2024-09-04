@@ -1,10 +1,12 @@
 package com.youppix.ecommercecourse.presentation.home_app.address
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.useCases.address.AddressUseCases
@@ -17,7 +19,7 @@ class AddressViewModel @Inject constructor(
     private val addressUseCases: AddressUseCases,
 ) : ScreenModel {
 
-    private var _state = mutableStateOf(AddressState())
+    private var _state = mutableStateOf(AddressState(isLoading = true))
     val state: State<AddressState> = _state
 
 
@@ -37,9 +39,28 @@ class AddressViewModel @Inject constructor(
             }
 
             is AddressEvent.UpsertAddress -> {
-                screenModelScope.launch {
-                    upsertAddress(event.address)
+                if (event.checkError) {
+                    if(checkInformationError(event.address, context = event.context)){
+                        _state.value = state.value.copy(
+                            addressNameError = null,
+                            specificAddressError = null
+                        )
+                        onEvent(AddressEvent.ToggleShowBottomSheet())
+                        screenModelScope.launch {
+                            upsertAddress(event.address, event.userCustomerId, event.isArabic)
+                        }
+                    }
+                } else {
+                    screenModelScope.launch {
+                        upsertAddress(
+                            event.address,
+                            event.userCustomerId,
+                            event.isArabic,
+                            isUpdatingDefaultAddress = true
+                        )
+                    }
                 }
+
             }
 
             is AddressEvent.DeleteAddress -> {
@@ -56,7 +77,8 @@ class AddressViewModel @Inject constructor(
                         addressCommune = event.address?.addressCommune,
                         addressName = event.address?.addressName ?: "",
                         addressCodePostal = event.address?.addressCodePostal ?: "",
-                        addressDefault = event.address?.addressDefault ?: 0
+                        addressDefault = event.address?.addressDefault ?: 0,
+                        addressSpecific = event.address?.addressSpecific ?: ""
                     )
                 )
             }
@@ -99,10 +121,8 @@ class AddressViewModel @Inject constructor(
             is AddressEvent.SetWilaya -> {
                 _state.value = state.value.copy(
                     selectedAddress = state.value.selectedAddress.copy(
-                        addressWilaya = event.wilaya,
-                        addressCommune = null
-                    ),
-                    communeList = emptyList()
+                        addressWilaya = event.wilaya, addressCommune = null
+                    ), communeList = emptyList()
                 )
                 onEvent(AddressEvent.ToggleWilayaDropMenu)
                 onEvent(AddressEvent.GetCommune(event.wilaya.wilayaId))
@@ -129,13 +149,33 @@ class AddressViewModel @Inject constructor(
                     defaultAddressIndex = event.index
                 )
             }
+
+            is AddressEvent.UpdateSpecificAddress -> {
+                _state.value = state.value.copy(
+                    selectedAddress = state.value.selectedAddress.copy(
+                        addressSpecific = event.value
+                    )
+                )
+            }
+
+            is AddressEvent.UpdateSelectAddressSuccess -> {
+                _state.value = state.value.copy(
+                    selectAddressSuccess = event.value
+                )
+            }
         }
     }
 
-    private suspend fun upsertAddress(address: Address) {
-        addressUseCases.upsertAddress(address).onEach { result ->
+    private suspend fun upsertAddress(
+        address: Address,
+        userCustomerId: String,
+        isArabic: Boolean,
+        isUpdatingDefaultAddress: Boolean = false,
+    ) {
+        addressUseCases.upsertAddress(address, userCustomerId, isArabic).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
+                    Log.d("AddressViewModel", "upsertAddress: loading , ${address.addressDefault}")
                     _state.value = state.value.copy(
                         isLoading = true
                     )
@@ -151,14 +191,22 @@ class AddressViewModel @Inject constructor(
                 }
 
                 is Resource.Successful -> {
+                    Log.d(
+                        "AddressViewModel",
+                        "upsertAddress: stop loading , ${address.addressDefault}"
+                    )
                     _state.value = state.value.copy(
                         isLoading = false,
                         error = null,
-                        success = true
+                        success = true,
+                        selectAddressSuccess = if (address.addressDefault == 0) state.value.selectAddressSuccess
+                        else
+                            isUpdatingDefaultAddress
                     )
                     onEvent(AddressEvent.GetAllAddress(address.userId))
                 }
             }
+
         }.launchIn(screenModelScope)
     }
 
@@ -182,9 +230,7 @@ class AddressViewModel @Inject constructor(
 
                 is Resource.Successful -> {
                     _state.value = state.value.copy(
-                        isLoading = false,
-                        error = null,
-                        success = true
+                        isLoading = false, error = null, success = true
                     )
                     onEvent(AddressEvent.GetAllAddress(userId))
                 }
@@ -216,13 +262,8 @@ class AddressViewModel @Inject constructor(
                         wilayaList = result.data?.wilayas ?: emptyList(),
                         error = null
                     )
-                    if (state.value.wilayaList.isNotEmpty()) {
-                        onEvent(AddressEvent.SetWilaya(state.value.wilayaList[0]))
-                        onEvent(AddressEvent.ToggleWilayaDropMenu)
-                    }
                 }
             }
-            Log.d("AddressViewModel", "getAllAddress: ${result.data}")
         }.launchIn(screenModelScope)
     }
 
@@ -253,6 +294,55 @@ class AddressViewModel @Inject constructor(
                 }
             }
         }.launchIn(screenModelScope)
+    }
+
+    private fun checkInformationError(address: Address , context :Context) : Boolean{
+       return  if (address.addressName.isEmpty() || address.addressName.isBlank()) {
+            _state.value = state.value.copy(
+                addressNameError = context.getString(R.string.addressNameEmptyErrorMsg)
+            )
+             false
+        }else if (address.addressWilaya == null ){
+            _state.value = state.value.copy(
+                addressNameError = null,
+                wilayaError = context.getString(R.string.pleaseSelectWilayaErrorMsg)
+            )
+             false
+        }else if (address.addressCommune == null) {
+            _state.value = state.value.copy(
+                addressNameError= null,
+                wilayaError = null,
+                communeError = context.getString(R.string.pleaseSelectCommuneErrorMsg)
+            )
+             false
+        }else if (address.addressCodePostal.isEmpty() || address.addressCodePostal.isBlank()) {
+            _state.value = state.value.copy(
+                addressNameError= null,
+                wilayaError = null,
+                communeError = null,
+                codePostalError = context.getString(R.string.codePostalEmptyErrorMsg)
+            )
+             false
+        } else if (address.addressCodePostal.length != 5) {
+            _state.value = state.value.copy(
+                addressNameError= null,
+                wilayaError = null,
+                communeError = null,
+                codePostalError =context.getString(R.string.codePostalWrongErrorMsg)
+            )
+             false
+        } else if (state.value.selectedAddress.addressSpecific.isEmpty() || state.value.selectedAddress.addressSpecific.isBlank()) {
+            _state.value = state.value.copy(
+                addressNameError= null,
+                wilayaError = null,
+                communeError = null,
+                codePostalError = null,
+                specificAddressError = context.getString(R.string.specificAddressEmptyErrorMsg)
+            )
+             false
+        }else {
+             true
+        }
     }
 
 }

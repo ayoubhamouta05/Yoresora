@@ -71,7 +71,6 @@ class CartViewModel @Inject constructor(
                         isLoading = false,
                         cartItems = result.data?.data ?: emptyList(),
                         subTotal = result.data?.subTotal ?: state.value.subTotal,
-                        deliveryFee = result.data?.deliveryFee ?: state.value.deliveryFee,
                         discount = result.data?.discount ?: 0f,
                         totalCost = result.data?.totalCost ?: state.value.totalCost
                     )
@@ -171,8 +170,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun calculateTotalCost(): Float {
-        return state.value.subTotal +
-                state.value.deliveryFee -
+        return state.value.subTotal -
                 state.value.discount
     }
 

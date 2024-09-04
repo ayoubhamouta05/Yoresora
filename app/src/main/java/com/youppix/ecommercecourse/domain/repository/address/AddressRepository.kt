@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AddressRepository {
     suspend fun getAllAddress(userId: Int): Flow<Resource<AddressResponse>>
-    suspend fun upsertAddress(address: Address): Flow<Resource<AuthResponse>>
+    suspend fun upsertAddress(address: Address , userCustomerId : String , isArabic : Boolean): Flow<Resource<AuthResponse>>
     suspend fun deleteAddress(addressId : Int , userId: Int): Flow<Resource<AuthResponse>>
     suspend fun getCommune(wilayaId : Int) : Flow<Resource<CommuneResponse>>
 }

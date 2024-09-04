@@ -34,6 +34,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +62,7 @@ fun AddressBottomSheet(
     modifier: Modifier = Modifier,
     isInserting: Boolean,
     userId: Int,
+    userCustomerId : String,
     state: AddressState,
     isArabic: Boolean,
     event: (AddressEvent) -> Unit,
@@ -68,6 +71,7 @@ fun AddressBottomSheet(
 
     val focusManager = LocalFocusManager.current
     val isKeyboardOpen by keyboardAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(isKeyboardOpen) {
         if (!isKeyboardOpen) {
@@ -104,13 +108,20 @@ fun AddressBottomSheet(
                     UpsertCancelButtonsRow(inserting = isInserting,
                         onConfirmCLick = {
                             if(state.selectedAddress.addressDefault == 1){
-                                event(
-                                    AddressEvent.UpsertAddress(
-                                        state.items[state.defaultAddressIndex].copy(
-                                            addressDefault = 0
+                                if (state.items.size>1){
+                                    event(
+                                        AddressEvent.UpsertAddress(
+                                            state.items[state.defaultAddressIndex].copy(
+                                                addressDefault = 0
+                                            ),
+                                            checkError = true,
+                                            context = context,
+                                            userCustomerId = userCustomerId,
+                                            isArabic = isArabic
                                         )
                                     )
-                                )
+                                    event(AddressEvent.ToggleShowBottomSheet())
+                                }
                             }
                             event(
                                 AddressEvent.UpsertAddress(
@@ -121,11 +132,15 @@ fun AddressBottomSheet(
                                         addressWilaya = state.selectedAddress.addressWilaya,
                                         addressCodePostal = state.selectedAddress.addressCodePostal,
                                         addressDefault = state.selectedAddress.addressDefault
-                                    )
+                                    ) ,
+                                    checkError = true ,
+                                    userCustomerId = userCustomerId,
+                                    context = context,
+                                    isArabic = isArabic
                                 )
                             )
 
-                            event(AddressEvent.ToggleShowBottomSheet())
+
                         },
                         onCancelClick = {
                             onDismissRequest()
@@ -150,7 +165,7 @@ fun AddressBottomSheet(
 
                 item {
                     CustomTextField(
-                        modifier = Modifier.padding(bottom = LargePadding),
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = state.selectedAddress.addressName,
                         onValueChange = {
                             event(AddressEvent.UpdateAddressName(it))
@@ -158,12 +173,14 @@ fun AddressBottomSheet(
                         label = stringResource(id = R.string.addressName),
                         placeholder = stringResource(id = R.string.enterYourAddressName),
                         trailingIcon = {},
-                        isError = false
+                        isError = !state.addressNameError.isNullOrEmpty(),
+                        errorMessage = state.addressNameError?: ""
                     )
                 }
 
                 item {
-                    Column {
+                    Column(modifier = Modifier.padding(vertical = Dimens.SmallPadding)
+                        .padding(bottom = SmallPadding)) {
                         AddressDropMenuLabel(
                             name = state.selectedAddress.addressWilaya?.wilayaName ?: stringResource(
                                 id = R.string.selectWilaya
@@ -172,7 +189,9 @@ fun AddressBottomSheet(
                                 id = R.string.selectWilaya
                             ),
                             isArabic = isArabic,
-                            clickable = state.wilayaList.isNotEmpty()
+                            clickable = state.wilayaList.isNotEmpty(),
+                            isError = !state.wilayaError.isNullOrEmpty(),
+                            errorMessage = state.wilayaError?:""
                         ) {
                             event(AddressEvent.ToggleWilayaDropMenu)
                         }
@@ -224,7 +243,7 @@ fun AddressBottomSheet(
                 }
 
                 item {
-                    Column {
+                    Column(modifier = Modifier.padding(bottom = Dimens.SmallPadding)){
                         AddressDropMenuLabel(
                             name = state.selectedAddress.addressCommune?.communeName ?: stringResource(
                                 id = R.string.selectCommune
@@ -233,7 +252,9 @@ fun AddressBottomSheet(
                                 id = R.string.selectCommune
                             ),
                             isArabic = isArabic,
-                            clickable = state.selectedAddress.addressWilaya != null && state.communeList.isNotEmpty()
+                            clickable = state.selectedAddress.addressWilaya != null && state.communeList.isNotEmpty(),
+                            isError = !state.communeError.isNullOrEmpty(),
+                            errorMessage = state.communeError?:""
                         ) {
                             event(AddressEvent.ToggleCommuneDropMenu)
                         }
@@ -284,7 +305,7 @@ fun AddressBottomSheet(
 
                 item {
                     CustomTextField(
-                        modifier = Modifier.padding(top = SmallPadding),
+                        modifier = Modifier.padding(bottom = SmallPadding),
                         value = state.selectedAddress.addressCodePostal,
                         onValueChange = {
                             if (it.length<=5){
@@ -295,29 +316,46 @@ fun AddressBottomSheet(
                         placeholder = stringResource(id = R.string.enterYourPostalCode),
                         trailingIcon = {},
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        isError = false
+                        isError = !state.codePostalError.isNullOrEmpty(),
+                        errorMessage = state.codePostalError ?:""
+                    )
+                }
+                
+                item { 
+                    CustomTextField(
+                        value = state.selectedAddress.addressSpecific,
+                        onValueChange = {
+                            event(AddressEvent.UpdateSpecificAddress(it))
+                        },
+                        label = stringResource(id = R.string.address) ,
+                        placeholder = stringResource(id = R.string.enterYourAddress),
+                        trailingIcon = {  },
+                        isError = !state.specificAddressError.isNullOrEmpty(),
+                        errorMessage = state.specificAddressError ?:""
                     )
                 }
 
-                item {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = MediumPadding,
-                            ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = state.selectedAddress.addressDefault == 1,
-                            onCheckedChange = {
-                                event(AddressEvent.UpdateAddressDefault(it))
-                            })
-                        Text(
-                            text = stringResource(id = R.string.setMainAddress),
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.offset(-Dimens.ExtraSmallPadding)
-                        )
+                if (state.items[state.defaultAddressIndex] != state.selectedAddress.copy(userId = userId)) {
+                    item {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = MediumPadding,
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = state.selectedAddress.addressDefault == 1,
+                                onCheckedChange = {
+                                    event(AddressEvent.UpdateAddressDefault(it))
+                                })
+                            Text(
+                                text = stringResource(id = R.string.setMainAddress),
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.offset(-Dimens.ExtraSmallPadding)
+                            )
+                        }
                     }
                 }
             }

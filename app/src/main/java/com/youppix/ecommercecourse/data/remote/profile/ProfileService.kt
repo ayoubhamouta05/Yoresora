@@ -171,11 +171,9 @@ class ProfileService(private val client: HttpClient) {
                 setBody(Body(userId))
             }
             val responseBody = response.body<AddressResponse>()
-            if (responseBody.status == "success") {
-                emit(Resource.Successful(responseBody))
-            } else {
-                emit(Resource.Error(responseBody.message))
-            }
+
+            emit(Resource.Successful(responseBody))
+
             Log.d("ProfileService", "response : $responseBody")
 
         } catch (e: ClientRequestException) {
@@ -193,27 +191,35 @@ class ProfileService(private val client: HttpClient) {
         }
     }
 
-    suspend fun upsertAddress(address: Address): Flow<Resource<AuthResponse>> = flow {
+    suspend fun upsertAddress(address: Address,userCustomerId:String ,isArabic : Boolean): Flow<Resource<AuthResponse>> = flow {
         try {
             emit(Resource.Loading())
             @Serializable
             data class Body(
                 val user_id: Int,
+                val user_customer_id : String,
                 val address_id: Int,
                 val address_name: String,
                 val address_wilaya: Int,
+                val wilaya_name : String ,
                 val address_commune: Int,
+                val commune_name : String ,
                 val address_code_postal: String,
                 val address_default: Int,
+                val address_specific : String
             )
             val response = client.post(UPSERT_ADDRESS_URL) {
                 setBody(Body(user_id =address.userId ,
+                    user_customer_id = userCustomerId,
                     address_id=address.addressId,
                     address_name = address.addressName,
                     address_wilaya = address.addressWilaya!!.wilayaId,
+                    wilaya_name = if (isArabic)address.addressWilaya.wilayaNameAr else address.addressWilaya.wilayaName ,
                     address_commune =address.addressCommune!!.communeId,
+                    commune_name = if (isArabic) address.addressCommune.communeNameAr else address.addressCommune.communeName,
                     address_code_postal = address.addressCodePostal,
-                    address_default=address.addressDefault
+                    address_default=address.addressDefault,
+                    address_specific = address.addressSpecific
                     ))
             }
             val responseBody = response.body<AuthResponse>()

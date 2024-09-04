@@ -1,9 +1,11 @@
 package com.youppix.ecommercecourse.domain.model.address
 
+import androidx.compose.runtime.Immutable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 
+@Immutable
 @Serializable
 data class Address(
     @SerialName("user_id")
@@ -16,6 +18,8 @@ data class Address(
     val addressWilaya: Wilaya ?= null ,
     @SerialName("address_commune")
     val addressCommune: Commune ?= null,
+    @SerialName("address_specific")
+    val addressSpecific: String = "",
     @SerialName("address_code_postal")
     val addressCodePostal: String = "",
     @SerialName("address_default")

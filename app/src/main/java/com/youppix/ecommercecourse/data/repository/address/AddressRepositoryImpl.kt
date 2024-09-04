@@ -14,8 +14,8 @@ class AddressRepositoryImpl(private val profileService: ProfileService): Address
         return profileService.getAllAddress(userId)
     }
 
-    override suspend fun upsertAddress(address: Address): Flow<Resource<AuthResponse>> {
-        return profileService.upsertAddress(address)
+    override suspend fun upsertAddress(address: Address,userCustomerId : String , isArabic: Boolean): Flow<Resource<AuthResponse>> {
+        return profileService.upsertAddress(address , userCustomerId , isArabic)
     }
 
     override suspend fun deleteAddress(addressId: Int, userId: Int): Flow<Resource<AuthResponse>> {

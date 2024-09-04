@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.cart.components
+package com.youppix.ecommercecourse.presentation.home_app.checkout.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -44,14 +44,17 @@ import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartEvent
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartState
+import com.youppix.ecommercecourse.presentation.home_app.cart.components.BottomSectionItem
+import com.youppix.ecommercecourse.presentation.home_app.cart.components.CodePromoSection
+import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutEvent
+import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutState
 
 @Stable
 @Composable
 fun BottomSection(
     modifier: Modifier = Modifier,
-    state: CartState,
-    event: (CartEvent) -> Unit,
-    onProceedToCheckout: () -> Unit,
+    state: CheckoutState,
+    continueToPayment: () -> Unit,
 ) {
 
     var showAllDetails by remember {
@@ -81,18 +84,8 @@ fun BottomSection(
                     .padding(
                         vertical = Dimens.MediumPadding,
                         horizontal = Dimens.LargePadding
-                    )
-                    .padding(top = SmallPadding)
+                    ).padding(top = SmallPadding)
             ) {
-                AnimatedVisibility(visible= showAllDetails) {
-                    CodePromoSection(
-                        codePromoError = state.promoCodeError,
-                        promoCode = state.promoCode,
-                        onCodePromoChange = {
-                            event(CartEvent.OnPromoCodeChange(it))
-                        })
-                }
-
                 AnimatedVisibility(visible = showAllDetails ){
                     BottomSectionItem(
                         title = stringResource(id = R.string.subTotal),
@@ -101,8 +94,9 @@ fun BottomSection(
                 }
                 AnimatedVisibility(visible = showAllDetails ){
                     BottomSectionItem(
-                        title = stringResource(id = R.string.discount),
-                        value = state.discount.toString() + " -"
+                        title = stringResource(id = R.string.deliveryFee),
+                        value = if(state.isHomeDelivery) state.homeDeliveryFee.toString()
+                        else state.pickupDeliveryFee.toString()
                     )
                 }
                 AnimatedVisibility(visible = showAllDetails ){
@@ -117,7 +111,7 @@ fun BottomSection(
 
                 BottomSectionItem(
                     title = stringResource(id = R.string.totalCost),
-                    value = state.totalCost.toString()
+                    value = state.totalPrice.toString()
                 )
 
 
@@ -126,11 +120,11 @@ fun BottomSection(
                         .fillMaxWidth()
                         .padding(top = Dimens.MediumPadding),
                     onClick = {
-                        onProceedToCheckout()
+                        continueToPayment()
                     }) {
                     Text(
                         modifier = Modifier.padding(vertical = Dimens.ExtraSmallPadding2),
-                        text = stringResource(id = R.string.proceedToCheckout),
+                        text = stringResource(id = R.string.continueToPayment),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold
                         )

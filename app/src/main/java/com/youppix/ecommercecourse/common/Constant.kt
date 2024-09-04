@@ -102,7 +102,7 @@ object Constant {
 
 
     fun checkUserName(name: String, context: Context): Resource<Boolean> {
-        val regex = "^[A-Za-z]\\w{5,29}$"
+        val regex = "^[A-Za-z][A-Za-z0-9_]*([ ][A-Za-z0-9_]+)*$"
         val p: Pattern = Pattern.compile(regex)
         val trimName = name.trim()
         val m: Matcher = p.matcher(name)

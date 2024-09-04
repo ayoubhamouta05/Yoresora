@@ -86,7 +86,8 @@ data class CartScreen(private val userId: String?) : Screen {
                         navigator.push(
                             CheckoutScreen(
                                 userId = userId!!.toInt(),
-                                orderList = state.cartItems
+                                orderList = state.cartItems ,
+                                totalPrice = state.totalCost
                             )
                         )
                     } else {

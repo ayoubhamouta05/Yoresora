@@ -7,6 +7,6 @@ class UpsertAddressUseCase(
     private val addressRepository: AddressRepository
 ) {
 
-    suspend operator fun invoke (address : Address)  =
-        addressRepository.upsertAddress(address)
+    suspend operator fun invoke (address : Address ,userCustomerId : String , isArabic : Boolean)  =
+        addressRepository.upsertAddress(address , userCustomerId , isArabic)
 }

@@ -59,11 +59,11 @@ import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.starting_app.auth.components.CustomProgressIndicator
-import com.youppix.ecommercecourse.presentation.starting_app.auth.verification.VerificationEmailSignUpScreen
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.components.SocialMediaItem
-import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import com.youppix.ecommercecourse.presentation.starting_app.auth.verification.VerificationEmailSignUpScreen
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -357,7 +357,7 @@ class SignUpScreen : Screen {
                 }
 
 
-                CustomProgressIndicator(show = state.isLoading)
+                CustomCircularProgress (isLoading = state.isLoading)
 
 
             }

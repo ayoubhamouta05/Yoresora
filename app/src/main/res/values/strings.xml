@@ -162,6 +162,13 @@ or continue with social media</string>
     <string name="setMainAddress">Select as main address</string>
     <string name="selectWilaya">Select your wilaya</string>
     <string name="selectCommune">Select your commune</string>
+    <string name="enterYourAddress">Enter your address</string>
+    <string name="specificAddressEmptyErrorMsg">Please fill address field</string>
+    <string name="addressNameEmptyErrorMsg">Please fill the name</string>
+    <string name="pleaseSelectWilayaErrorMsg">Please fill wilaya field</string>
+    <string name="pleaseSelectCommuneErrorMsg">Please fill commune field</string>
+    <string name="codePostalEmptyErrorMsg">Please fill postal code field</string>
+    <string name="codePostalWrongErrorMsg">Wrong postal code</string>
 
 
 </resources>

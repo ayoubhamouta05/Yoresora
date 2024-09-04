@@ -1,4 +1,4 @@
-package com.youppix.ecommercecourse.presentation.home_app.checkout.components
+package com.youppix.ecommercecourse.presentation.home_app.address.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,6 +44,7 @@ fun ShippingAddressItem(
 
     val wilayaName = if(isArabic) address.addressWilaya?.wilayaNameAr?:"" else address.addressWilaya?.wilayaName ?:""
     val communeName =if(isArabic) address.addressCommune?.communeNameAr?:"" else address.addressCommune?.communeName ?:""
+    val specificAddress = address.addressSpecific
 
     Row(modifier = modifier.fillMaxWidth()) {
 
@@ -69,7 +70,7 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}",
+                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}, $specificAddress",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),
@@ -112,15 +113,18 @@ fun ShippingAddressItem(
     modifier: Modifier = Modifier,
     address: Address,
     isArabic : Boolean ,
+    clickable : Boolean ,
     onSelectClick: (() -> Unit)? = null,
     onUpdateClick: () -> Unit,
 ) {
     val wilayaName = if(isArabic) address.addressWilaya?.wilayaNameAr?:"" else address.addressWilaya?.wilayaName ?:""
     val communeName =if(isArabic) address.addressCommune?.communeNameAr?:"" else address.addressCommune?.communeName ?:""
+    val specificAddress = address.addressSpecific
+
     Row(modifier = modifier
         .fillMaxWidth()
         .clip(RoundedCornerShape(SmallPadding))
-        .clickable {
+        .clickable (enabled = clickable){
             onSelectClick?.let {
                 it()
             }
@@ -149,7 +153,7 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}",
+                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}, $specificAddress",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),

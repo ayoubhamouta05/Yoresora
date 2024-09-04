@@ -50,7 +50,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.presentation.starting_app.auth.components.CustomProgressIndicator
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.starting_app.auth.components.OtpInputField
 import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpState
 import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpViewModel
@@ -236,7 +236,7 @@ class VerificationEmailSignUpScreen(
                         )
                     }
                 }
-                CustomProgressIndicator(show = currentState.isLoading)
+                CustomCircularProgress(isLoading = currentState.isLoading)
             }
         }
     }

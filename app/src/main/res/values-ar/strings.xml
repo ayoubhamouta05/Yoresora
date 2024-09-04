@@ -162,4 +162,11 @@
     <string name="setMainAddress">اختر كعنوان رئيسي</string>
     <string name="selectWilaya">حدد ولايتك</string>
     <string name="selectCommune">حدد مدينتك</string>
+    <string name="enterYourAddress">أدخل عنوانك</string>
+    <string name="specificAddressEmptyErrorMsg">الرجاء ادخال العنوان</string>
+    <string name="addressNameEmptyErrorMsg">الرجاء ادخال الاسم</string>
+    <string name="pleaseSelectWilayaErrorMsg">يرجى ادخال الولاية</string>
+    <string name="pleaseSelectCommuneErrorMsg">يرجى ادخال البلدية</string>
+    <string name="codePostalEmptyErrorMsg">الرجاء ادخال الرمز البريدي</string>
+    <string name="codePostalWrongErrorMsg">الرمز البريدي خاطئ</string>
 </resources>
