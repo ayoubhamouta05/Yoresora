@@ -32,9 +32,16 @@ class ProfileRepositoryImpl(
         email: String,
         phone: String,
         oldPassword: String,
-        newPassword: String
+        newPassword: String,
+        userCustomerId : String
     ): Flow<Resource<AuthResponse>> {
-        return profileService.updatePersonalDetails(userId, name, email, phone, oldPassword, newPassword)
+        return profileService.updatePersonalDetails(userId = userId,
+            name = name,
+            email = email,
+            phone =phone,
+            oldPassword = oldPassword,
+            newPassword = newPassword,
+            userCustomerId = userCustomerId)
     }
 
     override fun checkUserName(userName: String, context: Context): Resource<Boolean> {

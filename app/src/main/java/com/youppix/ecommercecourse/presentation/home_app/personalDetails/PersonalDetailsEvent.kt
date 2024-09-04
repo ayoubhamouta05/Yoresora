@@ -15,6 +15,7 @@ sealed class PersonalDetailsEvent {
     data object ToggleEditPassword : PersonalDetailsEvent()
     data object ToggleShowDialog : PersonalDetailsEvent()
     data object ToggleShowEmailDialog : PersonalDetailsEvent()
+    data object ToggleUpdatedSuccessState : PersonalDetailsEvent()
     data class SaveUserInformation(val user: User) : PersonalDetailsEvent()
     data class UpdatePersonalDetails(
         val context : Context,
@@ -24,7 +25,8 @@ sealed class PersonalDetailsEvent {
         val email: String,
         val phone: String,
         val oldPassword: String,
-        val newPassword: String
+        val newPassword: String,
+        val userCustomerId:String
     ) : PersonalDetailsEvent()
 
     data class CheckEmailAvailability(

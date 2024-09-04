@@ -11,15 +11,17 @@ class UpdatePersonalDetailsUseCase(
 
     suspend operator fun invoke(
         userId: Int, name: String, email: String, phone: String,
-        oldPassword: String, newPassword: String
+        oldPassword: String, newPassword: String ,
+        userCustomerId : String
     ): Flow<Resource<AuthResponse>> =
         profileRepository.updatePersonalDetails(
-            userId,
-            name,
-            email,
-            phone,
-            oldPassword,
-            newPassword
+            userId = userId,
+            name =name,
+            email = email,
+            phone =phone,
+            oldPassword = oldPassword,
+            newPassword =newPassword,
+            userCustomerId = userCustomerId
         )
 
 }

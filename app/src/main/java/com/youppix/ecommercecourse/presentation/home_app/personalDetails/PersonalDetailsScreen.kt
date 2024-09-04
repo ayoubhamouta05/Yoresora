@@ -58,6 +58,7 @@ import com.youppix.ecommercecourse.common.Dimens.BottomBarHeight
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.user.User
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
@@ -112,7 +113,8 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
                         email = state.user.userEmail,
                         phone = state.user.userPhone,
                         oldPassword = state.oldPassword,
-                        newPassword = state.newPassword
+                        newPassword = state.newPassword,
+                        userCustomerId = state.user.userCustomerId?:""
                     )
                 )
                 navigator.pop()
@@ -129,12 +131,9 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
 
         LaunchedEffect(state.updateSuccess) {
             if (state.updateSuccess) {
+                viewModel.onEvent(PersonalDetailsEvent.SaveUserInformation(state.user))
+                viewModel.onEvent(PersonalDetailsEvent.ToggleUpdatedSuccessState)
                 navigator.pop()
-                Log.d("PersonalDetailsScreen", "navigator : ${navigator.items}")
-                Log.d(
-                    "PersonalDetailsScreen",
-                    "lastItem : ${navigator.lastItem.javaClass.simpleName}"
-                )
 
                 Toast.makeText(context, R.string.updateSuccess, Toast.LENGTH_SHORT).show()
             }
@@ -160,7 +159,8 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
                                 email = state.user.userEmail,
                                 phone = state.user.userPhone,
                                 oldPassword = state.oldPassword,
-                                newPassword = state.newPassword
+                                newPassword = state.newPassword,
+                                userCustomerId = state.user.userCustomerId?:""
                             )
                         )
                     }
@@ -321,6 +321,8 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
 
 
             }
+
+            CustomCircularProgress(isLoading = state.isLoading)
 
             CustomDialog(
                 title = stringResource(id = R.string.error),

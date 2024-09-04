@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PersonalDetailsViewModel @Inject constructor(
-    private val profileUseCases: ProfileUseCases
+    private val profileUseCases: ProfileUseCases,
 ) : ScreenModel {
 
     private var _state = mutableStateOf(PersonalDetailsState())
@@ -103,7 +103,6 @@ class PersonalDetailsViewModel @Inject constructor(
                     )
                 ) {
 
-
                     if (state.value.user == event.initialData && !state.value.editPassword) {
                         _state.value = state.value.copy(
                             updateSuccess = true
@@ -115,6 +114,12 @@ class PersonalDetailsViewModel @Inject constructor(
                                 updateError = event.context.getString(R.string.ifYouChangeEmailYouMustVerifyIt)
                             )
                         } else {
+
+                            Log.d(
+                                "PersonalDetailsScreen",
+                                "editPassword: ${state.value.editPassword}"
+                            )
+
                             if (state.value.editPassword) {
                                 event.apply {
                                     if (oldPassword == newPassword) {
@@ -123,7 +128,7 @@ class PersonalDetailsViewModel @Inject constructor(
                                             showDialog = true
                                         )
                                     } else {
-                                        onEvent(PersonalDetailsEvent.SaveUserInformation(state.value.user))
+//                                        onEvent(PersonalDetailsEvent.SaveUserInformation(state.value.user))
                                         screenModelScope.launch {
                                             updatePersonalDetails(
                                                 context,
@@ -132,18 +137,26 @@ class PersonalDetailsViewModel @Inject constructor(
                                                 email,
                                                 phone,
                                                 oldPassword,
-                                                newPassword
+                                                newPassword,
+                                                userCustomerId
                                             )
                                         }
                                     }
                                 }
                             } else {
                                 event.apply {
-                                    onEvent(PersonalDetailsEvent.SaveUserInformation(state.value.user))
+//                                    onEvent(PersonalDetailsEvent.SaveUserInformation(state.value.user))
                                     screenModelScope.launch {
                                         Log.d("PersonalDetailsScreen", "${state.value}")
                                         updatePersonalDetails(
-                                            context, userId, name, email, phone, "", ""
+                                            context,
+                                            userId,
+                                            name,
+                                            email,
+                                            phone,
+                                            "",
+                                            "",
+                                            userCustomerId
                                         )
                                     }
                                 }
@@ -161,6 +174,12 @@ class PersonalDetailsViewModel @Inject constructor(
                 screenModelScope.launch {
                     checkEmailAvailability(event.context, event.userId, event.email)
                 }
+            }
+
+            PersonalDetailsEvent.ToggleUpdatedSuccessState -> {
+                _state.value = state.value.copy(
+                    updateSuccess = false
+                )
             }
         }
     }
@@ -208,11 +227,18 @@ class PersonalDetailsViewModel @Inject constructor(
         email: String,
         phone: String,
         oldPassword: String,
-        newPassword: String
+        newPassword: String,
+        userCustomerId: String,
     ) {
 
         profileUseCases.updatePersonalDetails(
-            userId, name, email, phone, oldPassword, newPassword
+           userId =  userId,
+            name = name,
+            email = email,
+            phone = phone,
+            oldPassword = oldPassword,
+            newPassword = newPassword,
+            userCustomerId = userCustomerId
         ).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -224,6 +250,7 @@ class PersonalDetailsViewModel @Inject constructor(
                 is Resource.Error -> {
 
                     if (result.data != null) {
+                        Log.d("updatePersonalDetails", "error : ${result.data}")
                         _state.value = state.value.copy(
                             isLoading = false,
                             updateError = context.getString(R.string.wrongPassword),
@@ -259,6 +286,9 @@ class PersonalDetailsViewModel @Inject constructor(
             it("userName", user.userName)
             it("userEmail", user.userEmail)
             it("userPhone", user.userPhone)
+            user.userCustomerId?.let {
+                it("userCustomerId", user.userCustomerId)
+            }
         }
 
     }

@@ -20,7 +20,8 @@ interface ProfileRepository {
         email: String,
         phone: String,
         oldPassword: String,
-        newPassword: String
+        newPassword: String,
+        userCustomerId : String
     ): Flow<Resource<AuthResponse>>
 
     fun checkUserName(userName : String , context: Context) : Resource<Boolean>

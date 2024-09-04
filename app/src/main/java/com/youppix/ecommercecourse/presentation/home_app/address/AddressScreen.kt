@@ -164,6 +164,7 @@ data class AddressScreen(
                                         )
                                     )
                                 }else {
+                                    itemClickable = true
                                     if (fromCheckout) {
                                         navigator.pop()
                                     }

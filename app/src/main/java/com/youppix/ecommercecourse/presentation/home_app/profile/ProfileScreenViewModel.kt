@@ -138,6 +138,7 @@ class ProfileScreenViewModel @Inject constructor(
         val userEmail = profileUseCases.getUserData("userEmail", "")
         val userPhone = profileUseCases.getUserData("userPhone", "")
         val userImage = profileUseCases.getUserData("userImage", "")
+        val userCustomerId = profileUseCases.getUserData("userCustomerId", "")
 
         _state.value = state.value.copy(
             user = state.value.user.copy(
@@ -145,7 +146,8 @@ class ProfileScreenViewModel @Inject constructor(
                 userName = userName.ifEmpty { state.value.user.userName },
                 userEmail = userEmail.ifEmpty { state.value.user.userEmail },
                 userPhone = userPhone.ifEmpty { state.value.user.userPhone },
-                userImage = userImage.ifEmpty { state.value.user.userName }
+                userImage = userImage.ifEmpty { state.value.user.userName },
+                userCustomerId = userCustomerId.ifEmpty { state.value.user.userCustomerId }
             )
         )
     }

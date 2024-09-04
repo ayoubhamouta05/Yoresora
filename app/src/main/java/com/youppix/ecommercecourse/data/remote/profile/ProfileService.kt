@@ -13,8 +13,6 @@ import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.profile.dto.AddressResponse
 import com.youppix.ecommercecourse.data.remote.profile.dto.CommuneResponse
 import com.youppix.ecommercecourse.domain.model.address.Address
-import com.youppix.ecommercecourse.domain.model.address.Commune
-import com.youppix.ecommercecourse.domain.model.address.Wilaya
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -28,7 +26,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import java.io.File
@@ -75,7 +72,9 @@ class ProfileService(private val client: HttpClient) {
 
 
     suspend fun updatePersonalDetails(
-        userId: Int, name: String, email: String, phone: String,
+        userId: Int,
+        userCustomerId: String,
+        name: String, email: String, phone: String,
         oldPassword: String, newPassword: String,
     ): Flow<Resource<AuthResponse>> = flow {
         try {
@@ -89,10 +88,18 @@ class ProfileService(private val client: HttpClient) {
                 val phone: String,
                 val oldPassword: String,
                 val newPassword: String,
+                val userCustomerId : String
             )
 
             val response = client.post(UPDATE_PERSONAL_DETAILS_URL) {
-                setBody(Body(userId, name, email, phone, oldPassword, newPassword))
+                setBody(Body(
+                    userId = userId,
+                    name =name,
+                    email = email,
+                    phone = phone,
+                    oldPassword =oldPassword,
+                    newPassword=newPassword ,
+                    userCustomerId = userCustomerId))
             }
             val responseBody = response.body<AuthResponse>()
             if (responseBody.status == "success") {
