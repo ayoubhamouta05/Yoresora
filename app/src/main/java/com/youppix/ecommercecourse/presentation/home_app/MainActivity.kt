@@ -43,6 +43,7 @@ import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
 import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
+import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -164,7 +165,8 @@ class MainActivity : ComponentActivity() {
                                         navigator.lastItem.javaClass.name != CustomSizeScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CartScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != AddressScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != AddressScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != PaymentScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

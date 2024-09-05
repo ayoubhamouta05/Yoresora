@@ -38,10 +38,6 @@ class StartActivityViewModel @Inject constructor(
         _appEntry.value = appEntryUseCases.getAppEntryUseCase(APP_ENTRY, _appEntry.value)
     }
 
-    fun readAppEntry(key : String, value : String) : String{
-        return appEntryUseCases.getAppEntryUseCase(key, value)
-    }
-
     private fun handleNetworkConnectivity() {
         // todo : handle this error here
         networkConnectivityManagerUseCase().onEach {

@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,7 +35,7 @@ import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(title: String, isArabic: Boolean, onBackClicked: () -> Unit) {
+fun CustomTopAppBar(title: String, isArabic: Boolean ,onBackClicked: () -> Unit) {
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -121,5 +122,40 @@ fun CustomTopAppBar(
             }
 
         }
+    )
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTopAppBar(title: String,actions : @Composable RowScope.() -> Unit ,isArabic: Boolean ,onBackClicked: () -> Unit) {
+
+    CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        title = {
+            Text(
+                text = title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall
+            )
+        },
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = Dimens.SmallPadding)
+            .padding(top = Dimens.SmallPadding),
+        navigationIcon = {
+            CustomIcon(
+                modifier = Modifier.rotate(
+                    if (isArabic) 180f else 0f
+                ),
+                imageVector = Icons.Default.ArrowBack
+            ) {
+                onBackClicked()
+            }
+        },
+        actions = actions
     )
 }

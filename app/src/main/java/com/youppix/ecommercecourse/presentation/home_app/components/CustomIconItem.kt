@@ -141,3 +141,39 @@ fun CustomIcon(
     }
 
 }
+
+
+@Stable
+@Composable
+fun CustomIcon(
+    modifier: Modifier = Modifier,
+    backgroundColor : Color= MaterialTheme.colorScheme.background,
+    iconColor : Color= MaterialTheme.colorScheme.onBackground,
+    imagePainter: Painter,
+    onCLick: () -> Unit
+) {
+
+    Card(modifier = modifier ,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        shape = CircleShape) {
+        Image(painter = imagePainter, contentDescription = null,
+            Modifier
+                .size(SocialMediaItemSize)
+                .clip(CircleShape)
+                .clickable {
+                    onCLick()
+                }
+                .background(
+                    backgroundColor,
+                    shape = CircleShape
+                )
+                .padding(
+                    SmallPadding
+                ),
+            colorFilter = ColorFilter.tint(color = iconColor)
+        )
+    }
+
+}

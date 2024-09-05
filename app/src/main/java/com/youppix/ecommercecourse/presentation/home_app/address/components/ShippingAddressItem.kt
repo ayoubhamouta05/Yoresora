@@ -70,7 +70,7 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}, $specificAddress",
+                text = "${wilayaName}, ${communeName}, $specificAddress, ${address.addressCodePostal}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),
@@ -153,7 +153,7 @@ fun ShippingAddressItem(
                 )
             )
             Text(
-                text = "${wilayaName}, ${communeName}, ${address.addressCodePostal}, $specificAddress",
+                text = "${wilayaName}, ${communeName}, $specificAddress, ${address.addressCodePostal}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = colorResource(id = R.color.body)
                 ),

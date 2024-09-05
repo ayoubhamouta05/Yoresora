@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.checkout
 
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,7 @@ import com.youppix.ecommercecourse.presentation.home_app.checkout.components.Ord
 import com.youppix.ecommercecourse.presentation.home_app.address.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
+import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
 import java.util.Locale
 
 data class CheckoutScreen(
@@ -69,10 +72,15 @@ data class CheckoutScreen(
                     })
             },
             bottomBar = {
+                val context = LocalContext.current
                 BottomSection(
                     state = state
                 ){
-//                    navigator.push()
+                    if (state.address != null) {
+                        navigator.push(PaymentScreen())
+                    }else{
+                        Toast.makeText(context, context.getString(R.string.emptyAddressMessage).substringBefore(","), Toast.LENGTH_SHORT).show()
+                    }
                 }
 
             }

@@ -169,6 +169,9 @@ or continue with social media</string>
     <string name="pleaseSelectCommuneErrorMsg">Please fill commune field</string>
     <string name="codePostalEmptyErrorMsg">Please fill postal code field</string>
     <string name="codePostalWrongErrorMsg">Wrong postal code</string>
+    <string name="available" translatable="false">متاح</string>
+    <string name="unavailable" translatable="false">غير متاح</string>
+    <string name="lost" translatable="false">مفقود</string>
 
 
 </resources>
