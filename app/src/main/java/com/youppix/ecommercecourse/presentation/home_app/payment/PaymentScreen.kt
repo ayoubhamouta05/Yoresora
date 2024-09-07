@@ -3,45 +3,33 @@ package com.youppix.ecommercecourse.presentation.home_app.payment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.ViewGroup
+import android.webkit.CookieManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.SnackbarVisuals
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidView
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
@@ -50,20 +38,22 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant
 import com.youppix.ecommercecourse.common.Dimens.LargePadding
-import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
+import com.youppix.ecommercecourse.common.Urls.FAILURE_URL
+import com.youppix.ecommercecourse.common.Urls.SUCCESS_URL
 import com.youppix.ecommercecourse.domain.manager.NetworkConnectivityManager
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.MainActivity
+import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-data class PaymentScreen(var url: String = "https://www.google.com") : Screen {
+data class PaymentScreen(
+    var userId: Int,
+    var url: String = ""
+) : Screen {
     @SuppressLint("SetJavaScriptEnabled")
     @Composable
     override fun Content() {
@@ -82,15 +72,19 @@ data class PaymentScreen(var url: String = "https://www.google.com") : Screen {
         LaunchedEffect(Unit) {
             setLanguage(context)
             webView.settings.javaScriptEnabled = true
+            webView.settings.domStorageEnabled = true
+            webView.settings.setSupportMultipleWindows(true)
+            webView.settings.javaScriptCanOpenWindowsAutomatically = true
+            CookieManager.getInstance().setAcceptCookie(true)
         }
 
-        var firstTimeShown by remember { mutableStateOf(false) }
+        var firstTimeShown by remember { mutableIntStateOf(0) }
 
         LaunchedEffect(state.networkState) {
             scope.launch {
-                if (state.networkState == NetworkConnectivityManager.Status.Available && !firstTimeShown) {
+                if (state.networkState == NetworkConnectivityManager.Status.Available && firstTimeShown < 2) {
                     snackbarHostState.currentSnackbarData?.dismiss()
-                    firstTimeShown = true
+                    firstTimeShown += 1
                 } else {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(
@@ -110,13 +104,23 @@ data class PaymentScreen(var url: String = "https://www.google.com") : Screen {
             }
         }
 
-        onBackButtonPressed(context, webView)
-        {
+        LaunchedEffect(currentUrl) {
+            if (currentUrl.contains(FAILURE_URL)) {
+                if (!navigator.popUntil { screen -> screen == CartScreen(userId = userId.toString()) }) {
+                    navigator.popUntilRoot()
+                }
+            }
+            if (currentUrl.contains(SUCCESS_URL)) {
+                navigator.push(PaymentSuccessScreen(userId = userId))
+            }
+        }
+
+        onBackButtonPressed(context, webView) {
             if (webView.canGoBack()) {
                 webView.goBack()
             } else {
                 if (navigator.canPop) {
-                    navigator.pop()
+                    navigator.popUntilRoot()
                 } else {
                     navigator.replace(HomeScreen())
                 }
@@ -142,7 +146,7 @@ data class PaymentScreen(var url: String = "https://www.google.com") : Screen {
                             webView.goBack()
                         } else {
                             if (navigator.canPop) {
-                                navigator.pop()
+                                navigator.popUntilRoot()
                             } else {
                                 navigator.replace(HomeScreen())
                             }
@@ -162,7 +166,7 @@ data class PaymentScreen(var url: String = "https://www.google.com") : Screen {
                         else MaterialTheme.colorScheme.error,
                         actionColor = MaterialTheme.colorScheme.background,
                         actionContentColor = MaterialTheme.colorScheme.background,
-                        contentColor = if(state.networkState == NetworkConnectivityManager.Status.Available)MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background,
+                        contentColor = if (state.networkState == NetworkConnectivityManager.Status.Available) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(
                             topStart = LargePadding,
                             bottomEnd = LargePadding,

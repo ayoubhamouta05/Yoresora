@@ -61,6 +61,7 @@ import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
 import com.youppix.ecommercecourse.domain.useCases.cart.GetCartItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.UpdateQuantityUseCase
 import com.youppix.ecommercecourse.domain.useCases.checkout.CheckoutUseCases
+import com.youppix.ecommercecourse.domain.useCases.checkout.CreateCheckoutUrlUseCase
 import com.youppix.ecommercecourse.domain.useCases.checkout.GetAddressUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteCartItemUseCase
 import com.youppix.ecommercecourse.domain.useCases.details.AddOrDeleteFromFavoriteUseCase
@@ -391,7 +392,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCheckoutUseCases(checkoutRepository: CheckoutRepository): CheckoutUseCases =
-        CheckoutUseCases(getAddress = GetAddressUseCase(checkoutRepository))
+        CheckoutUseCases(getAddress = GetAddressUseCase(checkoutRepository) ,
+            createCheckoutUrl = CreateCheckoutUrlUseCase(checkoutRepository)
+        )
 
     // Address
     @Provides

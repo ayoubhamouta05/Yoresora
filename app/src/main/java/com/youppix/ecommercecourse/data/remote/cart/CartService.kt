@@ -6,6 +6,7 @@ import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CartResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CheckoutResponse
+import com.youppix.ecommercecourse.data.remote.cart.dto.CreateCheckoutUrlResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -117,6 +118,53 @@ class CartService(private val client: HttpClient) {
                 )
             }
             val responseBody = response.body<CheckoutResponse>()
+
+            emit(Resource.Successful(responseBody))
+            Log.d("SignUpService", response.body())
+        } catch (e: ClientRequestException) {
+            emit(Resource.Error("Client request error"))
+            Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+        } catch (e: ServerResponseException) {
+            emit(Resource.Error("Server response error"))
+            Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+        } catch (e: IOException) {
+            emit(Resource.Error("Couldn't reach server"))
+            Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+        } catch (e: SerializationException) {
+            emit(Resource.Error("Serialization error"))
+            Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+        }
+    }
+
+    suspend fun createCheckout(
+        local : String ,
+        description : String ,
+        amount :Float ,
+        customerId : String,
+        userId: Int
+    ): Flow<Resource<CreateCheckoutUrlResponse>> = flow {
+        try {
+            emit(Resource.Loading())
+            @Serializable
+            data class Body(
+                val local : String ,
+                val description : String ,
+                val amount :Float ,
+                val customerId : String,
+                val userId: Int,
+            )
+            val response = client.post(Urls.CREATE_CHECKOUT_URL) {
+                setBody(
+                    Body(
+                        local = local ,
+                        description  = description,
+                        amount = amount,
+                        customerId = customerId,
+                        userId = userId
+                    )
+                )
+            }
+            val responseBody = response.body<CreateCheckoutUrlResponse>()
 
             emit(Resource.Successful(responseBody))
             Log.d("SignUpService", response.body())

@@ -172,6 +172,8 @@ or continue with social media</string>
     <string name="available" translatable="false">متاح</string>
     <string name="unavailable" translatable="false">غير متاح</string>
     <string name="lost" translatable="false">مفقود</string>
+    <string name="thankYouForYourConfidence">Thank you for your confidence</string>
+    <string name="discoverMoreProducts">Discover More Products</string>
 
 
 </resources>

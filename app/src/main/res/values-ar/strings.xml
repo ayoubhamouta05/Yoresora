@@ -169,4 +169,6 @@
     <string name="pleaseSelectCommuneErrorMsg">يرجى ادخال البلدية</string>
     <string name="codePostalEmptyErrorMsg">الرجاء ادخال الرمز البريدي</string>
     <string name="codePostalWrongErrorMsg">الرمز البريدي خاطئ</string>
+    <string name="thankYouForYourConfidence">نشكركم على ثقتكم</string>
+    <string name="discoverMoreProducts">اكتشف المزيد من المنتجات</string>
 </resources>

@@ -26,17 +26,17 @@ import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.youppix.ecommercecourse.R
-import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
+import com.youppix.ecommercecourse.presentation.home_app.address.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.BottomSection
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.DeliveryMethodItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.OrderListItem
-import com.youppix.ecommercecourse.presentation.home_app.address.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
@@ -44,7 +44,7 @@ import java.util.Locale
 
 data class CheckoutScreen(
     val userId: Int,
-    val totalPrice : Float = 0f,
+    val totalPrice: Float = 0f,
     val orderList: List<CartData> = emptyList(),
 ) : Screen {
     @Composable
@@ -53,10 +53,27 @@ data class CheckoutScreen(
         val viewModel: CheckoutViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
         val isArabic = Locale.getDefault().language == "ar"
+        val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             viewModel.onEvent(CheckoutEvent.SetSubTotal(value = totalPrice))
             viewModel.onEvent(CheckoutEvent.GetAddress(userId = userId))
+            val customerId =
+                context.getSharedPreferences(APP_ENTRY, 0).getString("userCustomerId", "") ?: ""
+            viewModel.onEvent(CheckoutEvent.UpdateCustomerId(customerId = customerId))
+        }
+
+        LaunchedEffect(state.checkoutUrl) {
+            state.checkoutUrl?.let {
+                navigator.push(PaymentScreen(userId = userId, url = it))
+                viewModel.onEvent(CheckoutEvent.ResetCheckoutUrl)
+            }
+        }
+
+        LaunchedEffect(state.error) {
+            if (!state.error.isNullOrEmpty() && !state.isLoading) {
+                Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+            }
         }
 
         Scaffold(
@@ -72,14 +89,27 @@ data class CheckoutScreen(
                     })
             },
             bottomBar = {
-                val context = LocalContext.current
+
                 BottomSection(
                     state = state
-                ){
+                ) {
                     if (state.address != null) {
-                        navigator.push(PaymentScreen())
-                    }else{
-                        Toast.makeText(context, context.getString(R.string.emptyAddressMessage).substringBefore(","), Toast.LENGTH_SHORT).show()
+                        viewModel.onEvent(
+                            CheckoutEvent.CreateCheckoutUrl(
+                                local = Locale.getDefault().language,
+                                description = "",
+                                amount = state.totalPrice,
+                                customerId = state.customerId!!,
+                                userId = userId
+                            )
+                        )
+
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.emptyAddressMessage).substringBefore(","),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -103,14 +133,14 @@ data class CheckoutScreen(
 
                 item {
                     if (state.address == null) {
-                        Box(modifier = Modifier.padding(SmallPadding)){
+                        Box(modifier = Modifier.padding(SmallPadding)) {
                             EmptyScreen(emptyMessage = stringResource(id = R.string.emptyAddressMessage)) {
                                 navigator.push(AddressScreen(userId, fromCheckout = true))
                             }
                         }
                     } else {
                         ShippingAddressItem(
-                            address= state.address!!,
+                            address = state.address!!,
                             modifier = Modifier.padding(vertical = SmallPadding),
                             isArabic = isArabic
                         ) {

@@ -40,7 +40,9 @@ object Urls {
     const val ALL_CART_ITEMS_URL = "$BASE_URL/cart/getCartItems.php"
     const val UPDATE_QUANTITY_URL = "$BASE_URL/cart/updateQuantity.php"
     const val GET_ADDRESS_URL = "$BASE_URL/address/getAddress.php"
-    const val GET_DELIYVERY_PRICE = "$BASE_URL/cart/getDeliveryPrice.php"
+    const val CREATE_CHECKOUT_URL = "$BASE_URL/checkout/createCheckout.php"
+    const val FAILURE_URL = "/ecommerce_course/webhook/failure.php"
+    const val SUCCESS_URL = "/ecommerce_course/webhook/success.php"
 
     /** Address urls */
     const val GET_ALL_ADDRESS_URL = "$BASE_URL/address/getAllAddress.php"

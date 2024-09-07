@@ -24,7 +24,7 @@ class CheckoutViewModel @Inject constructor(
             is CheckoutEvent.UpdateDeliveryMethod -> {
                 _state.value = state.value.copy(
                     isHomeDelivery = event.value,
-                    totalPrice =( if (event.value)
+                    totalPrice = (if (event.value)
                         state.value.homeDeliveryFee
                     else state.value.pickupDeliveryFee) + state.value.subTotal
                 )
@@ -41,6 +41,30 @@ class CheckoutViewModel @Inject constructor(
                     subTotal = event.value
                 )
             }
+
+            is CheckoutEvent.CreateCheckoutUrl -> {
+                screenModelScope.launch {
+                    createCheckoutUrl(
+                        local = event.local ,
+                        description = event.description ,
+                        amount = event.amount ,
+                        customerId = event.customerId ,
+                        userId = event.userId
+                    )
+                }
+            }
+
+            is CheckoutEvent.UpdateCustomerId -> {
+                _state.value = state.value.copy(
+                    customerId = event.customerId
+                )
+            }
+
+            CheckoutEvent.ResetCheckoutUrl -> {
+                _state.value = state.value.copy(
+                    checkoutUrl = null
+                )
+            }
         }
     }
 
@@ -55,15 +79,14 @@ class CheckoutViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _state.value = state.value.copy(
-                        isLoading = false ,
-                        error = result.data?.message ?: result.message
-                        ?: "An Unexpected Error Occurred"
+                        isLoading = false
                     )
                 }
 
                 is Resource.Successful -> {
                     _state.value = state.value.copy(
                         isLoading = false,
+                        error = null,
                         address = result.data?.data,
                         homeDeliveryFee = result.data?.deliveryHomePrice ?: 0f,
                         pickupDeliveryFee = result.data?.deliveryPickupPointPrice ?: 0f,
@@ -75,6 +98,46 @@ class CheckoutViewModel @Inject constructor(
                 }
             }
 
+        }.launchIn(screenModelScope)
+    }
+
+
+    suspend fun createCheckoutUrl(
+        local: String,
+        description: String,
+        amount: Float,
+        customerId: String,
+        userId: Int
+    ) {
+        checkoutUseCases.createCheckoutUrl(
+            local = local,
+            description = description,
+            amount = amount,
+            customerId = customerId ,
+            userId = userId
+        ).onEach {result ->
+            when (result ){
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+
+                }
+                is Resource.Error ->{
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = result.data?.message ?: result.message ?: "An unexpected error occurred",
+                        checkoutUrl = null
+                    )
+                }
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false ,
+                        error = null ,
+                        checkoutUrl = result.data?.data
+                    )
+                }
+            }
         }.launchIn(screenModelScope)
     }
 

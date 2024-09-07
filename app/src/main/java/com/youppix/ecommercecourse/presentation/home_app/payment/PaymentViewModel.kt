@@ -48,22 +48,11 @@ class PaymentViewModel @Inject constructor(
     }
 
     private fun handleNetworkConnectivity() {
-        // todo : handle this error here
         networkConnectivityManagerUseCase().onEach {
             _state.value = state.value.copy(
                 networkState = it
             )
-//            _status.value = it
-//            if (firstTime && status.value == NetworkConnectivityManager.Status.Available) {
-//                firstTime = false
-//            } else {
-//                _showNetworkStatus.value = true
-//            }
         }.launchIn(screenModelScope)
-
-//        if (status.value == NetworkConnectivityManager.Status.Unavailable) {
-//            _showNetworkStatus.value = true
-//        }
     }
 
 }

@@ -5,6 +5,5 @@ import com.youppix.ecommercecourse.domain.manager.NetworkConnectivityManager
 data class PaymentState(
     val isLoading : Boolean = false,
     val showSnackBar : Boolean = false ,
-    val currentUrl : String = "",
     val networkState : NetworkConnectivityManager.Status? = null
 )
