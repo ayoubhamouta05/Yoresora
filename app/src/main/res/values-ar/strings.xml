@@ -171,4 +171,8 @@
     <string name="codePostalWrongErrorMsg">الرمز البريدي خاطئ</string>
     <string name="thankYouForYourConfidence">نشكركم على ثقتكم</string>
     <string name="discoverMoreProducts">اكتشف المزيد من المنتجات</string>
+    <string name="completed">مكتملة</string>
+    <string name="pending">جارية</string>
+    <string name="unfinished">غير مكتملة</string>
+    <string name="contactUs">تواصل معنا</string>
 </resources>

@@ -7,6 +7,8 @@ import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CartResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CheckoutResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CreateCheckoutUrlResponse
+import com.youppix.ecommercecourse.domain.model.cart.CartData
+import com.youppix.ecommercecourse.domain.model.items.Item
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -141,7 +143,8 @@ class CartService(private val client: HttpClient) {
         description : String ,
         amount :Float ,
         customerId : String,
-        userId: Int
+        userId: Int,
+        carts : List<CartData>
     ): Flow<Resource<CreateCheckoutUrlResponse>> = flow {
         try {
             emit(Resource.Loading())
@@ -152,6 +155,7 @@ class CartService(private val client: HttpClient) {
                 val amount :Float ,
                 val customerId : String,
                 val userId: Int,
+                val carts : List<CartData>
             )
             val response = client.post(Urls.CREATE_CHECKOUT_URL) {
                 setBody(
@@ -160,7 +164,8 @@ class CartService(private val client: HttpClient) {
                         description  = description,
                         amount = amount,
                         customerId = customerId,
-                        userId = userId
+                        userId = userId,
+                        carts = carts
                     )
                 )
             }

@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.domain.useCases.checkout
 
+import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.repository.checkout.CheckoutRepository
 
 class CreateCheckoutUrlUseCase(
@@ -11,14 +12,16 @@ class CreateCheckoutUrlUseCase(
         description: String,
         amount: Float,
         customerId: String,
-        userId: Int
+        userId: Int,
+        carts: List<CartData>,
     ) =
         checkoutRepository.createCheckout(
             local = local,
             description = description,
             amount = amount,
             customerId = customerId,
-            userId = userId
+            userId = userId,
+            carts = carts
         )
 
 }

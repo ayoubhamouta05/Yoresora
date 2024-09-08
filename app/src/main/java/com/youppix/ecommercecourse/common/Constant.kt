@@ -4,12 +4,16 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.Patterns
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.automirrored.filled.Message
+import androidx.compose.material.icons.automirrored.outlined.EventNote
 import androidx.compose.material.icons.automirrored.outlined.Message
+import androidx.compose.material.icons.filled.EventNote
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingBag
+import androidx.compose.material.icons.outlined.EventNote
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -68,9 +72,9 @@ object Constant {
             screen = 2
         ),
         BottomBar(
-            title = "Chat",
-            selectedIcon = Icons.AutoMirrored.Filled.Message,
-            unselectedIcon = Icons.AutoMirrored.Outlined.Message,
+            title = "Orders",
+            selectedIcon = Icons.AutoMirrored.Filled.EventNote,
+            unselectedIcon = Icons.AutoMirrored.Outlined.EventNote,
             screen = 3
         ),
         BottomBar(

@@ -30,6 +30,7 @@ import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.CartData
+import com.youppix.ecommercecourse.domain.model.cart.toItem
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
@@ -100,7 +101,8 @@ data class CheckoutScreen(
                                 description = "",
                                 amount = state.totalPrice,
                                 customerId = state.customerId!!,
-                                userId = userId
+                                userId = userId,
+                                carts = orderList
                             )
                         )
 

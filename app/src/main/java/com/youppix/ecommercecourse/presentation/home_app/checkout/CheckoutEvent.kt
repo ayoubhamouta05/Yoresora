@@ -1,5 +1,8 @@
 package com.youppix.ecommercecourse.presentation.home_app.checkout
 
+import com.youppix.ecommercecourse.domain.model.cart.CartData
+import com.youppix.ecommercecourse.domain.model.items.Item
+
 sealed class CheckoutEvent {
 
     data class UpdateDeliveryMethod(val value: Boolean) : CheckoutEvent()
@@ -14,5 +17,6 @@ sealed class CheckoutEvent {
         val amount: Float,
         val customerId: String,
         val userId: Int,
+        val carts : List<CartData>
     ) : CheckoutEvent()
 }

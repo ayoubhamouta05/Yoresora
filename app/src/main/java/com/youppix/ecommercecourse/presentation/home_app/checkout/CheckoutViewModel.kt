@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.cart.CartData
+import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.domain.useCases.checkout.CheckoutUseCases
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -49,7 +51,8 @@ class CheckoutViewModel @Inject constructor(
                         description = event.description ,
                         amount = event.amount ,
                         customerId = event.customerId ,
-                        userId = event.userId
+                        userId = event.userId,
+                        carts = event.carts
                     )
                 }
             }
@@ -102,19 +105,21 @@ class CheckoutViewModel @Inject constructor(
     }
 
 
-    suspend fun createCheckoutUrl(
+    private suspend fun createCheckoutUrl(
         local: String,
         description: String,
         amount: Float,
         customerId: String,
-        userId: Int
+        userId: Int,
+        carts : List<CartData>
     ) {
         checkoutUseCases.createCheckoutUrl(
             local = local,
             description = description,
             amount = amount,
             customerId = customerId ,
-            userId = userId
+            userId = userId,
+            carts = carts
         ).onEach {result ->
             when (result ){
                 is Resource.Loading -> {

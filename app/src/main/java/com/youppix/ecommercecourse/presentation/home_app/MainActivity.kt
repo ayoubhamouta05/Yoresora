@@ -33,7 +33,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
-import com.youppix.ecommercecourse.presentation.home_app.chat.ChatScreen
+import com.youppix.ecommercecourse.presentation.home_app.orders.OrdersScreen
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
 import com.youppix.ecommercecourse.presentation.home_app.components.shadow
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                                 HomeScreen::class.java.simpleName -> setCurrentScreen(0)
                                 CartScreen::class.java.simpleName -> setCurrentScreen(1)
                                 FavoritesScreen::class.java.simpleName -> setCurrentScreen(2)
-                                ChatScreen::class.java.simpleName -> setCurrentScreen(3)
+                                OrdersScreen::class.java.simpleName -> setCurrentScreen(3)
                                 ProfileScreen::class.java.simpleName -> setCurrentScreen(4)
                             }
                         }
@@ -139,9 +139,9 @@ class MainActivity : ComponentActivity() {
                                     }
 
                                     3 -> {
-                                        if (navigator?.lastItem?.javaClass?.name != ChatScreen::class.java.name)
-                                        if(navigator?.popUntil { screen -> screen ==  ChatScreen() } == false)
-                                            navigator?.replace(ChatScreen())
+                                        if (navigator?.lastItem?.javaClass?.name != OrdersScreen::class.java.name)
+                                        if(navigator?.popUntil { screen -> screen ==  OrdersScreen() } == false)
+                                            navigator?.replace(OrdersScreen())
                                     }
 
                                     4 -> {

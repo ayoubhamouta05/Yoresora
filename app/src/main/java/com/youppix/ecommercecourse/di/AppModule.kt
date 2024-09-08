@@ -9,6 +9,7 @@ import com.youppix.ecommercecourse.data.remote.cart.CartService
 import com.youppix.ecommercecourse.data.remote.details.DetailsService
 import com.youppix.ecommercecourse.data.remote.favorites.FavoritesService
 import com.youppix.ecommercecourse.data.remote.home.HomeService
+import com.youppix.ecommercecourse.data.remote.orders.OrdersService
 import com.youppix.ecommercecourse.data.remote.profile.ProfileService
 import com.youppix.ecommercecourse.data.repository.address.AddressRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.cart.CartRepositoryImpl
@@ -18,6 +19,7 @@ import com.youppix.ecommercecourse.data.repository.favorites.FavoritesRepository
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.home.HomeRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
+import com.youppix.ecommercecourse.data.repository.orders.OrdersRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.profile.ProfileRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.search.SearchRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.signUp.SignUpRepositoryImpl
@@ -32,6 +34,7 @@ import com.youppix.ecommercecourse.domain.repository.favorites.FavoritesReposito
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.home.HomeRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
+import com.youppix.ecommercecourse.domain.repository.orders.OrdersRepository
 import com.youppix.ecommercecourse.domain.repository.profile.ProfileRepository
 import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
 import com.youppix.ecommercecourse.domain.repository.signUp.SignUpRepository
@@ -76,6 +79,8 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.orders.GetAllOrdersUseCase
+import com.youppix.ecommercecourse.domain.useCases.orders.OrdersUseCases
 import com.youppix.ecommercecourse.domain.useCases.profile.CheckEmailAvailabilityUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.GetUserDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
@@ -411,5 +416,21 @@ object AppModule {
             deleteAddress = DeleteAddressUseCase(addressRepository) ,
             getCommune = GetCommuneUseCase(addressRepository)
         )
+
+
+    //Orders
+    @Provides
+    @Singleton
+    fun provideOrdersService (client: HttpClient) = OrdersService(client)
+
+    @Provides
+    @Singleton
+    fun provideOrdersRepository(service: OrdersService) : OrdersRepository =
+        OrdersRepositoryImpl(service)
+
+    @Provides
+    @Singleton
+    fun provideOrdersUseCases(ordersRepository : OrdersRepository) : OrdersUseCases =
+        OrdersUseCases(getAllOrders = GetAllOrdersUseCase(ordersRepository))
 
 }

@@ -15,7 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Message
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,7 +50,6 @@ import com.youppix.ecommercecourse.presentation.home_app.personalDetails.Persona
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ChangeLangSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ImageSection
 import com.youppix.ecommercecourse.presentation.home_app.profile.components.ProfileItem
-import com.youppix.ecommercecourse.presentation.home_app.settings.SettingScreen
 import com.youppix.ecommercecourse.presentation.starting_app.StartActivity
 import java.util.Locale
 
@@ -154,25 +156,7 @@ class ProfileScreen : Screen {
                         )
                     }
                 }
-                item {
-                    Column(
-                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
-                    ) {
-                        ProfileItem(
-                            modifier = Modifier.padding(vertical = ExtraSmallPadding2),
-                            isArabic = isArabic,
-                            painter = painterResource(id = R.drawable.ic_orders),
-                            title = stringResource(id = R.string.myOrders)
-                        ) {}
-                        Spacer(
-                            modifier = Modifier
-                                .height(0.5.dp)
-                                .fillMaxWidth()
-                                .padding(horizontal = SmallPadding)
-                                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
-                        )
-                    }
-                }
+
                 item {
                     Column(
                         Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
@@ -194,15 +178,7 @@ class ProfileScreen : Screen {
                         )
                     }
                 }
-                item {
-                    ChangeLangSection(
-                        isArabic = isArabic,
-                        dropLanguageMenu = dropLanguageMenu,
-                        onDismissRequest = { dropLanguageMenu = false },
-                        onCLick = { dropLanguageMenu = !dropLanguageMenu },
-                        event = viewModel::onEvent
-                    )
-                }
+
                 item {
                     Column(
                         Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
@@ -222,10 +198,42 @@ class ProfileScreen : Screen {
                         )
                     }
                 }
+
+                item {
+                    ChangeLangSection(
+                        isArabic = isArabic,
+                        dropLanguageMenu = dropLanguageMenu,
+                        onDismissRequest = { dropLanguageMenu = false },
+                        onCLick = { dropLanguageMenu = !dropLanguageMenu },
+                        event = viewModel::onEvent
+                    )
+                }
+
+                item {
+                    Column(
+                        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center
+                    ) {
+                        ProfileItem(
+                            modifier = Modifier.padding(vertical = ExtraSmallPadding2),
+                            isArabic = isArabic,
+                            imageVector = Icons.AutoMirrored.Outlined.Message,
+                            title = stringResource(id = R.string.contactUs)
+                        ) {}
+                        Spacer(
+                            modifier = Modifier
+                                .height(0.5.dp)
+                                .fillMaxWidth()
+                                .padding(horizontal = SmallPadding)
+                                .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                        )
+                    }
+                }
+
                 item {
                     ProfileItem(
-                        modifier = Modifier.padding(vertical = ExtraSmallPadding2)
-                            .padding(bottom = BottomBarHeight.plus(MediumPadding *2)),
+                        modifier = Modifier
+                            .padding(vertical = ExtraSmallPadding2)
+                            .padding(bottom = BottomBarHeight.plus(MediumPadding * 2)),
                         isArabic = isArabic,
                         painter = painterResource(id = R.drawable.ic_logout),
                         title = stringResource(id = R.string.logout)

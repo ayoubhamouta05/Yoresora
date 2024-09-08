@@ -335,7 +335,7 @@ fun AddressBottomSheet(
                     )
                 }
 
-                if (state.items[state.defaultAddressIndex] != state.selectedAddress.copy(userId = userId)) {
+                if ( state.items.isEmpty() ||state.items[state.defaultAddressIndex] != state.selectedAddress.copy(userId = userId)) {
                     item {
                         Row(
                             Modifier
