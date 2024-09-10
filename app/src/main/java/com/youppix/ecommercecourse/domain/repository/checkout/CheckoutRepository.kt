@@ -15,6 +15,7 @@ interface CheckoutRepository {
         amount: Float,
         customerId: String,
         userId: Int,
-        carts : List<CartData>
+        carts : List<CartData>,
+        deliveryMethod : Int
     ): Flow<Resource<CreateCheckoutUrlResponse>>
 }

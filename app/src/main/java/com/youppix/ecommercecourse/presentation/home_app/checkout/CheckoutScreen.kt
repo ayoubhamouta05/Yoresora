@@ -30,14 +30,13 @@ import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.cart.CartData
-import com.youppix.ecommercecourse.domain.model.cart.toItem
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
 import com.youppix.ecommercecourse.presentation.home_app.address.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.BottomSection
 import com.youppix.ecommercecourse.presentation.home_app.checkout.components.DeliveryMethodItem
-import com.youppix.ecommercecourse.presentation.home_app.checkout.components.OrderListItem
+import com.youppix.ecommercecourse.presentation.home_app.checkout.components.CartItemOfOrder
 import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
@@ -102,7 +101,8 @@ data class CheckoutScreen(
                                 amount = state.totalPrice,
                                 customerId = state.customerId!!,
                                 userId = userId,
-                                carts = orderList
+                                carts = orderList,
+                                deliveryMethod = if (state.isHomeDelivery)  1 else 2
                             )
                         )
 
@@ -204,7 +204,7 @@ data class CheckoutScreen(
                 }
 
                 items(orderList.size, key = { it }) { index ->
-                    OrderListItem(
+                    CartItemOfOrder(
                         modifier = Modifier.padding(vertical = SmallPadding),
                         cartItem = orderList[index],
                         isArabic = isArabic

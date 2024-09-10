@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,18 +17,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
+import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 
 @Stable
 @Composable
@@ -38,7 +42,7 @@ fun EmptyScreen( error: String? = null ,emptyMessage: String="" , onClick: (() -
     }
 
     var icon by remember {
-        mutableStateOf(R.drawable.ic_network_error)
+        mutableIntStateOf(R.drawable.ic_network_error)
     }
 
     if (error == null) {
@@ -70,6 +74,7 @@ fun EmptyContent(alphaAnim: Float, message: String, iconId: Int, onClick: (() ->
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .clip(RoundedCornerShape(MediumPadding))
             .clickable(enabled = onClick != null) {
                 onClick?.let {
                     it()

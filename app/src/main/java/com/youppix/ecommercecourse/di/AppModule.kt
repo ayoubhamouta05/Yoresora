@@ -80,6 +80,7 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCas
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
 import com.youppix.ecommercecourse.domain.useCases.orders.GetAllOrdersUseCase
+import com.youppix.ecommercecourse.domain.useCases.orders.GetOrderDetailsUseCase
 import com.youppix.ecommercecourse.domain.useCases.orders.OrdersUseCases
 import com.youppix.ecommercecourse.domain.useCases.profile.CheckEmailAvailabilityUseCase
 import com.youppix.ecommercecourse.domain.useCases.profile.GetUserDataUseCase
@@ -431,6 +432,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideOrdersUseCases(ordersRepository : OrdersRepository) : OrdersUseCases =
-        OrdersUseCases(getAllOrders = GetAllOrdersUseCase(ordersRepository))
+        OrdersUseCases(getAllOrders = GetAllOrdersUseCase(ordersRepository) ,
+            getOrderDetails = GetOrderDetailsUseCase(ordersRepository)
+        )
 
 }

@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.address.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -108,39 +109,60 @@ fun AddressBottomSheet(
                     UpsertCancelButtonsRow(inserting = isInserting,
                         onConfirmCLick = {
                             if(state.selectedAddress.addressDefault == 1){
-                                if (state.items.size>1){
+                                if (state.items.isNotEmpty()){
+                                    event(AddressEvent.UpsertMultipleAddress(
+                                        address1 = state.items[state.defaultAddressIndex].copy(
+                                            addressDefault = 0
+                                        ),
+                                        address2 = state.selectedAddress.copy(
+                                            userId = userId,
+                                            addressName = state.selectedAddress.addressName,
+                                            addressCommune = state.selectedAddress.addressCommune,
+                                            addressWilaya = state.selectedAddress.addressWilaya,
+                                            addressCodePostal = state.selectedAddress.addressCodePostal,
+                                            addressDefault = state.selectedAddress.addressDefault
+                                        ),
+                                        checkError = true,
+                                        userCustomerId = userCustomerId ,
+                                        isArabic = isArabic,
+                                        context = context
+                                    ))
+                                }else{
                                     event(
                                         AddressEvent.UpsertAddress(
-                                            state.items[state.defaultAddressIndex].copy(
-                                                addressDefault = 0
+                                            address = state.selectedAddress.copy(
+                                                userId = userId,
+                                                addressName = state.selectedAddress.addressName,
+                                                addressCommune = state.selectedAddress.addressCommune,
+                                                addressWilaya = state.selectedAddress.addressWilaya,
+                                                addressCodePostal = state.selectedAddress.addressCodePostal,
+                                                addressDefault = state.selectedAddress.addressDefault
                                             ),
                                             checkError = true,
-                                            context = context,
                                             userCustomerId = userCustomerId,
+                                            context = context,
                                             isArabic = isArabic
                                         )
                                     )
-                                    event(AddressEvent.ToggleShowBottomSheet())
                                 }
-                            }
-                            event(
-                                AddressEvent.UpsertAddress(
-                                    address = state.selectedAddress.copy(
-                                        userId = userId,
-                                        addressName = state.selectedAddress.addressName,
-                                        addressCommune = state.selectedAddress.addressCommune,
-                                        addressWilaya = state.selectedAddress.addressWilaya,
-                                        addressCodePostal = state.selectedAddress.addressCodePostal,
-                                        addressDefault = state.selectedAddress.addressDefault
-                                    ) ,
-                                    checkError = true ,
-                                    userCustomerId = userCustomerId,
-                                    context = context,
-                                    isArabic = isArabic
+                            }else {
+                                event(
+                                    AddressEvent.UpsertAddress(
+                                        address = state.selectedAddress.copy(
+                                            userId = userId,
+                                            addressName = state.selectedAddress.addressName,
+                                            addressCommune = state.selectedAddress.addressCommune,
+                                            addressWilaya = state.selectedAddress.addressWilaya,
+                                            addressCodePostal = state.selectedAddress.addressCodePostal,
+                                            addressDefault = state.selectedAddress.addressDefault
+                                        ),
+                                        checkError = true,
+                                        userCustomerId = userCustomerId,
+                                        context = context,
+                                        isArabic = isArabic
+                                    )
                                 )
-                            )
-
-
+                            }
                         },
                         onCancelClick = {
                             onDismissRequest()
@@ -216,7 +238,8 @@ fun AddressBottomSheet(
                                                     MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                                                 else MaterialTheme.colorScheme.background,
                                                 RoundedCornerShape(SmallPadding)
-                                            ),
+                                            )
+                                            .clip(RoundedCornerShape(SmallPadding)),
                                         text = {
                                             Row(
                                                 modifier = Modifier.fillMaxWidth(),

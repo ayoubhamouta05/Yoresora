@@ -169,157 +169,159 @@ data class PersonalDetailsScreen(var userData: User, val email: String? = null) 
                 }
             })
         { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .animateContentSize()
-                    .verticalScroll(scrollState)
-            ) {
-
-                //User Name
-                CustomTextField(
+            if (!state.isLoading) {
+                Column(
                     modifier = Modifier
-                        .padding(top = MediumPadding, bottom = SmallPadding)
-                        .padding(
-                            horizontal = MediumPadding
-                        ),
-                    value = state.user.userName,
-                    label = stringResource(id = R.string.userName),
-                    placeholder = stringResource(id = R.string.enterYourUserName),
-                    trailingIcon = Icons.Outlined.Person,
-                    onValueChange = { value ->
-                        viewModel.onEvent(PersonalDetailsEvent.UpdateUserName(value))
-                    },
-                    isError = !state.userNameError.isNullOrEmpty(),
-                    errorMessage = state.userNameError ?: ""
-                )
-                //Email
-                CustomTextField(
-                    modifier = Modifier
-                        .padding(bottom = SmallPadding)
-                        .padding(
-                            horizontal = MediumPadding
-                        ),
-                    value = state.user.userEmail,
-                    label = stringResource(id = R.string.email),
-                    placeholder = stringResource(id = R.string.enterYourEmail),
-                    trailingIcon = Icons.Outlined.Email,
-                    onValueChange = { value ->
-                        viewModel.onEvent(PersonalDetailsEvent.UpdateEmail(value))
-                    },
-                    isError = !state.emailError.isNullOrEmpty(),
-                    errorMessage = state.emailError ?: ""
-                )
-                //Phone
-
-                CustomTextField(
-                    modifier = Modifier
-                        .padding(bottom = SmallPadding)
-                        .padding(
-                            horizontal = MediumPadding
-                        ),
-                    value = state.user.userPhone,
-                    label = stringResource(id = R.string.phone),
-                    placeholder = stringResource(id = R.string.enterYourPhone),
-                    trailingIcon = Icons.Outlined.Phone,
-                    onValueChange = { value ->
-                        viewModel.onEvent(PersonalDetailsEvent.UpdatePhone(value))
-                    },
-                    isError = !state.phoneError.isNullOrEmpty(),
-                    isPassword = false,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    errorMessage = state.phoneError ?: ""
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = SmallPadding)
-                        .padding(horizontal = MediumPadding)
-                        .clip(CircleShape)
-                        .clickable {
-                            viewModel.onEvent(PersonalDetailsEvent.ToggleEditPassword)
-                        },
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(innerPadding)
+                        .animateContentSize()
+                        .verticalScroll(scrollState)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.changePassword),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Spacer(
+
+                    //User Name
+                    CustomTextField(
                         modifier = Modifier
-                            .weight(1f)
-                            .height(1.dp)
-                            .padding(horizontal = SmallPadding)
-                            .background(color = MaterialTheme.colorScheme.primary)
-                            .align(Alignment.CenterVertically)
+                            .padding(top = MediumPadding, bottom = SmallPadding)
+                            .padding(
+                                horizontal = MediumPadding
+                            ),
+                        value = state.user.userName,
+                        label = stringResource(id = R.string.userName),
+                        placeholder = stringResource(id = R.string.enterYourUserName),
+                        trailingIcon = Icons.Outlined.Person,
+                        onValueChange = { value ->
+                            viewModel.onEvent(PersonalDetailsEvent.UpdateUserName(value))
+                        },
+                        isError = !state.userNameError.isNullOrEmpty(),
+                        errorMessage = state.userNameError ?: ""
                     )
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                        modifier = Modifier.rotate(if (state.editPassword) 0f else 180f)
+                    //Email
+                    CustomTextField(
+                        modifier = Modifier
+                            .padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = MediumPadding
+                            ),
+                        value = state.user.userEmail,
+                        label = stringResource(id = R.string.email),
+                        placeholder = stringResource(id = R.string.enterYourEmail),
+                        trailingIcon = Icons.Outlined.Email,
+                        onValueChange = { value ->
+                            viewModel.onEvent(PersonalDetailsEvent.UpdateEmail(value))
+                        },
+                        isError = !state.emailError.isNullOrEmpty(),
+                        errorMessage = state.emailError ?: ""
                     )
-                }
+                    //Phone
 
-                AnimatedVisibility(
-                    state.editPassword, enter = enterTransition,
-                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
-                ) {
-                    Column {
+                    CustomTextField(
+                        modifier = Modifier
+                            .padding(bottom = SmallPadding)
+                            .padding(
+                                horizontal = MediumPadding
+                            ),
+                        value = state.user.userPhone,
+                        label = stringResource(id = R.string.phone),
+                        placeholder = stringResource(id = R.string.enterYourPhone),
+                        trailingIcon = Icons.Outlined.Phone,
+                        onValueChange = { value ->
+                            viewModel.onEvent(PersonalDetailsEvent.UpdatePhone(value))
+                        },
+                        isError = !state.phoneError.isNullOrEmpty(),
+                        isPassword = false,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+                        errorMessage = state.phoneError ?: ""
+                    )
 
-
-                        //Password
-                        CustomTextField(
-                            modifier = Modifier
-                                .padding(bottom = SmallPadding)
-                                .padding(
-                                    horizontal = MediumPadding
-                                ),
-                            value = state.oldPassword,
-                            onValueChange = { value ->
-                                viewModel.onEvent(PersonalDetailsEvent.UpdatePassword(value))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = SmallPadding)
+                            .padding(horizontal = MediumPadding)
+                            .clip(CircleShape)
+                            .clickable {
+                                viewModel.onEvent(PersonalDetailsEvent.ToggleEditPassword)
                             },
-                            label = stringResource(id = R.string.password),
-                            placeholder = stringResource(id = R.string.enterYourPassword),
-                            trailingIcon = Icons.Outlined.Lock,
-                            isError = !state.oldPasswordError.isNullOrEmpty(),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            isPassword = true,
-                            showPassword = state.showPassword,
-                            onShowPassword = {
-                                viewModel.onEvent(PersonalDetailsEvent.ToggleShowPassword)
-                            },
-                            errorMessage = state.oldPasswordError ?: ""
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.changePassword),
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            )
                         )
-
-                        CustomTextField(
+                        Spacer(
                             modifier = Modifier
-                                .padding(bottom = BottomBarHeight.plus(MediumPadding))
-                                .padding(
-                                    horizontal = MediumPadding
-                                ),
-                            value = state.newPassword,
-                            onValueChange = { value ->
-                                viewModel.onEvent(PersonalDetailsEvent.UpdateNewPassword(value))
-                            },
-                            label = stringResource(id = R.string.newPassword),
-                            placeholder = stringResource(id = R.string.enterYourNewPassword),
-                            trailingIcon = Icons.Outlined.Lock,
-                            isError = !state.newPasswordError.isNullOrEmpty(),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            isPassword = true,
-                            showPassword = state.showNewPassword,
-                            onShowPassword = {
-                                viewModel.onEvent(PersonalDetailsEvent.ToggleShowNewPassword)
-                            },
-                            errorMessage = state.newPasswordError ?: ""
+                                .weight(1f)
+                                .height(1.dp)
+                                .padding(horizontal = SmallPadding)
+                                .background(color = MaterialTheme.colorScheme.primary)
+                                .align(Alignment.CenterVertically)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                            modifier = Modifier.rotate(if (state.editPassword) 0f else 180f)
                         )
                     }
+
+                    AnimatedVisibility(
+                        state.editPassword, enter = enterTransition,
+                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                    ) {
+                        Column {
+
+
+                            //Password
+                            CustomTextField(
+                                modifier = Modifier
+                                    .padding(bottom = SmallPadding)
+                                    .padding(
+                                        horizontal = MediumPadding
+                                    ),
+                                value = state.oldPassword,
+                                onValueChange = { value ->
+                                    viewModel.onEvent(PersonalDetailsEvent.UpdatePassword(value))
+                                },
+                                label = stringResource(id = R.string.password),
+                                placeholder = stringResource(id = R.string.enterYourPassword),
+                                trailingIcon = Icons.Outlined.Lock,
+                                isError = !state.oldPasswordError.isNullOrEmpty(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                isPassword = true,
+                                showPassword = state.showPassword,
+                                onShowPassword = {
+                                    viewModel.onEvent(PersonalDetailsEvent.ToggleShowPassword)
+                                },
+                                errorMessage = state.oldPasswordError ?: ""
+                            )
+
+                            CustomTextField(
+                                modifier = Modifier
+                                    .padding(bottom = BottomBarHeight.plus(MediumPadding))
+                                    .padding(
+                                        horizontal = MediumPadding
+                                    ),
+                                value = state.newPassword,
+                                onValueChange = { value ->
+                                    viewModel.onEvent(PersonalDetailsEvent.UpdateNewPassword(value))
+                                },
+                                label = stringResource(id = R.string.newPassword),
+                                placeholder = stringResource(id = R.string.enterYourNewPassword),
+                                trailingIcon = Icons.Outlined.Lock,
+                                isError = !state.newPasswordError.isNullOrEmpty(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                isPassword = true,
+                                showPassword = state.showNewPassword,
+                                onShowPassword = {
+                                    viewModel.onEvent(PersonalDetailsEvent.ToggleShowNewPassword)
+                                },
+                                errorMessage = state.newPasswordError ?: ""
+                            )
+                        }
+                    }
+
+
                 }
-
-
             }
 
             CustomCircularProgress(isLoading = state.isLoading)

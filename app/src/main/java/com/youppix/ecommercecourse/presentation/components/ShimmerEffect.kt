@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,16 +29,21 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
+import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
+import com.youppix.ecommercecourse.common.Dimens.SocialMediaItemSize
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.shimmerEffect() = composed {
@@ -205,5 +212,122 @@ fun CategoriesItemShimmerEffect() {
             .shimmerEffect()
     ) {
 
+    }
+}
+
+@Composable
+fun OrderListItemShimmerEffect() {
+    val brush = Brush.linearGradient(
+        listOf(
+            MaterialTheme.colorScheme.background,
+            MaterialTheme.colorScheme.primary
+        ),
+        start = Offset(0f, 1000f),
+        end = Offset(2000f, 2500f)
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MediumPadding, vertical = SmallPadding),
+        shape = RoundedCornerShape(26.dp),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 4.dp
+        ),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        )
+    ) {
+        Box(Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(brush = brush)
+                    .padding(horizontal = MediumPadding, vertical = SmallPadding)
+            ) {
+                // Shimmering Order ID
+                ShimmerEffect(
+                    modifier = Modifier
+                        .padding(vertical = SmallPadding)
+                        .fillMaxWidth()
+                        .height(MediumPadding)
+                        .offset(y = (-1.5).dp)
+
+                )
+
+                // Shimmering Order Date
+                ShimmerEffect(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(14.dp)
+                        .offset(y = (-1.5).dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = SmallPadding)
+                        .height(0.5.dp)
+                        .fillMaxWidth()
+                        .offset(y = (-1.5).dp)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                )
+
+                // Shimmering Number of Items
+                ShimmerEffect(
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(14.dp)
+                        .offset(y = (-3).dp)
+                )
+
+                // Shimmering Order Description
+                ShimmerEffect(
+                    modifier = Modifier
+                        .padding(vertical = SmallPadding)
+                        .fillMaxWidth(0.6f)
+                        .height(14.dp)
+                        .offset(y = (-3).dp)
+                )
+
+                // Shimmering Delivery Method
+                ShimmerEffect(
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(14.dp)
+                        .offset(y = (-3).dp)
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .padding(vertical = SmallPadding)
+                        .height(0.5.dp)
+                        .fillMaxWidth()
+                        .offset(y = (-1.5).dp)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
+                )
+
+                // Shimmering Price and Details
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset(y = (-3).dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    ShimmerEffect(
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(14.dp)
+                    )
+                    ShimmerEffect(
+                        modifier = Modifier
+                            .width(70.dp)
+                            .height(LargePadding)
+                            .clip(RoundedCornerShape(SmallPadding))
+                    )
+                }
+            }
+
+        }
     }
 }

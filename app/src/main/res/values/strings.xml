@@ -101,7 +101,7 @@ or continue with social media</string>
     <string name="customSize">Custom Size</string>
     <string name="error">Error</string>
     <string name="alreadyHaveCustomSize">You Already Have Custom Size</string>
-    <string name="alreadyHaveCustomSizeMessage">Do you want to modify it ?</string>
+    <string name="alreadyHaveCustomSizeMessage">If you modify it, you will lose the old size data!\nDo you want to modify it ?</string>
     <string name="checkValueRangeErrorMessage">%3$s should be between %1$d and %2$d</string>
     <string name="shouldBeNumber">Should be a number</string>
     <string name="sizeNameCannotBeEmpty">Size name cannot be empty</string>
@@ -178,6 +178,12 @@ or continue with social media</string>
     <string name="pending">Pending</string>
     <string name="unfinished">Unfinished</string>
     <string name="contactUs">Contact Us</string>
+    <string name="orderId">Order Id: %1$s</string>
+    <string name="numberOfItems">Number of items: %1$s</string>
+    <string name="orderItems">Order Items: %1$s</string>
+    <string name="price">Price: </string>
+    <string name="orderDetails">Order Details</string>
+    <string name="youDontHaveAnyOrders">You don\'t have any %1$s orders yet!</string>
 
 
 </resources>

@@ -144,7 +144,8 @@ class CartService(private val client: HttpClient) {
         amount :Float ,
         customerId : String,
         userId: Int,
-        carts : List<CartData>
+        carts : List<CartData> ,
+        deliveryMethod : Int
     ): Flow<Resource<CreateCheckoutUrlResponse>> = flow {
         try {
             emit(Resource.Loading())
@@ -155,7 +156,8 @@ class CartService(private val client: HttpClient) {
                 val amount :Float ,
                 val customerId : String,
                 val userId: Int,
-                val carts : List<CartData>
+                val carts : List<CartData>,
+                val deliveryMethod : Int,
             )
             val response = client.post(Urls.CREATE_CHECKOUT_URL) {
                 setBody(
@@ -165,7 +167,8 @@ class CartService(private val client: HttpClient) {
                         amount = amount,
                         customerId = customerId,
                         userId = userId,
-                        carts = carts
+                        carts = carts,
+                        deliveryMethod = deliveryMethod
                     )
                 )
             }

@@ -52,7 +52,8 @@ class CheckoutViewModel @Inject constructor(
                         amount = event.amount ,
                         customerId = event.customerId ,
                         userId = event.userId,
-                        carts = event.carts
+                        carts = event.carts ,
+                        deliveryMethod = event.deliveryMethod
                     )
                 }
             }
@@ -111,7 +112,8 @@ class CheckoutViewModel @Inject constructor(
         amount: Float,
         customerId: String,
         userId: Int,
-        carts : List<CartData>
+        carts : List<CartData> ,
+        deliveryMethod : Int ,
     ) {
         checkoutUseCases.createCheckoutUrl(
             local = local,
@@ -119,7 +121,8 @@ class CheckoutViewModel @Inject constructor(
             amount = amount,
             customerId = customerId ,
             userId = userId,
-            carts = carts
+            carts = carts ,
+            deliveryMethod = deliveryMethod
         ).onEach {result ->
             when (result ){
                 is Resource.Loading -> {

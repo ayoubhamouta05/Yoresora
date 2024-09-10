@@ -17,6 +17,7 @@ sealed class CheckoutEvent {
         val amount: Float,
         val customerId: String,
         val userId: Int,
-        val carts : List<CartData>
+        val carts : List<CartData>,
+        val deliveryMethod : Int
     ) : CheckoutEvent()
 }

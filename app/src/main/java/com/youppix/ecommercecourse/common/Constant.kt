@@ -5,15 +5,11 @@ import android.content.res.Configuration
 import android.util.Patterns
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
-import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.automirrored.outlined.EventNote
-import androidx.compose.material.icons.automirrored.outlined.Message
-import androidx.compose.material.icons.filled.EventNote
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingBag
-import androidx.compose.material.icons.outlined.EventNote
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
@@ -21,6 +17,8 @@ import androidx.compose.material.icons.outlined.ShoppingBag
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.domain.model.bottomBar.BottomBar
 import com.youppix.ecommercecourse.domain.model.onBoarding.OnBoarding
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -179,5 +177,12 @@ object Constant {
                 Resource.Successful(true)
             }
         }
+    }
+
+    fun formatDate(time : Long) :String{
+        val date = Date(time *1000)
+        val dateFormatted = SimpleDateFormat("dd/MM/yyyy HH:mm:ss" , Locale.US)
+            .format(date)
+        return dateFormatted
     }
 }

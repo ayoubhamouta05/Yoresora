@@ -49,4 +49,9 @@ object Urls {
     const val UPSERT_ADDRESS_URL = "$BASE_URL/address/upsertAddress.php"
     const val DELETE_ADDRESS_URL = "$BASE_URL/address/deleteAddress.php"
     const val GET_COMMUNE_URL = "$BASE_URL/address/getCommune.php"
+
+    /** Order urls */
+    const val GET_ALL_ORDERS_URL = "$BASE_URL/orders/getAllOrders.php"
+    const val GET_ORDER_DETAILS_URL = "$BASE_URL/orders/getOrderDetails.php"
+
 }

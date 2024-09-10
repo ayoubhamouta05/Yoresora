@@ -1,10 +1,14 @@
 package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +47,7 @@ import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
 import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
+import com.youppix.ecommercecourse.presentation.home_app.ordersDetails.OrderDetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,15 +57,15 @@ import java.util.Locale
 class MainActivity : ComponentActivity() {
 
     private var navigator: Navigator? = null
+    private val currentLang by lazy {
+        getSharedPreferences(APP_LANG, 0).getString(APP_LANG, Locale.getDefault().language)
+            ?: Locale.getDefault().language
+    }
+
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        val currentLang =
-            getSharedPreferences(APP_LANG, 0).getString(APP_LANG, Locale.getDefault().language)
-                ?: Locale.getDefault().language
 
         setLocal(currentLang, this)
 
@@ -140,8 +145,8 @@ class MainActivity : ComponentActivity() {
 
                                     3 -> {
                                         if (navigator?.lastItem?.javaClass?.name != OrdersScreen::class.java.name)
-                                        if(navigator?.popUntil { screen -> screen ==  OrdersScreen() } == false)
-                                            navigator?.replace(OrdersScreen())
+                                        if(navigator?.popUntil { screen -> screen ==  OrdersScreen(userId?.toInt() ?: 0) } == false)
+                                            navigator?.replace(OrdersScreen(userId?.toInt() ?: 0))
                                     }
 
                                     4 -> {
@@ -166,7 +171,8 @@ class MainActivity : ComponentActivity() {
                                         navigator.lastItem.javaClass.name != CartScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != AddressScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != PaymentScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != PaymentScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != OrderDetailsScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }
@@ -214,4 +220,9 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        setLocal(currentLang, this)
+        super.onConfigurationChanged(newConfig)
+        Log.d("MainActivityLifecycle" ,"onConfigurationChanged")
+    }
 }

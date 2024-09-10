@@ -14,6 +14,7 @@ class CreateCheckoutUrlUseCase(
         customerId: String,
         userId: Int,
         carts: List<CartData>,
+        deliveryMethod : Int
     ) =
         checkoutRepository.createCheckout(
             local = local,
@@ -21,7 +22,8 @@ class CreateCheckoutUrlUseCase(
             amount = amount,
             customerId = customerId,
             userId = userId,
-            carts = carts
+            carts = carts,
+            deliveryMethod = deliveryMethod
         )
 
 }

@@ -25,6 +25,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -72,6 +73,7 @@ import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
 import com.youppix.ecommercecourse.presentation.home_app.MainActivity
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomIcon
+import com.youppix.ecommercecourse.presentation.home_app.components.EmptyScreen
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsEvent
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsState
 import kotlinx.coroutines.Dispatchers
@@ -87,7 +89,7 @@ fun DetailsScreenContent(
     item: Item,
     userId: Int,
     makeCustomSize: () -> Unit,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -126,7 +128,7 @@ fun DetailsScreenContent(
     var showImage by remember {
         mutableStateOf(false)
     }
- var enableBackPress by remember {
+    var enableBackPress by remember {
         mutableStateOf(false)
     }
 
@@ -145,7 +147,7 @@ fun DetailsScreenContent(
         }
     }
 
-    onBackButtonPressed(context , enableBackPress) {
+    onBackButtonPressed(context, enableBackPress) {
         if (showImage) {
             showImage = false
             enableBackPress = false
@@ -162,264 +164,280 @@ fun DetailsScreenContent(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = modifier,
-            userScrollEnabled = !showImage,
-            state = lazyColumnState
-        ) {
-            // HorizontalPager
-            item {
-                if (state.details.images.isNotEmpty())
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillParentMaxHeight(if (showImage) 0.9f else 0.4f)
-                            .padding(bottom = ExtraSmallPadding)
-                            .animateContentSize(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        ),
-                        shape = if (!showImage) RoundedCornerShape(
-                            bottomStart = 70.dp,
-                            bottomEnd = 70.dp
-                        )
-                        else RoundedCornerShape(0),
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 4.dp
-                        )
-                    ) {
-                        HorizontalPager(
-                            state = pagerState,
+        if (state.error.isNullOrEmpty() && !state.isLoading) {
+            LazyColumn(
+                modifier = modifier,
+                userScrollEnabled = !showImage,
+                state = lazyColumnState
+            ) {
+                // HorizontalPager
+                item {
+                    if (state.details.images.isNotEmpty())
+                        Card(
                             modifier = Modifier
-                                .fillParentMaxSize()
-                                .animateContentSize()
-                        ) { page ->
-                            Box(modifier = Modifier
-                                .fillMaxSize()
-                                .transformable(transformState, enabled = showImage)
-                                .clickable(enabled = !showImage) {
-                                    showImage = true
-                                    enableBackPress = true
-                                    scope.launch {
-                                        lazyColumnState.animateScrollToItem(0)
+                                .fillMaxWidth()
+                                .fillParentMaxHeight(if (showImage) 0.9f else 0.4f)
+                                .padding(bottom = ExtraSmallPadding)
+                                .animateContentSize(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            ),
+                            shape = if (!showImage) RoundedCornerShape(
+                                bottomStart = 70.dp,
+                                bottomEnd = 70.dp
+                            )
+                            else RoundedCornerShape(0),
+                            elevation = CardDefaults.cardElevation(
+                                defaultElevation = 4.dp
+                            )
+                        ) {
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier
+                                    .fillParentMaxSize()
+                                    .animateContentSize()
+                            ) { page ->
+                                Box(modifier = Modifier
+                                    .fillMaxSize()
+                                    .transformable(transformState, enabled = showImage)
+                                    .clickable(enabled = !showImage) {
+                                        showImage = true
+                                        enableBackPress = true
+                                        scope.launch {
+                                            lazyColumnState.animateScrollToItem(0)
+                                        }
                                     }
+                                    .drawBehind {
+                                        drawRect(if (isArabic) brushAR else brush)
+                                    }) {
+                                    val currentPage =
+                                        Urls.IMAGES_URL + state.details.images[page]
+                                    val imageRequest =
+                                        ImageRequest.Builder(context).data(currentPage)
+                                            .dispatcher(Dispatchers.IO)
+                                            .diskCachePolicy(CachePolicy.ENABLED)
+                                            .memoryCachePolicy(CachePolicy.ENABLED).build()
+
+                                    AsyncImage(
+                                        model = imageRequest,
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .scale(imageScale)
+                                            .fillParentMaxHeight(if (showImage) 0.6f else 0.4f)
+                                            .align(Alignment.Center)
+                                            .graphicsLayer(
+                                                scaleX = if (imageScale < 0.6f) 0.6f else imageScale,
+                                                scaleY = if (imageScale < 0.6f) 0.6f else imageScale,
+                                                translationX = imageOffset.x,
+                                                translationY = imageOffset.y
+                                            )
+                                            .clip(RoundedCornerShape(SmallPadding))
+
+                                    )
                                 }
-                                .drawBehind {
-                                    drawRect(if (isArabic) brushAR else brush)
-                                }) {
-                                val currentPage =
-                                    Urls.IMAGES_URL + state.details.images[page]
-                                val imageRequest = ImageRequest.Builder(context).data(currentPage)
-                                    .dispatcher(Dispatchers.IO).diskCachePolicy(CachePolicy.ENABLED)
-                                    .memoryCachePolicy(CachePolicy.ENABLED).build()
 
-                                AsyncImage(
-                                    model = imageRequest,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Fit,
-                                    modifier = Modifier
-                                        .scale(imageScale)
-                                        .fillParentMaxHeight(if (showImage) 0.6f else 0.4f)
-                                        .align(Alignment.Center)
-                                        .graphicsLayer(
-                                            scaleX = if (imageScale < 0.6f) 0.6f else imageScale,
-                                            scaleY = if (imageScale < 0.6f) 0.6f else imageScale,
-                                            translationX = imageOffset.x,
-                                            translationY = imageOffset.y
-                                        )
-                                        .clip(RoundedCornerShape(SmallPadding))
-
-                                )
                             }
-
                         }
-                    }
-            }
-            // Image Indicator
-            item {
-                ImageIndicatorSection(state = state, pagerState = pagerState)
-            }
+                }
+                // Image Indicator
+                item {
+                    ImageIndicatorSection(state = state, pagerState = pagerState)
+                }
 
-            item {
-                Text(
-                    text = if (isArabic) state.details.categories_name_ar else state.details.categories_name,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Normal
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
-                )
-            }
-            item {
-                Text(
-                    text = if (isArabic) item.itemNameAr else item.itemName,
-                    style = MaterialTheme.typography.displaySmall.copy(
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(
-                        horizontal = Dimens.MediumPadding,
-                        vertical = SmallPadding
-                    )
-                )
-            }
-
-            item {
-                Text(
-                    text = stringResource(id = R.string.details),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
-                )
-            }
-
-            item {
-                Text(
-                    text = if (isArabic) item.itemDescAr else item.itemDesc,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = colorResource(id = R.color.text_medium)
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
-                )
-            }
-
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = Dimens.MediumPadding, vertical = Dimens.MediumPadding)
-                        .height(1.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                        )
-                )
-            }
-
-            item {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(horizontal = MediumPadding)
-                        .padding(bottom = ExtraSmallPadding),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+                item {
                     Text(
-                        text = stringResource(id = R.string.selectSize) + " :",
+                        text = if (isArabic) state.details.categories_name_ar else state.details.categories_name,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        ),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
+                    )
+                }
+                item {
+                    Text(
+                        text = if (isArabic) item.itemNameAr else item.itemName,
+                        style = MaterialTheme.typography.displaySmall.copy(
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(
+                            horizontal = Dimens.MediumPadding,
+                            vertical = SmallPadding
+                        )
+                    )
+                }
+
+                item {
+                    Text(
+                        text = stringResource(id = R.string.details),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold
                         ),
                         textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
                     )
-                    Text(
-                        text = stringResource(id = R.string.or),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            color = Color.Gray
-                        ),
-                        textAlign = TextAlign.Center,
+                }
 
+                item {
+                    Text(
+                        text = if (isArabic) item.itemDescAr else item.itemDesc,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            color = colorResource(id = R.color.text_medium)
+                        ),
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
+                    )
+                }
+
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = Dimens.MediumPadding,
+                                vertical = Dimens.MediumPadding
+                            )
+                            .height(1.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                            )
+                    )
+                }
+
+                item {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(horizontal = MediumPadding)
+                            .padding(bottom = ExtraSmallPadding),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.selectSize) + " :",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            textAlign = TextAlign.Start,
+                        )
+                        Text(
+                            text = stringResource(id = R.string.or),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                color = Color.Gray
+                            ),
+                            textAlign = TextAlign.Center,
+
+                            )
+
+                        Text(
+                            text = stringResource(id = R.string.makeYourOwnSize),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                textDecoration = TextDecoration.Underline
+                            ),
+                            textAlign = TextAlign.End,
+                            maxLines = 1,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(SmallPadding))
+                                .clickable {
+                                    makeCustomSize()
+                                }
+                                .background(
+                                    Color.Transparent
+                                )
+                                .padding(horizontal = ExtraSmallPadding2)
                         )
 
+
+                    }
+
+                }
+                item {
+                    Box(modifier = Modifier.animateContentSize()) {
+                        SelectSizeSection(state = state, event = event)
+                    }
+
+                }
+                item {
                     Text(
-                        text = stringResource(id = R.string.makeYourOwnSize),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = FontWeight.SemiBold,
-                            textDecoration = TextDecoration.Underline
+                        text = stringResource(id = R.string.choseColors) + " :",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold
                         ),
-                        textAlign = TextAlign.End,
-                        maxLines = 1 ,
-                        modifier = Modifier.clip(RoundedCornerShape(SmallPadding)).clickable {
-                            makeCustomSize()
-                        }.background(
-                            Color.Transparent
-                        ).padding(horizontal = ExtraSmallPadding2)
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.padding(
+                            start = Dimens.MediumPadding,
+                            end = Dimens.MediumPadding,
+                            top = Dimens.SmallPadding,
+                            bottom = ExtraSmallPadding
+                        )
                     )
-
-
                 }
-
-            }
-            item {
-                Box(modifier = Modifier.animateContentSize()) {
-                    SelectSizeSection(state = state, event = event)
+                item {
+                    SelectColorSection(state = state, event = event)
                 }
-
             }
-            item {
-                Text(
-                    text = stringResource(id = R.string.choseColors) + " :",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.padding(
-                        start = Dimens.MediumPadding,
-                        end = Dimens.MediumPadding,
-                        top = Dimens.SmallPadding,
-                        bottom = ExtraSmallPadding
+
+            CustomIcon(
+                modifier = Modifier
+                    .align(
+                        Alignment.TopStart
                     )
-                )
+                    .padding(horizontal = SmallPadding, vertical = SmallPadding),
+                backgroundColor = MaterialTheme.colorScheme.background,
+                iconColor = MaterialTheme.colorScheme.onBackground,
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack
+            ) {
+                if (showImage) {
+                    showImage = false
+                    enableBackPress = false
+                    imageScale = 1f
+                    imageOffset = Offset.Zero
+                } else {
+                    onBackClicked()
+                }
             }
-            item {
-                SelectColorSection(state = state, event = event)
+
+            CustomIcon(
+                modifier = Modifier
+                    .align(
+                        Alignment.TopEnd
+                    )
+                    .padding(horizontal = SmallPadding, vertical = SmallPadding),
+                backgroundColor = MaterialTheme.colorScheme.background,
+                iconColor = MaterialTheme.colorScheme.onBackground,
+                imageVector = if (state.details.is_favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+            ) {
+                event(DetailsEvent.UpdateFavoriteState(userId = userId, itemId = item.itemId))
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        } else if (!state.error.isNullOrEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.Center)
+            )
+            EmptyScreen(error = state.error) {
+                event(DetailsEvent.GetItemDetails(itemId = item.itemId, userId = userId))
             }
         }
-
-        CustomIcon(
-            modifier = Modifier
-                .rotate(if (isArabic) 180f else 0f)
-                .align(
-                    Alignment.TopStart
-                )
-                .padding(horizontal = SmallPadding, vertical = SmallPadding),
-            backgroundColor = MaterialTheme.colorScheme.background,
-            iconColor = MaterialTheme.colorScheme.onBackground,
-            imageVector = Icons.Default.ArrowBack
-        ) {
-            if (showImage) {
-                showImage = false
-                enableBackPress = false
-                imageScale = 1f
-                imageOffset = Offset.Zero
-            } else {
-                onBackClicked()
-            }
-        }
-
-        CustomIcon(
-            modifier = Modifier
-                .align(
-                    Alignment.TopEnd
-                )
-                .padding(horizontal = SmallPadding, vertical = SmallPadding),
-            backgroundColor = MaterialTheme.colorScheme.background,
-            iconColor = MaterialTheme.colorScheme.onBackground,
-            imageVector = if (state.details.is_favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
-        ) {
-            event(DetailsEvent.UpdateFavoriteState(userId = userId, itemId = item.itemId))
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }
-
-
-        CustomCircularProgress( state.isLoading)
-
-
+        CustomCircularProgress(state.isLoading)
     }
+
 }
 
-private fun onBackButtonPressed(context: Context, enable : Boolean, onBackPressed: () -> Unit ) {
-        (context as MainActivity).onBackPressedDispatcher.addCallback(
-            context,
-            object : OnBackPressedCallback(enable) {
-                override fun handleOnBackPressed() {
-                    onBackPressed()
-                    remove()
-                }
+private fun onBackButtonPressed(context: Context, enable: Boolean, onBackPressed: () -> Unit) {
+    (context as MainActivity).onBackPressedDispatcher.addCallback(
+        context,
+        object : OnBackPressedCallback(enable) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+                remove()
             }
-        )
+        }
+    )
 }

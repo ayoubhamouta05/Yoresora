@@ -26,14 +26,13 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import kotlinx.coroutines.Dispatchers
 
 @Composable
-fun OrderListItem(
+fun CartItemOfOrder(
     modifier: Modifier = Modifier,
     cartItem: CartData,
     isArabic: Boolean,

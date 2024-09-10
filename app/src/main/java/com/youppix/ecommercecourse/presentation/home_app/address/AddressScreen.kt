@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.address
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -39,6 +41,7 @@ import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
 import com.youppix.ecommercecourse.presentation.home_app.address.components.AddressBottomSheet
 import com.youppix.ecommercecourse.presentation.home_app.address.components.ShippingAddressItem
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 data class AddressScreen(
@@ -52,9 +55,10 @@ data class AddressScreen(
         val state by viewModel.state
 
         val context = LocalContext.current
-        val userCustomerId = context.getSharedPreferences(APP_ENTRY ,0).getString("userCustomerId", "")?:""
+        val userCustomerId =
+            context.getSharedPreferences(APP_ENTRY, 0).getString("userCustomerId", "") ?: ""
 
-        var itemClickable by remember{
+        var itemClickable by remember {
             mutableStateOf(true)
         }
         LaunchedEffect(Unit) {
@@ -62,6 +66,7 @@ data class AddressScreen(
         }
 
         LaunchedEffect(state.isLoading) {
+            Log.d("AddressViewModel", "success !${state.selectAddressSuccess}")
             if (state.selectAddressSuccess && !state.isLoading) {
                 viewModel.onEvent(AddressEvent.UpdateSelectAddressSuccess(false))
                 itemClickable = true
@@ -70,8 +75,6 @@ data class AddressScreen(
                 }
             }
         }
-
-
 
 
         val isArabic = Locale.getDefault().language == "ar"
@@ -119,62 +122,65 @@ data class AddressScreen(
             ) {
                 items(state.items.size) { index ->
 
-                        ShippingAddressItem(
-                            modifier = Modifier
-                                .padding(vertical = SmallPadding)
-                                .padding(horizontal = SmallPadding)
-                                .background(
-                                    if (state.items[index].addressDefault == 1) {
-                                        viewModel.onEvent(
-                                            AddressEvent.UpdateDefaultAddressIndex(
-                                                index
-                                            )
-                                        ) // get the default address index
-                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
-                                    } else Color.Transparent,
-                                    shape = RoundedCornerShape(SmallPadding)
-                                ),
-                            clickable = itemClickable ,
-                            isArabic = isArabic,
-                            address = state.items[index],
-                            onSelectClick = {
-                                itemClickable = false
-                                if (state.items[index].addressDefault != 1) { // don't update values when he select the same address
-                                    if(state.items.size > 1){
-                                        viewModel.onEvent(
-                                            AddressEvent.UpsertAddress(
-                                                state.items[state.defaultAddressIndex].copy(
-                                                    addressDefault = 0
-                                                ) ,
-                                                context = context,
-                                                userCustomerId = userCustomerId ,
-                                                isArabic = isArabic
-                                            )
+                    ShippingAddressItem(
+                        modifier = Modifier
+                            .padding(vertical = SmallPadding)
+                            .padding(horizontal = SmallPadding)
+                            .background(
+                                if (state.items[index].addressDefault == 1) {
+                                    viewModel.onEvent(
+                                        AddressEvent.UpdateDefaultAddressIndex(
+                                            index
                                         )
-                                    }
-
+                                    ) // get the default address index
+                                    MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                                } else Color.Transparent,
+                                shape = RoundedCornerShape(SmallPadding)
+                            ),
+                        clickable = itemClickable,
+                        isArabic = isArabic,
+                        address = state.items[index],
+                        onSelectClick = {
+                            itemClickable = false
+                            if (state.items[index].addressDefault != 1) { // don't update values when he select the same address
+                                if (state.items.size > 1) {
+                                    viewModel.onEvent(
+                                        AddressEvent.UpsertMultipleAddress(
+                                            address1 = state.items[state.defaultAddressIndex].copy(
+                                                addressDefault = 0
+                                            ),
+                                            address2 = state.items[index].copy(
+                                                addressDefault = 1
+                                            ),
+                                            userCustomerId = userCustomerId,
+                                            isArabic = isArabic,
+                                            context = context
+                                        )
+                                    )
+                                } else {
                                     viewModel.onEvent(
                                         AddressEvent.UpsertAddress(
                                             state.items[index].copy(
                                                 addressDefault = 1
-                                            ) ,
-                                           context=  context ,
+                                            ),
+                                            context = context,
                                             userCustomerId = userCustomerId,
                                             isArabic = isArabic
                                         )
                                     )
-                                }else {
-                                    itemClickable = true
-                                    if (fromCheckout) {
-                                        navigator.pop()
-                                    }
                                 }
-                            },
-                            onUpdateClick = {
-                                viewModel.onEvent(AddressEvent.ToggleShowBottomSheet(isInserting = false))
-                                viewModel.onEvent(AddressEvent.ToggleSelectedAddressId(state.items[index]))
+                            } else {
+                                itemClickable = true
+                                if (fromCheckout) {
+                                    navigator.pop()
+                                }
                             }
-                        )
+                        },
+                        onUpdateClick = {
+                            viewModel.onEvent(AddressEvent.ToggleShowBottomSheet(isInserting = false))
+                            viewModel.onEvent(AddressEvent.ToggleSelectedAddressId(state.items[index]))
+                        }
+                    )
 
                 }
             }

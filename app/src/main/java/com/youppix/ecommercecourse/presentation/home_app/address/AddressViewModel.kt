@@ -8,8 +8,13 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.useCases.address.AddressUseCases
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -39,8 +44,9 @@ class AddressViewModel @Inject constructor(
             }
 
             is AddressEvent.UpsertAddress -> {
+                Log.d("AddressViewModel", "check error: ${event.checkError}")
                 if (event.checkError) {
-                    if(checkInformationError(event.address, context = event.context)){
+                    if (checkInformationError(event.address, context = event.context)) {
                         _state.value = state.value.copy(
                             addressNameError = null,
                             specificAddressError = null
@@ -163,6 +169,34 @@ class AddressViewModel @Inject constructor(
                     selectAddressSuccess = event.value
                 )
             }
+
+            is AddressEvent.UpsertMultipleAddress -> {
+                if (event.checkError) {
+                    if (checkInformationError(event.address2, context = event.context)) {
+                        _state.value = state.value.copy(
+                            addressNameError = null,
+                            specificAddressError = null
+                        )
+                        onEvent(AddressEvent.ToggleShowBottomSheet())
+                        screenModelScope.launch {
+                            upsertMultipleAddress(event.address1,
+                                event.address2,
+                                event.userCustomerId,
+                                event.isArabic)
+                        }
+                    }
+                } else {
+                    screenModelScope.launch {
+                        upsertMultipleAddress(
+                            event.address1,
+                            event.address2,
+                            event.userCustomerId,
+                            event.isArabic,
+                            isUpdatingDefaultAddress = true
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -175,7 +209,6 @@ class AddressViewModel @Inject constructor(
         addressUseCases.upsertAddress(address, userCustomerId, isArabic).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
-                    Log.d("AddressViewModel", "upsertAddress: loading , ${address.addressDefault}")
                     _state.value = state.value.copy(
                         isLoading = true
                     )
@@ -204,6 +237,58 @@ class AddressViewModel @Inject constructor(
                             isUpdatingDefaultAddress
                     )
                     onEvent(AddressEvent.GetAllAddress(address.userId))
+                }
+            }
+            Log.d("AddressViewModel", "result upsert: ${result.data}")
+        }.launchIn(screenModelScope)
+    }
+
+    private suspend fun upsertMultipleAddress(
+        address1: Address,
+        address2: Address,
+        userCustomerId: String,
+        isArabic: Boolean,
+        isUpdatingDefaultAddress: Boolean = false,
+    ) {
+        combine(
+            addressUseCases.upsertAddress(address1, userCustomerId, isArabic),
+            addressUseCases.upsertAddress(address2, userCustomerId, isArabic)
+        ) { result1, result2 ->
+            when (result1) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                else -> {}
+            }
+            when (result2) {
+                is Resource.Loading -> {
+                    _state.value = state.value.copy(
+                        isLoading = true
+                    )
+                }
+
+                is Resource.Error -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = result2.data?.message ?: result2.message
+                        ?: "An Unexpected Error Occurred",
+                        success = false
+                    )
+                }
+
+                is Resource.Successful -> {
+                    _state.value = state.value.copy(
+                        isLoading = false,
+                        error = null,
+                        success = true,
+                        selectAddressSuccess = isUpdatingDefaultAddress
+                    )
+                    if (!isUpdatingDefaultAddress) {
+                        onEvent(AddressEvent.GetAllAddress(address2.userId))
+                    }
                 }
             }
 
@@ -296,52 +381,52 @@ class AddressViewModel @Inject constructor(
         }.launchIn(screenModelScope)
     }
 
-    private fun checkInformationError(address: Address , context :Context) : Boolean{
-       return  if (address.addressName.isEmpty() || address.addressName.isBlank()) {
+    private fun checkInformationError(address: Address, context: Context): Boolean {
+        return if (address.addressName.isEmpty() || address.addressName.isBlank()) {
             _state.value = state.value.copy(
                 addressNameError = context.getString(R.string.addressNameEmptyErrorMsg)
             )
-             false
-        }else if (address.addressWilaya == null ){
+            false
+        } else if (address.addressWilaya == null) {
             _state.value = state.value.copy(
                 addressNameError = null,
                 wilayaError = context.getString(R.string.pleaseSelectWilayaErrorMsg)
             )
-             false
-        }else if (address.addressCommune == null) {
+            false
+        } else if (address.addressCommune == null) {
             _state.value = state.value.copy(
-                addressNameError= null,
+                addressNameError = null,
                 wilayaError = null,
                 communeError = context.getString(R.string.pleaseSelectCommuneErrorMsg)
             )
-             false
-        }else if (address.addressCodePostal.isEmpty() || address.addressCodePostal.isBlank()) {
+            false
+        } else if (address.addressCodePostal.isEmpty() || address.addressCodePostal.isBlank()) {
             _state.value = state.value.copy(
-                addressNameError= null,
+                addressNameError = null,
                 wilayaError = null,
                 communeError = null,
                 codePostalError = context.getString(R.string.codePostalEmptyErrorMsg)
             )
-             false
+            false
         } else if (address.addressCodePostal.length != 5) {
             _state.value = state.value.copy(
-                addressNameError= null,
+                addressNameError = null,
                 wilayaError = null,
                 communeError = null,
-                codePostalError =context.getString(R.string.codePostalWrongErrorMsg)
+                codePostalError = context.getString(R.string.codePostalWrongErrorMsg)
             )
-             false
+            false
         } else if (state.value.selectedAddress.addressSpecific.isEmpty() || state.value.selectedAddress.addressSpecific.isBlank()) {
             _state.value = state.value.copy(
-                addressNameError= null,
+                addressNameError = null,
                 wilayaError = null,
                 communeError = null,
                 codePostalError = null,
                 specificAddressError = context.getString(R.string.specificAddressEmptyErrorMsg)
             )
-             false
-        }else {
-             true
+            false
+        } else {
+            true
         }
     }
 

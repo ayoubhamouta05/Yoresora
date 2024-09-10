@@ -16,6 +16,15 @@ sealed class AddressEvent {
         val isArabic : Boolean
     ) : AddressEvent()
 
+    data class UpsertMultipleAddress(
+        val address1: Address,
+        val address2: Address,
+        val userCustomerId: String,
+        val checkError: Boolean = false,
+        val context: Context,
+        val isArabic : Boolean
+    ) : AddressEvent()
+
     data class UpdateAddressCodePostal(val codePostal: String) : AddressEvent()
     data class UpdateAddressName(val name: String) : AddressEvent()
     data object ToggleWilayaDropMenu : AddressEvent()
