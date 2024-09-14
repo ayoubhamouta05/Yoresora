@@ -19,7 +19,7 @@ data class OrderDetails(
     val items_name_ar: String,
     val items_price: Int,
     val orders_id: String,
-    val sizes_name: String,
+    val sizes_name: String
 )
 
 

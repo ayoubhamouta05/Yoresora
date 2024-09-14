@@ -164,7 +164,7 @@ fun DetailsScreenContent(
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (state.error.isNullOrEmpty() && !state.isLoading) {
+        if (state.error.isNullOrEmpty()) {
             LazyColumn(
                 modifier = modifier,
                 userScrollEnabled = !showImage,
@@ -415,7 +415,7 @@ fun DetailsScreenContent(
                 event(DetailsEvent.UpdateFavoriteState(userId = userId, itemId = item.itemId))
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
-        } else if (!state.error.isNullOrEmpty()) {
+        } else {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

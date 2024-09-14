@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.youppix.ecommercecourse.common.Resource
+import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.model.items.Item
 import com.youppix.ecommercecourse.domain.useCases.checkout.CheckoutUseCases
@@ -53,7 +54,8 @@ class CheckoutViewModel @Inject constructor(
                         customerId = event.customerId ,
                         userId = event.userId,
                         carts = event.carts ,
-                        deliveryMethod = event.deliveryMethod
+                        deliveryMethod = event.deliveryMethod,
+                        shippingAddress = event.shippingAddress
                     )
                 }
             }
@@ -114,6 +116,7 @@ class CheckoutViewModel @Inject constructor(
         userId: Int,
         carts : List<CartData> ,
         deliveryMethod : Int ,
+        shippingAddress : Address
     ) {
         checkoutUseCases.createCheckoutUrl(
             local = local,
@@ -122,7 +125,8 @@ class CheckoutViewModel @Inject constructor(
             customerId = customerId ,
             userId = userId,
             carts = carts ,
-            deliveryMethod = deliveryMethod
+            deliveryMethod = deliveryMethod,
+            shippingAddress = shippingAddress
         ).onEach {result ->
             when (result ){
                 is Resource.Loading -> {

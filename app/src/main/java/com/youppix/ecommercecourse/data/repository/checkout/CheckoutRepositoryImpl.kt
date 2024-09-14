@@ -4,6 +4,7 @@ import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.cart.CartService
 import com.youppix.ecommercecourse.data.remote.cart.dto.CheckoutResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CreateCheckoutUrlResponse
+import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.repository.checkout.CheckoutRepository
 import kotlinx.coroutines.flow.Flow
@@ -21,6 +22,7 @@ class CheckoutRepositoryImpl(private val service: CartService) : CheckoutReposit
         userId: Int,
         carts: List<CartData>,
         deliveryMethod: Int,
+        shippingAddress : Address
     ): Flow<Resource<CreateCheckoutUrlResponse>> {
         return service.createCheckout(
             local = local,
@@ -29,7 +31,8 @@ class CheckoutRepositoryImpl(private val service: CartService) : CheckoutReposit
             customerId = customerId,
             userId = userId,
             carts = carts,
-            deliveryMethod = deliveryMethod
+            deliveryMethod = deliveryMethod,
+            shippingAddress = shippingAddress
         )
     }
 }

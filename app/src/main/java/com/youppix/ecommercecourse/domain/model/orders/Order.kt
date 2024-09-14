@@ -10,5 +10,7 @@ data class Order(
     val ordersDescription : String,
     val ordersAmount: Int,
     val ordersDate: Long,
-    val ordersId : String
+    val ordersId : String,
+    val ordersAddressName : String ,
+    val ordersAddressInformation : String
 )

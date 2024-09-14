@@ -1,7 +1,9 @@
 package com.youppix.ecommercecourse.presentation.home_app.address.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -184,6 +186,54 @@ fun ShippingAddressItem(
                 modifier = Modifier.padding(horizontal = SmallPadding)
             )
         }
+
+    }
+
+
+}
+
+@Stable
+@Composable
+fun ShippingAddressItem(
+    modifier: Modifier = Modifier,
+    addressName: String,
+    addressInformation : String
+) {
+
+    Row(modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween) {
+
+        Column(
+            Modifier
+                .align(Alignment.Top)
+                .weight(1f)
+                .padding(end = LargePadding)
+        ) {
+            Text(
+                text = addressName, style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            )
+            Text(
+                text = addressInformation,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = colorResource(id = R.color.body)
+                ),
+                modifier = Modifier.offset(y = (-6).dp),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_location), contentDescription = null,
+            modifier = Modifier
+                .padding(top = ExtraSmallPadding)
+                .size(LargePadding.minus(ExtraSmallPadding2)),
+            tint = Color.Unspecified
+
+        )
 
     }
 

@@ -22,12 +22,7 @@ class HomeViewModel @Inject constructor(
     private var _homeState = mutableStateOf(HomeState(isHomeLoading = true))
     val homeState: State<HomeState> = _homeState
 
-    init {
-        screenModelScope.launch {
-            getHomeData()
-            getItemsByCategory(homeState.value.categorySelected)
-        }
-    }
+
 
     fun onEvent(event: HomeEvent) {
         when (event) {
@@ -37,7 +32,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.GetHomeData -> {
                 screenModelScope.launch {
-                    getHomeData()
+                    getHomeData(userId = event.userId)
                 }
             }
 
@@ -46,6 +41,12 @@ class HomeViewModel @Inject constructor(
                 screenModelScope.launch {
                     getItemsByCategory(event.category)
                 }
+            }
+
+            is HomeEvent.SetUserId -> {
+                _homeState.value = homeState.value.copy(
+                    userId = event.userId
+                )
             }
 
         }
@@ -64,8 +65,8 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    private suspend fun getHomeData() {
-        homeUseCases.getHomeData().onEach { result ->
+    private suspend fun getHomeData(userId: Int) {
+        homeUseCases.getHomeData(userId).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _homeState.value = homeState.value.copy(
@@ -88,7 +89,9 @@ class HomeViewModel @Inject constructor(
                         categories = result.data?.categories?.toCategories() ?: emptyList(),
                         flashSaleItems = result.data?.flashSaleItems?.toItems() ?: emptyList(),
                         newArrivals = result.data?.newArrivals?.toItems() ?: emptyList(),
-                        getHomeDataError = null
+                        getHomeDataError = null ,
+                        haveNotification = result.data?.haveNotification ?: false
+
                     )
                 }
             }

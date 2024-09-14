@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetHomeDataUseCase(
     private val homeRepository: HomeRepository
 ) {
-    suspend operator fun invoke(): Flow<Resource<HomeResponse>> {
-        return homeRepository.getHomeData()
+    suspend operator fun invoke(userId :Int): Flow<Resource<HomeResponse>> {
+        return homeRepository.getHomeData(userId)
     }
 }

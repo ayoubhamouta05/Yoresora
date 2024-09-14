@@ -9,8 +9,8 @@ import com.youppix.ecommercecourse.domain.repository.home.HomeRepository
 import kotlinx.coroutines.flow.Flow
 
 class HomeRepositoryImpl(private val homeService: HomeService) : HomeRepository {
-    override suspend fun getHomeData(): Flow<Resource<HomeResponse>> {
-        return homeService.getHomeData()
+    override suspend fun getHomeData(userId : Int): Flow<Resource<HomeResponse>> {
+        return homeService.getHomeData(userId)
     }
 
 

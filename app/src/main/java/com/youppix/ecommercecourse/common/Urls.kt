@@ -19,6 +19,8 @@ object Urls {
     const val COlORS_URL = "$BASE_URL/colors/colors.php"
     const val ITEMS_BY_CATEGORY_URL = "$BASE_URL/items/itemsByCategory.php"
     const val ITEMS_BY_FILTERING_URL = "$BASE_URL/items/itemsByFiltering.php"
+    const val GET_NOTIFICATIONS_URL = "$BASE_URL/notifications/getNotifications.php"
+    const val UPDATE_NOTIFICATION_URL = "$BASE_URL/notifications/updateNotification.php"
 
     /** details urls */
     const val ITEM_DETAILS_URL = "$BASE_URL/details/details.php"

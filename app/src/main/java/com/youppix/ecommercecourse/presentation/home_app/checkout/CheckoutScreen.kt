@@ -102,10 +102,10 @@ data class CheckoutScreen(
                                 customerId = state.customerId!!,
                                 userId = userId,
                                 carts = orderList,
-                                deliveryMethod = if (state.isHomeDelivery)  1 else 2
+                                deliveryMethod = if (state.isHomeDelivery)  1 else 2,
+                                shippingAddress = state.address!!
                             )
                         )
-
                     } else {
                         Toast.makeText(
                             context,

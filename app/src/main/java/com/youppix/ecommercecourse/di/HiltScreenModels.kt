@@ -9,6 +9,7 @@ import com.youppix.ecommercecourse.presentation.home_app.details.DetailsViewMode
 import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeViewModel
 import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesViewModel
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeViewModel
+import com.youppix.ecommercecourse.presentation.home_app.notification.NotificationsViewModel
 import com.youppix.ecommercecourse.presentation.home_app.orders.OrdersViewModel
 import com.youppix.ecommercecourse.presentation.home_app.ordersDetails.OrderDetailsViewModel
 import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentViewModel
@@ -93,4 +94,9 @@ abstract class HiltScreenModels {
     @IntoMap
     @ScreenModelKey(OrderDetailsViewModel::class)
     abstract fun bindHiltOrderDetailsViewModel(orderDetailsViewModel: OrderDetailsViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(NotificationsViewModel::class)
+    abstract fun bindHiltNotificationsViewModel(notificationsViewModel: NotificationsViewModel): ScreenModel
 }

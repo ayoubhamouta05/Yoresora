@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.model.user.User
 import com.youppix.ecommercecourse.domain.model.user.toUser
@@ -173,6 +174,8 @@ class LoginViewModel @Inject constructor(
                 it("userPhone", user.userPhone)
                 it("userImage" , user.userImage ?: "")
             }
+            FirebaseMessaging.getInstance().subscribeToTopic("users")
+            FirebaseMessaging.getInstance().subscribeToTopic(user.userId.toString())
         }
 
     }

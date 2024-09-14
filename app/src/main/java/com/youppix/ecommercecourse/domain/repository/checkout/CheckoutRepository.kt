@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.domain.repository.checkout
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.cart.dto.CheckoutResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CreateCheckoutUrlResponse
+import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,7 @@ interface CheckoutRepository {
         customerId: String,
         userId: Int,
         carts : List<CartData>,
-        deliveryMethod : Int
+        deliveryMethod : Int,
+        shippingAddress : Address
     ): Flow<Resource<CreateCheckoutUrlResponse>>
 }

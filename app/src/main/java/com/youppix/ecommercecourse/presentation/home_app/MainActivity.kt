@@ -2,13 +2,11 @@ package com.youppix.ecommercecourse.presentation.home_app
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,18 +35,19 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
-import com.youppix.ecommercecourse.presentation.home_app.orders.OrdersScreen
-import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
-import com.youppix.ecommercecourse.presentation.home_app.components.shadow
-import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
-import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
-import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
-import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
-import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.home_app.cart.CartScreen
 import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutScreen
+import com.youppix.ecommercecourse.presentation.home_app.components.CustomBottomBar
+import com.youppix.ecommercecourse.presentation.home_app.components.shadow
+import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeScreen
+import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
+import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesScreen
+import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
+import com.youppix.ecommercecourse.presentation.home_app.notification.NotificationsScreen
+import com.youppix.ecommercecourse.presentation.home_app.orders.OrdersScreen
 import com.youppix.ecommercecourse.presentation.home_app.ordersDetails.OrderDetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentScreen
+import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -172,7 +171,8 @@ class MainActivity : ComponentActivity() {
                                         navigator.lastItem.javaClass.name != CheckoutScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != AddressScreen::class.java.name &&
                                         navigator.lastItem.javaClass.name != PaymentScreen::class.java.name &&
-                                        navigator.lastItem.javaClass.name != OrderDetailsScreen::class.java.name
+                                        navigator.lastItem.javaClass.name != OrderDetailsScreen::class.java.name &&
+                                        navigator.lastItem.javaClass.name != NotificationsScreen::class.java.name
                             backPressedState =
                                 navigator.lastItem.javaClass.name != HomeScreen::class.java.name
                         }

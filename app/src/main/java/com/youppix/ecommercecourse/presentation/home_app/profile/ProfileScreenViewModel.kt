@@ -8,6 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Resource
@@ -81,6 +82,8 @@ class ProfileScreenViewModel @Inject constructor(
 
     private fun logout() {
         profileUseCases.saveUserData(APP_ENTRY, "1")
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("users")
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(state.value.user.userId.toString())
     }
 
     private suspend fun uploadImage(userId: Int, file: File) {

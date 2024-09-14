@@ -10,7 +10,7 @@ data class LoginState(
     val showPassword: Boolean = false,
     val emailError: String? = null,
     val passwordError: String? = null,
-    val rememberMe: Boolean = false,
+    val rememberMe: Boolean = true,
     val loginSuccessful: Boolean = false,
     val loginError: String? = null,
     val needUserApprove :Boolean?=null

@@ -2,6 +2,7 @@ package com.youppix.ecommercecourse.common
 
 import android.content.Context
 import android.content.res.Configuration
+import android.text.format.DateUtils
 import android.util.Patterns
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
@@ -184,5 +185,32 @@ object Constant {
         val dateFormatted = SimpleDateFormat("dd/MM/yyyy HH:mm:ss" , Locale.US)
             .format(date)
         return dateFormatted
+    }
+
+    fun getRelativeTime(time: String): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+
+        val date: Date = dateFormat.parse(time) ?: return "Invalid date"
+
+        val timestamp = date.time
+
+        val now = System.currentTimeMillis()
+
+        return DateUtils.getRelativeTimeSpanString(
+            timestamp,
+            now,
+            DateUtils.MINUTE_IN_MILLIS
+        ).toString().toEnglishNumbers()
+    }
+    private fun String.toEnglishNumbers(): String {
+        val arabicNumbers = arrayOf('٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩')
+        val englishNumbers = arrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+
+        var result = this
+        for (i in arabicNumbers.indices) {
+            result = result.replace(arabicNumbers[i], englishNumbers[i])
+        }
+
+        return result
     }
 }

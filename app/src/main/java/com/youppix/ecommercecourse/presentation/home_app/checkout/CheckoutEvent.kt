@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.checkout
 
+import com.youppix.ecommercecourse.domain.model.address.Address
 import com.youppix.ecommercecourse.domain.model.cart.CartData
 import com.youppix.ecommercecourse.domain.model.items.Item
 
@@ -18,6 +19,7 @@ sealed class CheckoutEvent {
         val customerId: String,
         val userId: Int,
         val carts : List<CartData>,
-        val deliveryMethod : Int
+        val deliveryMethod : Int,
+        val shippingAddress : Address
     ) : CheckoutEvent()
 }

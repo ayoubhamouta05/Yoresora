@@ -46,7 +46,6 @@ data class OrdersScreen(val userId: Int) : Screen {
         val viewModel: OrdersViewModel = navigator.getNavigatorScreenModel()
         val state by viewModel.state
         val isArabic = Locale.getDefault().language == "ar"
-        val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             viewModel.onEvent(OrdersEvent.GetAllOrders(userId = userId))
@@ -154,7 +153,7 @@ data class OrdersScreen(val userId: Int) : Screen {
                                 ),
                             order = state.ordersList[index]
                         ) {
-                            navigator.push(OrderDetailsScreen(orderId = state.ordersList[index].ordersId))
+                            navigator.push(OrderDetailsScreen(order = state.ordersList[index]))
                         }
                     }
                 }

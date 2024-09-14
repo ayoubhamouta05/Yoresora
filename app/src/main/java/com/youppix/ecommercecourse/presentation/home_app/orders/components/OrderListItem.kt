@@ -92,7 +92,7 @@ fun OrderListItem(modifier: Modifier = Modifier, order: Order, onDetailsClick: (
                         text = stringResource(id = R.string.orderId, order.ordersId),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Start
+                            textAlign = TextAlign.Center
                         ),
                         modifier = Modifier
                             .weight(1f)

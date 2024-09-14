@@ -9,5 +9,6 @@ data class HomeResponse(
     val categories: List<CategoryData>? = emptyList(),
     val flashSaleItems: List<ItemData>? = emptyList(),
     val newArrivals: List<ItemData>? = emptyList(),
+    val haveNotification : Boolean = false,
     val status: String
 )

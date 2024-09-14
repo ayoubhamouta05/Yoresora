@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">EcommerceCourse</string>
-    <string name="onboardingtitle1">مرحبًا بكم في OM-MH</string>
+    <string name="app_name">Yoresora</string>
+    <string name="onboardingtitle1">مرحبًا بكم في Yoresora</string>
     <string name="onboardingtitle2">تصاميم مخصصة</string>
-    <string name="onboardingtitle3">ابدأ مع OM-MH</string>
+    <string name="onboardingtitle3">ابدأ مع Yoresora</string>
     <string name="onboardingbody1">استكشف الأناقة والحرفية للفساتين المصممة خصيصًا لك فقط</string>
     <string name="onboardingbody2">تم تصميم كل قطعة باهتمام دقيق بالتفاصيل، مما يعكس أسلوبك وشخصيتك الفريدة</string>
     <string name="onboardingbody3">قم بالتسجيل أو تسجيل الدخول لبدء رحلة الموضة معنا. اكتشف فستان أحلامك وخصصه وصنعه</string>
@@ -181,4 +181,6 @@
     <string name="price">السعر :</string>
     <string name="orderDetails">تفاصيل الطلب</string>
     <string name="youDontHaveAnyOrders">ليس لديك أي طلبات %1$s حتى الآن!</string>
+    <string name="at">على : %1$s</string>
+    <string name="youHaveUnreadNotifications">لديك إشعارات غير مقروءة</string>
 </resources>

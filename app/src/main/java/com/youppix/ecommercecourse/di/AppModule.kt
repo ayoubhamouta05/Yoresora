@@ -19,6 +19,7 @@ import com.youppix.ecommercecourse.data.repository.favorites.FavoritesRepository
 import com.youppix.ecommercecourse.data.repository.forgotPassword.ForgotPasswordRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.home.HomeRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.login.LoginRepositoryImpl
+import com.youppix.ecommercecourse.data.repository.notifications.NotificationsRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.orders.OrdersRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.profile.ProfileRepositoryImpl
 import com.youppix.ecommercecourse.data.repository.search.SearchRepositoryImpl
@@ -34,6 +35,7 @@ import com.youppix.ecommercecourse.domain.repository.favorites.FavoritesReposito
 import com.youppix.ecommercecourse.domain.repository.forgotPassword.ForgotPasswordRepository
 import com.youppix.ecommercecourse.domain.repository.home.HomeRepository
 import com.youppix.ecommercecourse.domain.repository.login.LoginRepository
+import com.youppix.ecommercecourse.domain.repository.notifications.NotificationsRepository
 import com.youppix.ecommercecourse.domain.repository.orders.OrdersRepository
 import com.youppix.ecommercecourse.domain.repository.profile.ProfileRepository
 import com.youppix.ecommercecourse.domain.repository.search.SearchRepository
@@ -79,6 +81,9 @@ import com.youppix.ecommercecourse.domain.useCases.home.GetHomeDataUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.GetItemsByCategoryUseCase
 import com.youppix.ecommercecourse.domain.useCases.home.HomeUseCases
 import com.youppix.ecommercecourse.domain.useCases.networkConnectivity.NetworkConnectivityManagerUseCase
+import com.youppix.ecommercecourse.domain.useCases.notifications.GetNotificationsUseCase
+import com.youppix.ecommercecourse.domain.useCases.notifications.NotificationsUseCases
+import com.youppix.ecommercecourse.domain.useCases.notifications.UpdateNotificationUseCase
 import com.youppix.ecommercecourse.domain.useCases.orders.GetAllOrdersUseCase
 import com.youppix.ecommercecourse.domain.useCases.orders.GetOrderDetailsUseCase
 import com.youppix.ecommercecourse.domain.useCases.orders.OrdersUseCases
@@ -398,7 +403,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCheckoutUseCases(checkoutRepository: CheckoutRepository): CheckoutUseCases =
-        CheckoutUseCases(getAddress = GetAddressUseCase(checkoutRepository) ,
+        CheckoutUseCases(
+            getAddress = GetAddressUseCase(checkoutRepository),
             createCheckoutUrl = CreateCheckoutUrlUseCase(checkoutRepository)
         )
 
@@ -413,8 +419,8 @@ object AppModule {
     fun provideAddressUseCases(addressRepository: AddressRepository): AddressUseCases =
         AddressUseCases(
             getAllAddress = GetAllAddressUseCase(addressRepository),
-            upsertAddress = UpsertAddressUseCase(addressRepository) ,
-            deleteAddress = DeleteAddressUseCase(addressRepository) ,
+            upsertAddress = UpsertAddressUseCase(addressRepository),
+            deleteAddress = DeleteAddressUseCase(addressRepository),
             getCommune = GetCommuneUseCase(addressRepository)
         )
 
@@ -422,18 +428,33 @@ object AppModule {
     //Orders
     @Provides
     @Singleton
-    fun provideOrdersService (client: HttpClient) = OrdersService(client)
+    fun provideOrdersService(client: HttpClient) = OrdersService(client)
 
     @Provides
     @Singleton
-    fun provideOrdersRepository(service: OrdersService) : OrdersRepository =
+    fun provideOrdersRepository(service: OrdersService): OrdersRepository =
         OrdersRepositoryImpl(service)
 
     @Provides
     @Singleton
-    fun provideOrdersUseCases(ordersRepository : OrdersRepository) : OrdersUseCases =
-        OrdersUseCases(getAllOrders = GetAllOrdersUseCase(ordersRepository) ,
+    fun provideOrdersUseCases(ordersRepository: OrdersRepository): OrdersUseCases =
+        OrdersUseCases(
+            getAllOrders = GetAllOrdersUseCase(ordersRepository),
             getOrderDetails = GetOrderDetailsUseCase(ordersRepository)
         )
 
+    //Notifications
+
+    @Provides
+    @Singleton
+    fun provideNotificationsRepository(service: HomeService): NotificationsRepository =
+        NotificationsRepositoryImpl(service)
+
+    @Provides
+    @Singleton
+    fun provideNotificationsUseCases(notificationsRepository: NotificationsRepository): NotificationsUseCases =
+        NotificationsUseCases(
+            getNotifications = GetNotificationsUseCase(notificationsRepository) ,
+            updateNotification = UpdateNotificationUseCase(notificationsRepository)
+        )
 }

@@ -75,7 +75,7 @@ fun HomeScreenContent(
         ) {
             EmptyScreen(error = state.getHomeDataError) {
 
-                event(HomeEvent.GetHomeData)
+                event(HomeEvent.GetHomeData(state.userId))
                 event(
                     HomeEvent.GetItemsByCategory(state.categorySelected) // to refresh the items either
                 )

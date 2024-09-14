@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import com.youppix.ecommercecourse.presentation.home_app.components.CustomIconIt
 import com.youppix.ecommercecourse.presentation.home_app.components.CustomSearchBar
 import com.youppix.ecommercecourse.presentation.home_app.details.DetailsScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.components.HomeScreenContent
+import com.youppix.ecommercecourse.presentation.home_app.notification.NotificationsScreen
 import com.youppix.ecommercecourse.presentation.home_app.search.SearchScreen
 
 class HomeScreen() : Screen {
@@ -40,9 +42,18 @@ class HomeScreen() : Screen {
         val viewModel = navigator.getNavigatorScreenModel<HomeViewModel>()
         val state = viewModel.homeState.value
         val context = LocalContext.current
-        val userId = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId" , "")
+        val userId = context.getSharedPreferences(Constant.APP_ENTRY, 0).getString("userId", "")
 
 
+        LaunchedEffect(Unit) {
+
+            userId?.let {
+                viewModel.onEvent(HomeEvent.SetUserId(it.toInt()))
+                viewModel.onEvent(HomeEvent.GetHomeData(it.toInt()))
+            }
+            viewModel.onEvent(HomeEvent.GetItemsByCategory(state.categorySelected))
+
+        }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -60,7 +71,7 @@ class HomeScreen() : Screen {
                         onBoxCLicked = {
                             navigator.push(
                                 SearchScreen(
-                                    userId ,
+                                    userId,
                                     fromSearching = true,
                                     FilteringItems(
                                         itemsCat = if (state.categorySelected == 1) null else state.categorySelected
@@ -73,8 +84,10 @@ class HomeScreen() : Screen {
                     CustomIconItem(
                         modifier = Modifier.padding(start = SmallPadding),
                         imageVector = Icons.Default.Notifications,
-                        hasNotification = true
-                    ) {}
+                        hasNotification = state.haveNotification
+                    ) {
+                        userId?.let { navigator.push(NotificationsScreen(it.toInt())) }
+                    }
                 }
             }
         ) { innerPadding ->
@@ -88,7 +101,7 @@ class HomeScreen() : Screen {
                 goToSearch = { initialDiscount ->
                     navigator.push(
                         SearchScreen(
-                            userId ,
+                            userId,
                             fromSearching = false,
                             FilteringItems(
                                 itemsCat = if (state.categorySelected == 1) null else state.categorySelected,
@@ -100,7 +113,7 @@ class HomeScreen() : Screen {
                 },
                 goToDetails = { item ->
                     userId?.let {
-                        navigator.push(DetailsScreen(userId ,item, true))
+                        navigator.push(DetailsScreen(userId, item, true))
                     }
                 },
                 event = viewModel::onEvent

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    suspend fun getHomeData() : Flow<Resource<HomeResponse>>
+    suspend fun getHomeData(userId : Int) : Flow<Resource<HomeResponse>>
 
     suspend fun getItemOfCategory(category : Int) : Flow<Resource<ItemsResponse>>
 }
