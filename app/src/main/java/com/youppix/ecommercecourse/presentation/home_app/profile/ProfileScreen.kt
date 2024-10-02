@@ -1,6 +1,9 @@
 package com.youppix.ecommercecourse.presentation.home_app.profile
 
 import android.content.Intent
+import android.os.Build
+import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,9 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Message
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Message
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -44,6 +46,7 @@ import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.presentation.components.CustomTopAppBar
+import com.youppix.ecommercecourse.presentation.components.NotificationPermissionHandler
 import com.youppix.ecommercecourse.presentation.home_app.address.AddressScreen
 import com.youppix.ecommercecourse.presentation.home_app.home.HomeScreen
 import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsScreen
@@ -70,8 +73,26 @@ class ProfileScreen : Screen {
         }
 
         LaunchedEffect(Unit) {
-            viewModel.onEvent(ProfileEvent.GetUserData)
+            viewModel.onEvent(ProfileEvent.GetUserData(context))
         }
+        LaunchedEffect(state.error) {
+            if (!state.error.isNullOrEmpty()){
+                Toast.makeText(context, context.getString(R.string.error) + ": ${state.error}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        NotificationPermissionHandler(
+            isNotificationEnable = state.isNotificationEnable,
+            onPermissionDenied = {
+                // If permission is denied, toggle the switch back off
+                viewModel.onEvent(ProfileEvent.ToggleNotification(false))
+            },
+            onPermissionGranted = {
+                // Permission granted, proceed with enabling notifications
+                viewModel.onEvent(ProfileEvent.ToggleNotification(true))
+            }
+        )
+
 
         val singlePhotoPickerLauncher =
             rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -143,9 +164,23 @@ class ProfileScreen : Screen {
                             modifier = Modifier.padding(vertical = ExtraSmallPadding2),
                             checked = state.isNotificationEnable,
                             imageVector = Icons.Outlined.Notifications,
-                            title = stringResource(id = R.string.notifications)
+                            title = stringResource(id = R.string.notifications) ,
+                            onLongClick = {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val intent =
+                                        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                            .putExtra(
+                                                Settings.EXTRA_APP_PACKAGE,
+                                                context.packageName
+                                            )
+                                    startActivity(context, intent, null)
+                                }
+                            }
                         ) {
-                            viewModel.onEvent(ProfileEvent.ToggleNotification)
+                            if (state.isNotificationEnable)
+                                viewModel.onEvent(ProfileEvent.ToggleNotification(false))
+                            else
+                                viewModel.onEvent(ProfileEvent.ToggleNotification(true))
                         }
                         Spacer(
                             modifier = Modifier

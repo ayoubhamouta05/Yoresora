@@ -186,6 +186,7 @@ or continue with social media</string>
     <string name="youDontHaveAnyOrders">You don\'t have any %1$s orders yet!</string>
     <string name="at">At: %$s</string>
     <string name="youHaveUnreadNotifications">You Have Unread Notifications</string>
+    <string name="notificationPermissionDeniedMessage">Please enable notification permission from settings,\nlong-press to go to notifications settings</string>
 
 
 </resources>

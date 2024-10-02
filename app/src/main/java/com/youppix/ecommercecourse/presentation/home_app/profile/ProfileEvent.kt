@@ -1,5 +1,6 @@
 package com.youppix.ecommercecourse.presentation.home_app.profile
 
+import android.content.Context
 import java.io.File
 
 sealed class ProfileEvent {
@@ -8,9 +9,9 @@ sealed class ProfileEvent {
     data object Logout : ProfileEvent()
     data object ShowDialog : ProfileEvent()
     data object HideDialog : ProfileEvent()
-    data object ToggleNotification : ProfileEvent()
+    data class ToggleNotification(val value : Boolean) : ProfileEvent()
     data class UploadImage(val userId: Int, val file: File) : ProfileEvent()
-    data object GetUserData : ProfileEvent()
+    data class GetUserData(val context : Context) : ProfileEvent()
     data class SaveAppLanguage(val lang : String ) : ProfileEvent()
 
 }

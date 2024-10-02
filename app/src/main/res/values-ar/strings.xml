@@ -183,4 +183,5 @@
     <string name="youDontHaveAnyOrders">ليس لديك أي طلبات %1$s حتى الآن!</string>
     <string name="at">على : %1$s</string>
     <string name="youHaveUnreadNotifications">لديك إشعارات غير مقروءة</string>
+    <string name="notificationPermissionDeniedMessage">يرجى تمكين إذن الإشعارات من الإعدادات,\nاضغط مطولا للانتقال إلى إعدادات الإشعارات</string>
 </resources>

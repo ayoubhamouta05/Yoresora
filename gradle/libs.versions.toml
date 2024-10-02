@@ -1,4 +1,5 @@
 [versions]
+accompanistPermissions = "0.36.0"
 agp = "8.4.2"
 coilCompose = "2.7.0"
 datastorePreferences = "1.1.1"
@@ -27,6 +28,7 @@ google-services = "4.4.2"
 firebaseMessaging = "24.0.0"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }

@@ -65,6 +65,7 @@ import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpS
 import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpState
 import com.youppix.ecommercecourse.presentation.starting_app.auth.verification.VerificationEmailSignUpScreen
 import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import com.youppix.ecommercecourse.presentation.components.NotificationPermissionHandler
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -100,6 +101,8 @@ class LoginScreen() : Screen {
             }
 
         }
+
+        NotificationPermissionHandler()
 
         CompositionLocalProvider(
             if (!isArabic) {
@@ -359,14 +362,5 @@ class LoginScreen() : Screen {
         context.startActivity(Intent(context, MainActivity::class.java))
         (context as Activity).finish()
 
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    EcommerceCourseTheme {
-        LoginScreen().Content()
     }
 }

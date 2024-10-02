@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,11 +28,11 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -45,7 +47,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -54,6 +55,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -246,14 +248,50 @@ fun DetailsScreenContent(
                 }
 
                 item {
-                    Text(
-                        text = if (isArabic) state.details.categories_name_ar else state.details.categories_name,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        ),
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier.padding(horizontal = Dimens.MediumPadding)
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = MediumPadding)
+                    ) {
+                        Text(
+                            text = if (isArabic) state.details.categories_name_ar else state.details.categories_name,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            ),
+                            textAlign = TextAlign.Start,
+                            modifier = Modifier.offset(y = (-1).dp)
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Text(
+                            text = if (item.itemDiscount.toString()
+                                    .isNotEmpty()
+                            )stringResource(id = R.string.discount) + ": " else "",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = colorResource(id = R.color.body),
+                            modifier = Modifier.offset(y = (-1).dp)
+                        )
+                        Text(
+                            text = if (item.itemDiscount.toString()
+                                    .isNotEmpty()
+                            ) "${item.itemDiscount}%" else "",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
+                            color = Color.Red,
+                            modifier = Modifier
+                                .padding(horizontal = ExtraSmallPadding2)
+                        )
+                        if (item.itemDiscount.toString().isNotEmpty())
+                            Icon(
+                                painterResource(id = R.drawable.ic_discount),
+                                contentDescription = null,
+                                Modifier.size(17.dp),
+                                tint = Color.Red
+                            )
+
+
+                    }
+
                 }
                 item {
                     Text(

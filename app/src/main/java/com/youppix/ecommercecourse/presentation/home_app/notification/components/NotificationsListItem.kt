@@ -44,7 +44,7 @@ fun NotificationsListItem(modifier: Modifier = Modifier, notification: Notificat
                 .offset(y = (-4).dp)
         ) {
             Text(
-                text = notification.title + notification.title + notification.title,
+                text = notification.title,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold
                 ),

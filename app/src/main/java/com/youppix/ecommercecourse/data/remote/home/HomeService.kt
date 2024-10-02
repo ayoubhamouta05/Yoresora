@@ -3,7 +3,7 @@ package com.youppix.ecommercecourse.data.remote.home
 import android.util.Log
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.common.Urls.CATEGORIES_URL
-import com.youppix.ecommercecourse.common.Urls.COlORS_URL
+import com.youppix.ecommercecourse.common.Urls.COLORS_URL
 import com.youppix.ecommercecourse.common.Urls.GET_NOTIFICATIONS_URL
 import com.youppix.ecommercecourse.common.Urls.HOME_URL
 import com.youppix.ecommercecourse.common.Urls.ITEMS_BY_CATEGORY_URL
@@ -16,7 +16,6 @@ import com.youppix.ecommercecourse.data.remote.home.dto.NotificationsResponse
 import com.youppix.ecommercecourse.domain.model.categories.CategoryData
 import com.youppix.ecommercecourse.domain.model.items.ColorData
 import com.youppix.ecommercecourse.domain.model.items.FilteringItems
-import com.youppix.ecommercecourse.domain.model.notification.Notification
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
@@ -127,7 +126,7 @@ class HomeService(private val client: HttpClient) {
     suspend fun getAllColors(): Flow<Resource<List<ColorData>>> = flow {
         try {
             emit(Resource.Loading())
-            val response = client.get(COlORS_URL)
+            val response = client.get(COLORS_URL)
 
 
             val responseBody = response.body<ColorResponse>().data

@@ -81,7 +81,7 @@ fun ItemsListItem(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .sizeIn(maxHeight = 300.dp)
+            .sizeIn(minHeight = 270.dp)
     ) {
         Card(
             modifier = Modifier

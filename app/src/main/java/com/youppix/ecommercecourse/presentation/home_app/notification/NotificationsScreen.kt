@@ -60,7 +60,7 @@ data class NotificationsScreen(private val userId: Int) : Screen {
                     .padding(innerPadding)
                     .padding(horizontal = Dimens.SmallPadding)
             ) {
-                items(state.notifications.size, key = { it }) {
+                items(state.notifications.size, key = { state.notifications[it].id }) {
                     NotificationsListItem(
                         modifier = Modifier.padding(
                             vertical = ExtraSmallPadding2

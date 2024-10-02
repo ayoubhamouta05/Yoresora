@@ -7,4 +7,5 @@ data class ProfileState(
     val isLoading : Boolean = false ,
     val showDialog : Boolean = false ,
     val isNotificationEnable : Boolean = false ,
+    val error : String? = null
 )

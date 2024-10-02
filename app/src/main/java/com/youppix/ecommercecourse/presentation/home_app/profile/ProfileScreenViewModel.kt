@@ -13,6 +13,7 @@ import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.domain.useCases.profile.ProfileUseCases
+import com.youppix.ecommercecourse.presentation.components.isNotificationPermissionGranted
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -56,8 +57,17 @@ class ProfileScreenViewModel @Inject constructor(
             }
 
             is ProfileEvent.ToggleNotification -> {
+                if(event.value){
+                    profileUseCases.saveUserData("subscribeToTopics" , true.toString())
+                    FirebaseMessaging.getInstance().subscribeToTopic("users")
+                    FirebaseMessaging.getInstance().subscribeToTopic(state.value.user.userId.toString())
+                }else{
+                    profileUseCases.saveUserData("subscribeToTopics" , false.toString())
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("users")
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(state.value.user.userId.toString())
+                }
                 _state.value = state.value.copy(
-                    isNotificationEnable = !state.value.isNotificationEnable
+                    isNotificationEnable = event.value
                 )
             }
 
@@ -69,6 +79,11 @@ class ProfileScreenViewModel @Inject constructor(
 
             is ProfileEvent.GetUserData -> {
                 getUserData()
+                val isNotificationEnable = profileUseCases.getUserData("subscribeToTopics", false.toString()).toBoolean()
+                        && isNotificationPermissionGranted(event.context)
+                _state.value = state.value.copy(
+                    isNotificationEnable = isNotificationEnable
+                )
             }
 
             is ProfileEvent.SaveAppLanguage -> {
@@ -97,7 +112,8 @@ class ProfileScreenViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _state.value = state.value.copy(
-                        isLoading = false
+                        isLoading = false,
+                        error = result.message ?: result.data?.message ?: "An Unexpected Error Occurred"
                     )
                     file.delete()
                 }
@@ -109,7 +125,8 @@ class ProfileScreenViewModel @Inject constructor(
                     }
 
                     _state.value = state.value.copy(
-                        isLoading = false
+                        isLoading = false ,
+                        error = null
                     )
                     file.delete()
                 }

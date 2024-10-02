@@ -173,6 +173,7 @@ class LoginViewModel @Inject constructor(
                 it("userEmail", user.userEmail)
                 it("userPhone", user.userPhone)
                 it("userImage" , user.userImage ?: "")
+                it("subscribeToTopics" , true.toString())
             }
             FirebaseMessaging.getInstance().subscribeToTopic("users")
             FirebaseMessaging.getInstance().subscribeToTopic(user.userId.toString())

@@ -159,7 +159,7 @@ fun ItemsListItemShimmerEffect(modifier: Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = Dimens.MediumPadding)
-            .sizeIn(maxHeight = 300.dp),
+            .sizeIn(minHeight = 300.dp),
         shape = RoundedCornerShape(26.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 4.dp,

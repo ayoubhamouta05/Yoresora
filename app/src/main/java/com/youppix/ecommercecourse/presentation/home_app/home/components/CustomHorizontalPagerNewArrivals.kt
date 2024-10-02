@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.youppix.ecommercecourse.common.Dimens
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
 import com.youppix.ecommercecourse.domain.model.items.Item
@@ -52,12 +53,12 @@ fun CustomHorizontalPagerNewArrivals(
 
         }
 
-//        PageIndicator(
-//            pageSize = items.size, selectedPage = pagerState.currentPage,
-//            modifier = Modifier.align(CenterHorizontally),
-//            indicatorSize = SmallPadding,
-//            selectedColor = MaterialTheme.colorScheme.primary,
-//            unselectedColor = if ( isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
-//        )
+        PageIndicator(
+            pageSize = items.size, selectedPage = pagerState.currentPage,
+            modifier = Modifier.align(CenterHorizontally),
+            indicatorSize = SmallPadding,
+            selectedColor = MaterialTheme.colorScheme.primary,
+            unselectedColor = if ( isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
+        )
     }
 }
