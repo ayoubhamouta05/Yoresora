@@ -13,6 +13,7 @@ data class DetailsData(
     val colors : List<ColorData> = emptyList(),
     val images: List<String> = emptyList(),
     val is_favorite: Boolean = false,
+    val is_active : Boolean = true ,
     val sizes: List<SizeData> = emptyList(),
     val initialData: ArrayList<InitialColorAndSizeData>? = null,
 )

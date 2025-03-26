@@ -184,9 +184,24 @@ or continue with social media</string>
     <string name="price">Price: </string>
     <string name="orderDetails">Order Details</string>
     <string name="youDontHaveAnyOrders">You don\'t have any %1$s orders yet!</string>
-    <string name="at">At: %$s</string>
+    <string name="at">At: %1$s</string>
     <string name="youHaveUnreadNotifications">You Have Unread Notifications</string>
     <string name="notificationPermissionDeniedMessage">Please enable notification permission from settings,\nlong-press to go to notifications settings</string>
+    <string name="invalidPromoCodeErrorMessage" />
+    <string name="edit">Edit</string>
+    <string name="englishName">English name</string>
+    <string name="arabicName">Arabic name</string>
+    <string name="englishDetails">English details</string>
+    <string name="arabicDetails">Arabic  details</string>
+    <string name="numberOfSubscribers">Subscribers</string>
+    <string name="numberOfOrders">Orders</string>
+    <string name="numberOfItemsInApp">Items</string>
+    <string name="ordersAwaited">Orders awaited</string>
+    <string name="lastWeekStatistics">Last Week Statistics</string>
+    <string name="bestSellingItems">best-selling items</string>
+    <string name="delivered">Delivered</string>
+    <string name="orderStatus">Order status</string>
+    <string name="users">Users</string>
 
 
 </resources>

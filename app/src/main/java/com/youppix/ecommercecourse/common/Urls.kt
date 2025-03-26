@@ -1,7 +1,7 @@
 package com.youppix.ecommercecourse.common
 
 object Urls {
-    private const val BASE_URL = "http://192.168.152.86:8080/ecommerce_course/"
+    private const val BASE_URL = "http://192.168.103.86:8080/ecommerce_course/"
     const val IMAGES_URL = "$BASE_URL/images/"
 
     /** auth urls */
@@ -41,6 +41,7 @@ object Urls {
     /** Cart urls */
     const val ALL_CART_ITEMS_URL = "$BASE_URL/cart/getCartItems.php"
     const val UPDATE_QUANTITY_URL = "$BASE_URL/cart/updateQuantity.php"
+    const val CHECK_CODE_PROMO_URL = "$BASE_URL/cart/checkCodePromo.php"
     const val GET_ADDRESS_URL = "$BASE_URL/address/getAddress.php"
     const val CREATE_CHECKOUT_URL = "$BASE_URL/checkout/createCheckout.php"
     const val FAILURE_URL = "/ecommerce_course/webhook/failure.php"

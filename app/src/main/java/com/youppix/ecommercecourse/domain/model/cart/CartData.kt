@@ -33,5 +33,6 @@ fun CartData.toItem() =
         itemNameAr = this.items_name_ar,
         itemPrice = this.items_price,
         itemDesc = this.items_desc,
-        itemDescAr = this.items_desc_ar
+        itemDescAr = this.items_desc_ar,
+        itemDiscount = this.items_discount
     )

@@ -5,6 +5,7 @@ import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.common.Urls
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CartResponse
+import com.youppix.ecommercecourse.data.remote.cart.dto.CheckPromoCodeResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CheckoutResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CreateCheckoutUrlResponse
 import com.youppix.ecommercecourse.domain.model.address.Address
@@ -194,5 +195,41 @@ class CartService(private val client: HttpClient) {
             Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
         }
     }
+
+    suspend fun checkCodePromo(codePromo : String): Flow<Resource<CheckPromoCodeResponse>> =
+        flow {
+            try {
+                emit(Resource.Loading())
+                @Serializable
+                data class Body(
+                    val codePromo : String
+                )
+                val response = client.post(Urls.CHECK_CODE_PROMO_URL) {
+                    setBody(
+                        Body(
+                           codePromo = codePromo
+                        )
+                    )
+                }
+                val responseBody = response.body<CheckPromoCodeResponse>()
+                if (responseBody.status == "success")
+                emit(Resource.Successful(responseBody))
+                else
+                    emit(Resource.Error(responseBody.message))
+                Log.d("SignUpService", response.body())
+            } catch (e: ClientRequestException) {
+                emit(Resource.Error("Client request error"))
+                Log.d("SignUpService", "Client request error: ${e.localizedMessage}")
+            } catch (e: ServerResponseException) {
+                emit(Resource.Error("Server response error"))
+                Log.d("SignUpService", "Server response error: ${e.localizedMessage}")
+            } catch (e: IOException) {
+                emit(Resource.Error("Couldn't reach server"))
+                Log.d("SignUpService", "Couldn't reach server: ${e.message}")
+            } catch (e: SerializationException) {
+                emit(Resource.Error("Serialization error"))
+                Log.d("SignUpService", "Serialization error: ${e.localizedMessage}")
+            }
+        }
 
 }

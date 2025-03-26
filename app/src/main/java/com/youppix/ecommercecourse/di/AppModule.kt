@@ -63,6 +63,7 @@ import com.youppix.ecommercecourse.domain.useCases.auth.signUp.CheckUserNameUseC
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.SignUpUseCases
 import com.youppix.ecommercecourse.domain.useCases.auth.signUp.VerifyCodeUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.CartUseCases
+import com.youppix.ecommercecourse.domain.useCases.cart.CheckCodePromoUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.GetCartItemsUseCase
 import com.youppix.ecommercecourse.domain.useCases.cart.UpdateQuantityUseCase
 import com.youppix.ecommercecourse.domain.useCases.checkout.CheckoutUseCases
@@ -390,7 +391,8 @@ object AppModule {
     fun provideCartUseCases(cartRepository: CartRepository): CartUseCases =
         CartUseCases(
             getCartItems = GetCartItemsUseCase(cartRepository),
-            updateQuantity = UpdateQuantityUseCase(cartRepository)
+            updateQuantity = UpdateQuantityUseCase(cartRepository) ,
+            checkCodePromo = CheckCodePromoUseCase(cartRepository)
         )
 
     // Checkout

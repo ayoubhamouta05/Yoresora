@@ -33,7 +33,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.home_app.MainActivity"
+        <activity android:name=".presentation.user_home_app.MainActivity"
+            android:theme="@style/Theme.EcommerceCourse">
+
+        </activity>
+        <activity android:name=".presentation.admin_home_app.AdminActivity"
             android:theme="@style/Theme.EcommerceCourse">
 
         </activity>

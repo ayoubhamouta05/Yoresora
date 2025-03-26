@@ -5,6 +5,7 @@ plugins {
     id ("kotlin-kapt")
     alias(libs.plugins.serialization)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -44,7 +45,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = libs.versions.kotlin.get()
     }
     packaging {
         resources {
@@ -105,4 +106,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation (libs.accompanist.permissions)
 
+    //Charts
+    implementation(libs.compose.charts)
 }

@@ -2,20 +2,22 @@ package com.youppix.ecommercecourse.di
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.hilt.ScreenModelKey
-import com.youppix.ecommercecourse.presentation.home_app.address.AddressViewModel
-import com.youppix.ecommercecourse.presentation.home_app.cart.CartViewModel
-import com.youppix.ecommercecourse.presentation.home_app.checkout.CheckoutViewModel
-import com.youppix.ecommercecourse.presentation.home_app.details.DetailsViewModel
-import com.youppix.ecommercecourse.presentation.home_app.customSize.CustomSizeViewModel
-import com.youppix.ecommercecourse.presentation.home_app.favorites.FavoritesViewModel
-import com.youppix.ecommercecourse.presentation.home_app.home.HomeViewModel
-import com.youppix.ecommercecourse.presentation.home_app.notification.NotificationsViewModel
-import com.youppix.ecommercecourse.presentation.home_app.orders.OrdersViewModel
-import com.youppix.ecommercecourse.presentation.home_app.ordersDetails.OrderDetailsViewModel
-import com.youppix.ecommercecourse.presentation.home_app.payment.PaymentViewModel
-import com.youppix.ecommercecourse.presentation.home_app.profile.ProfileScreenViewModel
-import com.youppix.ecommercecourse.presentation.home_app.personalDetails.PersonalDetailsViewModel
-import com.youppix.ecommercecourse.presentation.home_app.search.SearchViewModel
+import com.youppix.ecommercecourse.presentation.admin_home_app.items.ItemsScreenViewModel
+import com.youppix.ecommercecourse.presentation.admin_home_app.users.UsersViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.address.AddressViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.cart.CartViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.checkout.CheckoutViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.details.DetailsViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.customSize.CustomSizeViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.favorites.FavoritesViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.home.HomeViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.notification.NotificationsViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.orders.OrdersViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.ordersDetails.OrderDetailsViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.payment.PaymentViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.profile.ProfileScreenViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.personalDetails.PersonalDetailsViewModel
+import com.youppix.ecommercecourse.presentation.user_home_app.search.SearchViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -99,4 +101,25 @@ abstract class HiltScreenModels {
     @IntoMap
     @ScreenModelKey(NotificationsViewModel::class)
     abstract fun bindHiltNotificationsViewModel(notificationsViewModel: NotificationsViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(ItemsScreenViewModel::class)
+    abstract fun bindHiltItemsScreenViewModel(itemsScreenViewModel: ItemsScreenViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(com.youppix.ecommercecourse.presentation.admin_home_app.details.DetailsViewModel::class)
+    abstract fun bindHiltDetailsViewModelForAdmin(detailsViewModel: com.youppix.ecommercecourse.presentation.admin_home_app.details.DetailsViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(com.youppix.ecommercecourse.presentation.admin_home_app.home.HomeViewModel::class)
+    abstract fun bindHiltHomeViewModelForAdmin(homeViewModel: com.youppix.ecommercecourse.presentation.admin_home_app.home.HomeViewModel): ScreenModel
+
+    @Binds
+    @IntoMap
+    @ScreenModelKey(UsersViewModel::class)
+    abstract fun bindHiltUsersViewModel(usersViewModel: UsersViewModel): ScreenModel
+
 }

@@ -3,10 +3,10 @@ accompanistPermissions = "0.36.0"
 agp = "8.4.2"
 coilCompose = "2.7.0"
 datastorePreferences = "1.1.1"
-firebaseBom = "33.1.2"
+firebaseBom = "33.4.0"
 hiltAndroid = "2.49"
 hiltNavigationCompose = "1.2.0"
-kotlin = "1.9.0"
+kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -15,17 +15,18 @@ ktorClientCio = "2.3.12"
 ktorClientContentNegotiation = "2.3.12"
 ktorClientCore = "2.3.12"
 ktorSerializationKotlinxJson = "2.3.12"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
-materialIconsExtended = "1.6.8"
+lifecycleRuntimeKtx = "2.8.6"
+activityCompose = "1.9.3"
+composeBom = "2024.10.00"
+materialIconsExtended = "1.7.4"
 voyagerNavigator = "1.0.0"
 serialization = "1.9.0"
 appcompat = "1.7.0"
 material = "1.12.0"
-activity = "1.9.0"
+activity = "1.9.3"
 google-services = "4.4.2"
-firebaseMessaging = "24.0.0"
+firebaseMessaging = "24.0.2"
+composeCharts = "0.2.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -63,6 +64,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
+compose-charts = { module = "io.github.bytebeats:compose-charts", version.ref = "composeCharts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -70,4 +72,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 hilt-android = {id ="com.google.dagger.hilt.android", version.ref = "hiltAndroid"}
 serialization = {id ="org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization"}
 google-services = {id="com.google.gms.google-services", version.ref = "google-services"}
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose" , version.ref = "kotlin" }
 

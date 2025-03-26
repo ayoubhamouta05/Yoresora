@@ -13,7 +13,8 @@ data class UserDataResponse(
     val users_password: String,
     val users_phone: String,
     val users_verifycode: Int ,
-    val users_image : String?
+    val users_image : String? ,
+    val users_type : Int
 )
 
 fun UserDataResponse.toUser(): User {
@@ -23,6 +24,7 @@ fun UserDataResponse.toUser(): User {
         userCustomerId = users_customer_id,
         userEmail = users_email,
         userPhone = users_phone ,
-        userImage = users_image
+        userImage = users_image ,
+        userType = users_type
     )
 }

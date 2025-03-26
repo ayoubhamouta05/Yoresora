@@ -9,5 +9,6 @@ data class User(
     val userName : String= "",
     val userEmail : String ="",
     val userPhone : String ="",
-    val userImage : String ? = null
+    val userImage : String ? = null ,
+    val userType : Int = 0
 ) : java.io.Serializable

@@ -44,7 +44,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,20 +52,20 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.common.Constant.APP_ENTRY
 import com.youppix.ecommercecourse.common.Dimens
-import com.youppix.ecommercecourse.presentation.components.CustomDialog
 import com.youppix.ecommercecourse.common.Dimens.ExtraSmallPadding
 import com.youppix.ecommercecourse.common.Dimens.LargePadding
 import com.youppix.ecommercecourse.common.Dimens.MediumPadding
 import com.youppix.ecommercecourse.common.Dimens.SmallPadding
-import com.youppix.ecommercecourse.presentation.home_app.MainActivity
+import com.youppix.ecommercecourse.presentation.components.CustomCircularProgress
+import com.youppix.ecommercecourse.presentation.components.CustomDialog
+import com.youppix.ecommercecourse.presentation.components.CustomTextField
+import com.youppix.ecommercecourse.presentation.components.NotificationPermissionHandler
+import com.youppix.ecommercecourse.presentation.user_home_app.MainActivity
 import com.youppix.ecommercecourse.presentation.starting_app.auth.forgotPassword.CheckEmailValidationScreen
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.components.SocialMediaItem
 import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpScreen
 import com.youppix.ecommercecourse.presentation.starting_app.auth.signup.SignUpState
 import com.youppix.ecommercecourse.presentation.starting_app.auth.verification.VerificationEmailSignUpScreen
-import com.youppix.ecommercecourse.presentation.components.CustomTextField
-import com.youppix.ecommercecourse.presentation.components.NotificationPermissionHandler
-import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -343,6 +342,8 @@ class LoginScreen() : Screen {
                     onDismissRequest = {
                         viewModel.resetState()
                     })
+                
+                CustomCircularProgress(isLoading = loginState.isLoading )
 
             }
         }

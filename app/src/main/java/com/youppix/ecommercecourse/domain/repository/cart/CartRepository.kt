@@ -3,6 +3,7 @@ package com.youppix.ecommercecourse.domain.repository.cart
 import com.youppix.ecommercecourse.common.Resource
 import com.youppix.ecommercecourse.data.remote.auth.dto.AuthResponse
 import com.youppix.ecommercecourse.data.remote.cart.dto.CartResponse
+import com.youppix.ecommercecourse.data.remote.cart.dto.CheckPromoCodeResponse
 import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
@@ -14,4 +15,6 @@ interface CartRepository {
         itemColor: Int,
         itemQuantity: Int,
     ): Flow<Resource<AuthResponse>>
+
+    suspend fun checkCodePromo(codePromo : String) : Flow<Resource<CheckPromoCodeResponse>>
 }

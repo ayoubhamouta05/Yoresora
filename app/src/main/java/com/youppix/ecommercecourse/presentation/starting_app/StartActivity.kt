@@ -23,7 +23,7 @@ import com.youppix.ecommercecourse.common.Constant.APP_LANG
 import com.youppix.ecommercecourse.common.Constant.setLocal
 import com.youppix.ecommercecourse.presentation.components.LeavingAppDialog
 import com.youppix.ecommercecourse.presentation.components.StatusBarColor
-import com.youppix.ecommercecourse.presentation.home_app.MainActivity
+import com.youppix.ecommercecourse.presentation.user_home_app.MainActivity
 import com.youppix.ecommercecourse.presentation.starting_app.auth.login.LoginScreen
 import com.youppix.ecommercecourse.presentation.starting_app.selectLanguage.SelectLanguageScreen
 import com.youppix.ecommercecourse.presentation.ui.theme.EcommerceCourseTheme

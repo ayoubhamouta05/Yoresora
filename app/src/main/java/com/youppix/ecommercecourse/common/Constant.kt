@@ -8,13 +8,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.EventNote
 import androidx.compose.material.icons.automirrored.outlined.EventNote
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.FormatListNumbered
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.ShoppingBag
+import androidx.compose.ui.graphics.Color
 import com.youppix.ecommercecourse.R
 import com.youppix.ecommercecourse.domain.model.bottomBar.BottomBar
 import com.youppix.ecommercecourse.domain.model.onBoarding.OnBoarding
@@ -23,6 +28,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.random.Random
 
 object Constant {
 
@@ -51,7 +57,7 @@ object Constant {
 
         )
 
-    val bottomBarItems = listOf(
+    val mainActivityBottomBarItems = listOf(
         BottomBar(
             title = "Home",
             selectedIcon = Icons.Filled.Home,
@@ -80,6 +86,41 @@ object Constant {
             title = "Profile",
             selectedIcon = Icons.Filled.Person,
             unselectedIcon = Icons.Outlined.Person,
+            screen = 4
+        ),
+
+
+        )
+
+    val adminActivityBottomBarItems = listOf(
+        BottomBar(
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+            screen = 0
+        ),
+        BottomBar(
+            title = "Items",
+            selectedIcon = Icons.Filled.FormatListNumbered,
+            unselectedIcon = Icons.Outlined.FormatListNumbered,
+            screen = 1
+        ),
+        BottomBar(
+            title = "Orders",
+            selectedIcon = Icons.AutoMirrored.Filled.EventNote,
+            unselectedIcon = Icons.AutoMirrored.Outlined.EventNote,
+            screen = 2
+        ),
+        BottomBar(
+            title = "Users",
+            selectedIcon = Icons.Filled.Person,
+            unselectedIcon = Icons.Outlined.Person,
+            screen = 3
+        ),
+        BottomBar(
+            title = "Settings",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
             screen = 4
         ),
 
@@ -212,5 +253,14 @@ object Constant {
         }
 
         return result
+    }
+
+    fun randomColor(mainBrightness: Int = 50): Color {
+        val random = Random.Default
+        val red = random.nextInt(mainBrightness, 256)
+        val green = random.nextInt(mainBrightness, 256)
+        val blue = random.nextInt(mainBrightness, 256)
+        return Color(red, green, blue)
+
     }
 }
