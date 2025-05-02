@@ -33,11 +33,8 @@
 
 ## 📸 Screenshots
 
-<video width="300" controls>
-  <source src="https://github.com/user-attachments/assets/22350dc9-10c9-4d28-b978-cfa83e5f6ba3" type="video/mp4">
-   Your browser does not support the video tag.
-</video>
-
+https://github.com/user-attachments/assets/22350dc9-10c9-4d28-b978-cfa83e5f6ba3
+ 
 <img src="https://github.com/user-attachments/assets/40ec0297-d63a-49be-9a14-bf3a3dbeef55" width="300" />
 <img src="https://github.com/user-attachments/assets/fcfe7da9-b531-44bd-91a8-514f2b721e32" width="300" />
 <img src="https://github.com/user-attachments/assets/1981d59d-714f-4c37-bc06-5284e47c9321" width="300" />
